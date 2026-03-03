@@ -12,7 +12,7 @@ A low-level hook that checks if a media query matches using React 18's `useSyncE
 ### Import
 
 ```tsx
-import { useMediaQuery } from 'dynamic-ui';
+import { useMediaQuery } from '@dynamic-framework/ui-react';
 ```
 
 ### Signature
@@ -45,7 +45,7 @@ function useMediaQuery(
 #### Basic Usage
 
 ```tsx
-import { useMediaQuery } from 'dynamic-ui';
+import { useMediaQuery } from '@dynamic-framework/ui-react';
 
 function ResponsiveComponent() {
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -61,7 +61,7 @@ function ResponsiveComponent() {
 #### With Live Updates
 
 ```tsx
-import { useMediaQuery } from 'dynamic-ui';
+import { useMediaQuery } from '@dynamic-framework/ui-react';
 
 function DynamicLayout() {
   // Re-renders when viewport size changes
@@ -78,7 +78,7 @@ function DynamicLayout() {
 #### Multiple Media Queries
 
 ```tsx
-import { useMediaQuery } from 'dynamic-ui';
+import { useMediaQuery } from '@dynamic-framework/ui-react';
 
 function AdaptiveComponent() {
   const isMobile = useMediaQuery('(max-width: 576px)', true);
@@ -99,7 +99,7 @@ function AdaptiveComponent() {
 #### Orientation Detection
 
 ```tsx
-import { useMediaQuery } from 'dynamic-ui';
+import { useMediaQuery } from '@dynamic-framework/ui-react';
 
 function OrientationAware() {
   const isPortrait = useMediaQuery('(orientation: portrait)', true);
@@ -128,7 +128,7 @@ import {
   useMediaBreakpointUpLg,
   useMediaBreakpointUpXl,
   useMediaBreakpointUpXxl,
-} from 'dynamic-ui';
+} from '@dynamic-framework/ui-react';
 ```
 
 ### Signature
@@ -174,7 +174,7 @@ type BreakpointProps = {
 #### Basic Breakpoint Check
 
 ```tsx
-import { useMediaBreakpointUpMd } from 'dynamic-ui';
+import { useMediaBreakpointUpMd } from '@dynamic-framework/ui-react';
 
 function ResponsiveNav() {
   const isMdOrLarger = useMediaBreakpointUpMd();
@@ -193,7 +193,7 @@ function ResponsiveNav() {
 import {
   useMediaBreakpointUpSm,
   useMediaBreakpointUpLg
-} from 'dynamic-ui';
+} from '@dynamic-framework/ui-react';
 
 function Dashboard() {
   const isSmOrLarger = useMediaBreakpointUpSm(true);
@@ -215,7 +215,7 @@ function Dashboard() {
 import {
   useMediaBreakpointUpMd,
   useMediaBreakpointUpXl
-} from 'dynamic-ui';
+} from '@dynamic-framework/ui-react';
 
 function ProductGrid({ products }) {
   const isMd = useMediaBreakpointUpMd(true);
@@ -240,7 +240,7 @@ import {
   useMediaBreakpointUpSm,
   useMediaBreakpointUpMd,
   useMediaBreakpointUpLg
-} from 'dynamic-ui';
+} from '@dynamic-framework/ui-react';
 
 function AdaptiveCard() {
   const isSm = useMediaBreakpointUpSm(true);
@@ -266,7 +266,7 @@ function AdaptiveCard() {
 The `useMediaBreakpointUp` hooks require `DContextProvider`:
 
 ```tsx
-import { DContextProvider } from 'dynamic-ui';
+import { DContextProvider } from '@dynamic-framework/ui-react';
 
 function App() {
   return (
@@ -291,7 +291,7 @@ Both hooks use `useSyncExternalStore` with proper server-side rendering support:
 ### SSR Best Practices
 
 ```tsx
-import { useMediaQuery } from 'dynamic-ui';
+import { useMediaQuery } from '@dynamic-framework/ui-react';
 import { useEffect, useState } from 'react';
 
 function SSRSafeComponent() {

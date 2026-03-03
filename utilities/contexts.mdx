@@ -12,7 +12,7 @@ The main context provider that supplies global configuration including currency 
 ### Import
 
 ```tsx
-import { DContextProvider, useDContext } from 'dynamic-ui';
+import { DContextProvider, useDContext } from '@dynamic-framework/ui-react';
 ```
 
 ### Provider Props
@@ -168,7 +168,7 @@ type DContextValue<T extends Record<string, unknown>> = {
 #### Basic Setup
 
 ```tsx
-import { DContextProvider } from 'dynamic-ui';
+import { DContextProvider } from '@dynamic-framework/ui-react';
 
 function App() {
   return (
@@ -182,7 +182,7 @@ function App() {
 #### Custom Currency
 
 ```tsx
-import { DContextProvider } from 'dynamic-ui';
+import { DContextProvider } from '@dynamic-framework/ui-react';
 
 function App() {
   return (
@@ -204,7 +204,7 @@ function App() {
 #### Accessing Context
 
 ```tsx
-import { useDContext } from 'dynamic-ui';
+import { useDContext } from '@dynamic-framework/ui-react';
 
 function CurrencyDisplay() {
   const { currency, language } = useDContext();
@@ -221,7 +221,7 @@ function CurrencyDisplay() {
 #### Dynamic Updates
 
 ```tsx
-import { useDContext } from 'dynamic-ui';
+import { useDContext } from '@dynamic-framework/ui-react';
 
 function LanguageSwitcher() {
   const { language, setContext } = useDContext();
@@ -244,7 +244,7 @@ function LanguageSwitcher() {
 #### Custom Icon Library
 
 ```tsx
-import { DContextProvider } from 'dynamic-ui';
+import { DContextProvider } from '@dynamic-framework/ui-react';
 
 function App() {
   return (
@@ -294,7 +294,7 @@ A specialized context for managing modal overlays and portals with stacking, ani
 ### Import
 
 ```tsx
-import { DPortalContextProvider, useDPortalContext } from 'dynamic-ui';
+import { DPortalContextProvider, useDPortalContext } from '@dynamic-framework/ui-react';
 ```
 
 <Note>
@@ -357,7 +357,7 @@ type PortalContextType<T extends Record<string, unknown>> = {
 #### Define Portal Components
 
 ```tsx
-import type { PortalProps } from 'dynamic-ui';
+import type { PortalProps } from '@dynamic-framework/ui-react';
 
 type ConfirmDialogPayload = {
   title: string;
@@ -404,7 +404,7 @@ function ImageViewer({ payload }: PortalProps<ImageViewerPayload>) {
 #### Register Portals
 
 ```tsx
-import { DContextProvider } from 'dynamic-ui';
+import { DContextProvider } from '@dynamic-framework/ui-react';
 
 type AvailablePortals = {
   confirm: ConfirmDialogPayload;
@@ -428,7 +428,7 @@ function App() {
 #### Open Portals
 
 ```tsx
-import { useDPortalContext } from 'dynamic-ui';
+import { useDPortalContext } from '@dynamic-framework/ui-react';
 
 function DeleteButton({ itemId }) {
   const { openPortal } = useDPortalContext<AvailablePortals>();

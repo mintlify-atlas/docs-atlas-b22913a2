@@ -8,7 +8,7 @@ The `useInputCurrency` hook manages the complex state and behavior of currency i
 ## Import
 
 ```tsx
-import { useInputCurrency } from 'dynamic-ui';
+import { useInputCurrency } from '@dynamic-framework/ui-react';
 ```
 
 ## Signature
@@ -123,7 +123,7 @@ type UseInputCurrencyReturn = {
 ### Basic Currency Input
 
 ```tsx
-import { useInputCurrency } from 'dynamic-ui';
+import { useInputCurrency } from '@dynamic-framework/ui-react';
 
 function CurrencyInput({ value, onChange }) {
   const currencyOptions = {
@@ -170,7 +170,7 @@ function CurrencyInput({ value, onChange }) {
 ### With Custom Callbacks
 
 ```tsx
-import { useInputCurrency } from 'dynamic-ui';
+import { useInputCurrency } from '@dynamic-framework/ui-react';
 import { useState } from 'react';
 
 function PriceInput() {
@@ -220,7 +220,7 @@ function PriceInput() {
 ### Forwarding Ref
 
 ```tsx
-import { useInputCurrency } from 'dynamic-ui';
+import { useInputCurrency } from '@dynamic-framework/ui-react';
 import { useRef, forwardRef } from 'react';
 
 const CurrencyInput = forwardRef<HTMLInputElement, Props>(
@@ -258,7 +258,7 @@ const CurrencyInput = forwardRef<HTMLInputElement, Props>(
 ### Complete Styled Component
 
 ```tsx
-import { useInputCurrency } from 'dynamic-ui';
+import { useInputCurrency } from '@dynamic-framework/ui-react';
 import styled from 'styled-components';
 
 const InputWrapper = styled.div`

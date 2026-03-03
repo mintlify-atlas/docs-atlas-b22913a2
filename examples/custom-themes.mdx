@@ -111,7 +111,7 @@ $primary-900: shade-color($primary, 80%);
     ```tsx
     // src/main.tsx or src/App.tsx
     import './styles/custom-theme.scss';
-    import { DContextProvider } from '@dynamic-ui/react';
+    import { DContextProvider } from '@dynamic-framework/ui-react';
     
     function App() {
       return (
@@ -129,7 +129,7 @@ $primary-900: shade-color($primary, 80%);
 Use CSS custom properties for runtime theme changes:
 
 ```tsx
-import { DBox, DButton, DInput } from '@dynamic-ui/react';
+import { DBox, DButton, DInput } from '@dynamic-framework/ui-react';
 import { useState } from 'react';
 
 function ThemeSwitcher() {
@@ -197,7 +197,7 @@ Each component exposes CSS variables for customization:
 ```
 
 ```tsx
-import { DInput } from '@dynamic-ui/react';
+import { DInput } from '@dynamic-framework/ui-react';
 
 function CustomStyledInput() {
   return (
@@ -377,7 +377,7 @@ import {
   DButton,
   DInput,
   DCard,
-} from '@dynamic-ui/react';
+} from '@dynamic-framework/ui-react';
 
 function App() {
   return (

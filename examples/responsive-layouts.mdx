@@ -12,7 +12,7 @@ Dynamic UI provides powerful layout components and utilities for building respon
 The `DLayout` component is a wrapper around Bootstrap's grid system with responsive gap support:
 
 ```tsx
-import { DLayout, DBox } from '@dynamic-ui/react';
+import { DLayout, DBox } from '@dynamic-framework/ui-react';
 
 function ResponsiveGrid() {
   return (
@@ -44,7 +44,7 @@ function ResponsiveGrid() {
 Create a responsive dashboard with metric cards and charts:
 
 ```tsx
-import { DLayout, DBox, DIcon, DButton } from '@dynamic-ui/react';
+import { DLayout, DBox, DIcon, DButton } from '@dynamic-framework/ui-react';
 
 function Dashboard() {
   const metrics = [
@@ -122,7 +122,7 @@ function Dashboard() {
 For finer control, use Bootstrap's grid classes directly:
 
 ```tsx
-import { DBox, DInput, DButton } from '@dynamic-ui/react';
+import { DBox, DInput, DButton } from '@dynamic-framework/ui-react';
 
 function TwoColumnForm() {
   return (
@@ -176,7 +176,7 @@ Use the `useMediaQuery` hook for conditional rendering:
 <Steps>
   <Step title="Import the hook">
     ```tsx
-    import { useMediaQuery } from '@dynamic-ui/react';
+    import { useMediaQuery } from '@dynamic-framework/ui-react';
     ```
   </Step>
   
@@ -206,7 +206,7 @@ Use the `useMediaQuery` hook for conditional rendering:
       useMediaBreakpointUpMd,
       useMediaBreakpointUpLg,
       useMediaBreakpointUpXl,
-    } from '@dynamic-ui/react';
+    } from '@dynamic-framework/ui-react';
     
     function AdaptiveLayout() {
       const isSmUp = useMediaBreakpointUpSm(true);
@@ -234,7 +234,7 @@ Use the `useMediaQuery` hook for conditional rendering:
 Create a split-screen layout that adapts to mobile:
 
 ```tsx
-import { DBox, DInput, DButton, DIcon } from '@dynamic-ui/react';
+import { DBox, DInput, DButton, DIcon } from '@dynamic-framework/ui-react';
 
 function FormWithCover() {
   return (
@@ -294,8 +294,8 @@ function FormWithCover() {
 Adapt content based on screen size:
 
 ```tsx
-import { useMediaQuery } from '@dynamic-ui/react';
-import { DButton, DButtonIcon } from '@dynamic-ui/react';
+import { useMediaQuery } from '@dynamic-framework/ui-react';
+import { DButton, DButtonIcon } from '@dynamic-framework/ui-react';
 
 function ResponsiveNav() {
   const isDesktop = useMediaQuery('(min-width: 992px)', true);
@@ -323,7 +323,7 @@ function ResponsiveNav() {
 Create a flexible three-column layout:
 
 ```tsx
-import { DLayout, DBox } from '@dynamic-ui/react';
+import { DLayout, DBox } from '@dynamic-framework/ui-react';
 
 function ThreeColumnLayout() {
   return (
@@ -365,7 +365,7 @@ function ThreeColumnLayout() {
 Adjust spacing based on viewport:
 
 ```tsx
-import { DLayout, DBox } from '@dynamic-ui/react';
+import { DLayout, DBox } from '@dynamic-framework/ui-react';
 
 function ResponsiveGaps() {
   return (

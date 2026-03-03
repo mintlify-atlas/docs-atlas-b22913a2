@@ -8,7 +8,7 @@ The `useFormatCurrency` hook provides currency formatting functionality using th
 ## Import
 
 ```tsx
-import { useFormatCurrency } from 'dynamic-ui';
+import { useFormatCurrency } from '@dynamic-framework/ui-react';
 ```
 
 ## Signature
@@ -66,7 +66,7 @@ type CurrencyProps = {
 ### Basic Usage
 
 ```tsx
-import { useFormatCurrency } from 'dynamic-ui';
+import { useFormatCurrency } from '@dynamic-framework/ui-react';
 
 function PriceDisplay() {
   const { format } = useFormatCurrency();
@@ -80,7 +80,7 @@ function PriceDisplay() {
 ### Format Multiple Values
 
 ```tsx
-import { useFormatCurrency } from 'dynamic-ui';
+import { useFormatCurrency } from '@dynamic-framework/ui-react';
 
 function FinancialSummary({ revenue, expenses, profit }) {
   const { values } = useFormatCurrency(revenue, expenses, profit);
@@ -99,7 +99,7 @@ function FinancialSummary({ revenue, expenses, profit }) {
 ### Custom Currency Options
 
 ```tsx
-import { useFormatCurrency } from 'dynamic-ui';
+import { useFormatCurrency } from '@dynamic-framework/ui-react';
 
 function EuroPrice({ amount }) {
   const { format } = useFormatCurrency();
@@ -119,7 +119,7 @@ function EuroPrice({ amount }) {
 ### Dynamic Formatting
 
 ```tsx
-import { useFormatCurrency } from 'dynamic-ui';
+import { useFormatCurrency } from '@dynamic-framework/ui-react';
 
 function ProductPrice({ price, onSale, discount }) {
   const { format } = useFormatCurrency();
@@ -143,7 +143,7 @@ function ProductPrice({ price, onSale, discount }) {
 This hook requires `DContextProvider` with currency configuration:
 
 ```tsx
-import { DContextProvider } from 'dynamic-ui';
+import { DContextProvider } from '@dynamic-framework/ui-react';
 
 function App() {
   return (
