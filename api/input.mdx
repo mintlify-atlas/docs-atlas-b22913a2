@@ -1,0 +1,424 @@
+---
+title: DInput
+description: API reference for the DInput component and variants
+---
+
+## DInput
+
+A comprehensive input component with support for icons, labels, validation states, and more.
+
+### Import
+
+```tsx
+import { DInput } from '@dynamic-labs/ui';
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = Merge<
+  Omit<ComponentPropsWithoutRef<'input'>, 'onChange' | 'value'>,
+  NonHTMLInputElementProps
+>;
+
+type NonHTMLInputElementProps = BaseProps &
+  FamilyIconProps &
+  StartIconProps &
+  EndIconProps & {
+    value?: string;
+    label?: string;
+    loading?: boolean;
+    hint?: string;
+    size?: ComponentSize;
+    invalid?: boolean;
+    valid?: boolean;
+    floatingLabel?: boolean;
+    inputStart?: ReactNode;
+    inputEnd?: ReactNode;
+    readonly?: boolean;
+    onChange?: (value: string) => void;
+    onIconStartClick?: (value?: string) => void;
+    onIconEndClick?: (value?: string) => void;
+  };
+
+type ComponentSize = 'sm' | 'lg';
+
+type StartIconProps = {
+  iconStart?: string;
+  iconStartDisabled?: boolean;
+  iconStartFamilyClass?: string;
+  iconStartFamilyPrefix?: string;
+  iconStartAriaLabel?: string;
+  iconStartTabIndex?: number;
+  iconStartMaterialStyle?: boolean;
+};
+
+type EndIconProps = {
+  iconEnd?: string;
+  iconEndDisabled?: boolean;
+  iconEndFamilyClass?: string;
+  iconEndFamilyPrefix?: string;
+  iconEndAriaLabel?: string;
+  iconEndTabIndex?: number;
+  iconEndMaterialStyle?: boolean;
+};
+```
+
+### Props
+
+<ParamField path="value" type="string">
+  The current value of the input.
+</ParamField>
+
+<ParamField path="label" type="string">
+  Label text for the input field.
+</ParamField>
+
+<ParamField path="placeholder" type="string">
+  Placeholder text when input is empty.
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  If true, displays a loading spinner and disables the input.
+</ParamField>
+
+<ParamField path="hint" type="string">
+  Helper text displayed below the input.
+</ParamField>
+
+<ParamField path="size" type="'sm' | 'lg'">
+  Size variant of the input.
+</ParamField>
+
+<ParamField path="invalid" type="boolean" default="false">
+  If true, applies invalid/error styling to the input.
+</ParamField>
+
+<ParamField path="valid" type="boolean" default="false">
+  If true, applies valid/success styling to the input.
+</ParamField>
+
+<ParamField path="floatingLabel" type="boolean" default="false">
+  If true, uses floating label style where label moves up when input has value.
+</ParamField>
+
+<ParamField path="inputStart" type="ReactNode">
+  Custom content to display at the start of the input (before icons).
+</ParamField>
+
+<ParamField path="inputEnd" type="ReactNode">
+  Custom content to display at the end of the input (after icons).
+</ParamField>
+
+<ParamField path="readonly" type="boolean">
+  If true, makes the input read-only.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  If true, disables the input.
+</ParamField>
+
+<ParamField path="onChange" type="(value: string) => void">
+  Callback function called when input value changes. Receives the new value as a string.
+</ParamField>
+
+<ParamField path="onIconStartClick" type="(value?: string) => void">
+  Callback function called when start icon is clicked.
+</ParamField>
+
+<ParamField path="onIconEndClick" type="(value?: string) => void">
+  Callback function called when end icon is clicked.
+</ParamField>
+
+<ParamField path="iconStart" type="string">
+  Icon to display at the start of the input.
+</ParamField>
+
+<ParamField path="iconStartFamilyClass" type="string">
+  CSS class for the start icon font family.
+</ParamField>
+
+<ParamField path="iconStartFamilyPrefix" type="string">
+  Prefix for the start icon font family.
+</ParamField>
+
+<ParamField path="iconStartMaterialStyle" type="boolean">
+  Whether to use Material Design style for the start icon.
+</ParamField>
+
+<ParamField path="iconStartDisabled" type="boolean">
+  If true, disables the start icon button.
+</ParamField>
+
+<ParamField path="iconStartAriaLabel" type="string">
+  Accessible label for the start icon button.
+</ParamField>
+
+<ParamField path="iconStartTabIndex" type="number">
+  Tab index for the start icon button.
+</ParamField>
+
+<ParamField path="iconEnd" type="string">
+  Icon to display at the end of the input.
+</ParamField>
+
+<ParamField path="iconEndFamilyClass" type="string">
+  CSS class for the end icon font family.
+</ParamField>
+
+<ParamField path="iconEndFamilyPrefix" type="string">
+  Prefix for the end icon font family.
+</ParamField>
+
+<ParamField path="iconEndMaterialStyle" type="boolean">
+  Whether to use Material Design style for the end icon.
+</ParamField>
+
+<ParamField path="iconEndDisabled" type="boolean">
+  If true, disables the end icon button.
+</ParamField>
+
+<ParamField path="iconEndAriaLabel" type="string">
+  Accessible label for the end icon button.
+</ParamField>
+
+<ParamField path="iconEndTabIndex" type="number">
+  Tab index for the end icon button.
+</ParamField>
+
+<ParamField path="id" type="string">
+  Unique identifier for the input element. Auto-generated if not provided.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the input wrapper.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the input wrapper.
+</ParamField>
+
+### Usage Examples
+
+#### Basic Input
+
+```tsx
+import { DInput } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [value, setValue] = useState('');
+
+  return (
+    <DInput
+      label="Email"
+      placeholder="Enter your email"
+      value={value}
+      onChange={setValue}
+    />
+  );
+}
+```
+
+#### With Icons
+
+```tsx
+import { DInput } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [value, setValue] = useState('');
+
+  return (
+    <DInput
+      label="Search"
+      placeholder="Search..."
+      value={value}
+      onChange={setValue}
+      iconStart="search"
+      iconStartFamilyClass="bi"
+    />
+  );
+}
+```
+
+#### Validation States
+
+```tsx
+import { DInput } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [email, setEmail] = useState('');
+  const isValid = email.includes('@');
+
+  return (
+    <div className="d-flex flex-column gap-3">
+      <DInput
+        label="Valid Input"
+        value="valid@example.com"
+        valid
+        hint="Looks good!"
+      />
+      <DInput
+        label="Invalid Input"
+        value="invalid-email"
+        invalid
+        hint="Please enter a valid email."
+      />
+      <DInput
+        label="Email"
+        placeholder="your@email.com"
+        value={email}
+        onChange={setEmail}
+        valid={isValid && email.length > 0}
+        invalid={!isValid && email.length > 0}
+        hint={!isValid && email.length > 0 ? 'Invalid email format' : ''}
+      />
+    </div>
+  );
+}
+```
+
+#### Floating Label
+
+```tsx
+import { DInput } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [value, setValue] = useState('');
+
+  return (
+    <DInput
+      label="Floating Label"
+      value={value}
+      onChange={setValue}
+      floatingLabel
+    />
+  );
+}
+```
+
+#### With Loading State
+
+```tsx
+import { DInput } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [value, setValue] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (newValue: string) => {
+    setValue(newValue);
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1000);
+  };
+
+  return (
+    <DInput
+      label="Search"
+      placeholder="Type to search..."
+      value={value}
+      onChange={handleChange}
+      loading={loading}
+    />
+  );
+}
+```
+
+#### With Addons
+
+```tsx
+import { DInput } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [value, setValue] = useState('');
+
+  return (
+    <div className="d-flex flex-column gap-3">
+      <DInput
+        label="Price"
+        value={value}
+        onChange={setValue}
+        inputStart={<span>$</span>}
+      />
+      <DInput
+        label="Website"
+        value={value}
+        onChange={setValue}
+        inputStart={<span>https://</span>}
+        inputEnd={<span>.com</span>}
+      />
+    </div>
+  );
+}
+```
+
+#### Size Variants
+
+```tsx
+import { DInput } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [value, setValue] = useState('');
+
+  return (
+    <div className="d-flex flex-column gap-3">
+      <DInput
+        label="Small"
+        placeholder="Small input"
+        size="sm"
+        value={value}
+        onChange={setValue}
+      />
+      <DInput
+        label="Default"
+        placeholder="Default input"
+        value={value}
+        onChange={setValue}
+      />
+      <DInput
+        label="Large"
+        placeholder="Large input"
+        size="lg"
+        value={value}
+        onChange={setValue}
+      />
+    </div>
+  );
+}
+```
+
+#### Clickable Icons
+
+```tsx
+import { DInput } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [value, setValue] = useState('');
+
+  const handleClear = () => {
+    setValue('');
+  };
+
+  return (
+    <DInput
+      label="Search"
+      placeholder="Search..."
+      value={value}
+      onChange={setValue}
+      iconStart="search"
+      iconStartFamilyClass="bi"
+      iconEnd={value ? "x-circle-fill" : undefined}
+      iconEndFamilyClass="bi"
+      iconEndAriaLabel="Clear search"
+      onIconEndClick={handleClear}
+    />
+  );
+}
+```

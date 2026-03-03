@@ -1,0 +1,248 @@
+---
+title: DCard
+description: API reference for the DCard component family
+---
+
+## DCard
+
+A flexible container component for grouping related content.
+
+### Import
+
+```tsx
+import { DCard } from '@dynamic-labs/ui';
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = PropsWithChildren<BaseProps>;
+
+type BaseProps = {
+  style?: CSSProperties;
+  className?: string;
+  dataAttributes?: DataAttributes;
+};
+```
+
+### Props
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the card.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the card.
+</ParamField>
+
+<ParamField path="dataAttributes" type="Record<`data-${string}`, string | number | undefined | null | boolean>">
+  Custom data attributes to add to the card element.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Content to display inside the card.
+</ParamField>
+
+---
+
+## DCard.Header
+
+Header section for the card.
+
+### TypeScript Interface
+
+```typescript
+type Props = PropsWithChildren<BaseProps>;
+```
+
+### Props
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the card header.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the card header.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Content to display inside the card header.
+</ParamField>
+
+---
+
+## DCard.Body
+
+Main content section for the card.
+
+### TypeScript Interface
+
+```typescript
+type Props = PropsWithChildren<BaseProps>;
+```
+
+### Props
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the card body.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the card body.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Content to display inside the card body.
+</ParamField>
+
+---
+
+## DCard.Footer
+
+Footer section for the card.
+
+### TypeScript Interface
+
+```typescript
+type Props = PropsWithChildren<BaseProps>;
+```
+
+### Props
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the card footer.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the card footer.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Content to display inside the card footer.
+</ParamField>
+
+---
+
+## Usage Examples
+
+### Basic Card
+
+```tsx
+import { DCard } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DCard>
+      <DCard.Body>
+        <h5>Card Title</h5>
+        <p>This is a simple card with just a body.</p>
+      </DCard.Body>
+    </DCard>
+  );
+}
+```
+
+### Card with Header and Footer
+
+```tsx
+import { DCard } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DCard>
+      <DCard.Header>
+        <h5 className="mb-0">Featured</h5>
+      </DCard.Header>
+      <DCard.Body>
+        <h5>Special title treatment</h5>
+        <p>With supporting text below as a natural lead-in to additional content.</p>
+        <button className="btn btn-primary">Go somewhere</button>
+      </DCard.Body>
+      <DCard.Footer className="text-muted">
+        2 days ago
+      </DCard.Footer>
+    </DCard>
+  );
+}
+```
+
+### User Profile Card
+
+```tsx
+import { DCard, DAvatar, DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DCard style={{ maxWidth: '400px' }}>
+      <DCard.Body className="text-center">
+        <DAvatar
+          name="John Doe"
+          image="https://i.pravatar.cc/150?img=1"
+          size="xxl"
+          className="mb-3"
+        />
+        <h5 className="mb-1">John Doe</h5>
+        <p className="text-muted mb-3">Software Engineer</p>
+        <div className="d-flex gap-2 justify-content-center">
+          <DButton text="Follow" color="primary" size="sm" />
+          <DButton text="Message" color="outline" variant="outline" size="sm" />
+        </div>
+      </DCard.Body>
+    </DCard>
+  );
+}
+```
+
+### Card Grid
+
+```tsx
+import { DCard } from '@dynamic-labs/ui';
+
+export default function Example() {
+  const cards = [
+    { title: 'Card 1', text: 'Some quick example text.' },
+    { title: 'Card 2', text: 'Some quick example text.' },
+    { title: 'Card 3', text: 'Some quick example text.' },
+  ];
+
+  return (
+    <div className="row g-3">
+      {cards.map((card, index) => (
+        <div key={index} className="col-md-4">
+          <DCard>
+            <DCard.Body>
+              <h5>{card.title}</h5>
+              <p>{card.text}</p>
+            </DCard.Body>
+          </DCard>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Card with Custom Styling
+
+```tsx
+import { DCard } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DCard
+      className="border-primary"
+      style={{
+        maxWidth: '500px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+      }}
+    >
+      <DCard.Header className="bg-primary text-white">
+        Custom Styled Card
+      </DCard.Header>
+      <DCard.Body>
+        <p>This card uses custom styling with className and style props.</p>
+      </DCard.Body>
+    </DCard>
+  );
+}
+```

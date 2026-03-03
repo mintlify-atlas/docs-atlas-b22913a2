@@ -1,0 +1,767 @@
+---
+title: Overlay Components
+description: Modal dialogs, popovers, tooltips, and dropdown menus
+---
+
+## DModal
+
+Modal dialog component with animations and composable structure.
+
+### Basic Usage
+
+```tsx
+import DModal from '@dynamic-ui/components';
+import { AnimatePresence } from 'framer-motion';
+
+function App() {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  return (
+    <>
+      <DButton text="Open Modal" onClick={() => setIsOpen(true)} />
+      
+      <AnimatePresence>
+        {isOpen && (
+          <DModal name="exampleModal" onClose={() => setIsOpen(false)}>
+            <DModal.Header>Modal Title</DModal.Header>
+            <DModal.Body>
+              Modal content goes here
+            </DModal.Body>
+            <DModal.Footer>
+              <DButton text="Close" onClick={() => setIsOpen(false)} />
+            </DModal.Footer>
+          </DModal>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+```
+
+### Props
+
+<ParamField path="name" type="string" required>
+  Unique modal identifier
+</ParamField>
+
+<ParamField path="staticBackdrop" type="boolean" default="false">
+  Prevents closing on backdrop click
+</ParamField>
+
+<ParamField path="scrollable" type="boolean" default="false">
+  Makes modal body scrollable
+</ParamField>
+
+<ParamField path="centered" type="boolean" default="false">
+  Vertically centers modal
+</ParamField>
+
+<ParamField path="fullScreen" type="boolean" default="false">
+  Full screen modal
+</ParamField>
+
+<ParamField path="fullScreenFrom" type="ModalFullScreenFrom">
+  Breakpoint for full screen - 'sm', 'md', 'lg', 'xl', or 'xxl'
+</ParamField>
+
+<ParamField path="size" type="ModalSize">
+  Modal size - 'sm', 'lg', or 'xl'
+</ParamField>
+
+<ParamField path="transition" type="Transition">
+  Custom Framer Motion transition
+</ParamField>
+
+### Subcomponents
+
+#### DModal.Header
+Modal header section
+
+#### DModal.Body
+Modal body section (main content)
+
+#### DModal.Footer
+Modal footer section (typically for actions)
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    <AnimatePresence>
+      {isOpen && (
+        <DModal name="confirmModal">
+          <DModal.Header>Confirm Action</DModal.Header>
+          <DModal.Body>
+            Are you sure you want to proceed?
+          </DModal.Body>
+          <DModal.Footer>
+            <DButton 
+              text="Cancel" 
+              variant="outline"
+              onClick={() => setIsOpen(false)} 
+            />
+            <DButton 
+              text="Confirm" 
+              color="primary"
+              onClick={handleConfirm} 
+            />
+          </DModal.Footer>
+        </DModal>
+      )}
+    </AnimatePresence>
+    ```
+  </Tab>
+  <Tab title="Sizes">
+    ```tsx
+    // Small
+    <DModal name="smallModal" size="sm">
+      <DModal.Body>Small modal</DModal.Body>
+    </DModal>
+    
+    // Large
+    <DModal name="largeModal" size="lg">
+      <DModal.Body>Large modal</DModal.Body>
+    </DModal>
+    
+    // Extra Large
+    <DModal name="xlModal" size="xl">
+      <DModal.Body>Extra large modal</DModal.Body>
+    </DModal>
+    ```
+  </Tab>
+  <Tab title="Centered">
+    ```tsx
+    <DModal name="centeredModal" centered>
+      <DModal.Header>Centered Modal</DModal.Header>
+      <DModal.Body>
+        This modal is vertically centered
+      </DModal.Body>
+    </DModal>
+    ```
+  </Tab>
+  <Tab title="Scrollable">
+    ```tsx
+    <DModal name="scrollableModal" scrollable>
+      <DModal.Header>Long Content</DModal.Header>
+      <DModal.Body>
+        {/* Long content that scrolls */}
+        <p>Paragraph 1...</p>
+        <p>Paragraph 2...</p>
+        {/* ... more content ... */}
+      </DModal.Body>
+    </DModal>
+    ```
+  </Tab>
+  <Tab title="Full Screen">
+    ```tsx
+    // Always full screen
+    <DModal name="fullModal" fullScreen>
+      <DModal.Header>Full Screen</DModal.Header>
+      <DModal.Body>Full screen modal</DModal.Body>
+    </DModal>
+    
+    // Full screen on small devices
+    <DModal name="responsiveModal" fullScreen fullScreenFrom="md">
+      <DModal.Body>Full screen below md breakpoint</DModal.Body>
+    </DModal>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & PropsWithChildren<{
+  name: string;
+  staticBackdrop?: boolean;
+  scrollable?: boolean;
+  centered?: boolean;
+  fullScreen?: boolean;
+  fullScreenFrom?: ModalFullScreenFrom;
+  size?: ModalSize;
+  transition?: Transition;
+}>;
+
+type ModalSize = 'sm' | 'lg' | 'xl';
+type ModalFullScreenFrom = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+```
+
+## DOffcanvas
+
+Offcanvas panel that slides in from any edge of the viewport.
+
+### Basic Usage
+
+```tsx
+import DOffcanvas from '@dynamic-ui/components';
+import { AnimatePresence } from 'framer-motion';
+
+function App() {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  return (
+    <>
+      <DButton text="Open Menu" onClick={() => setIsOpen(true)} />
+      
+      <AnimatePresence>
+        {isOpen && (
+          <DOffcanvas name="menu" openFrom="end">
+            <DOffcanvas.Header>
+              <h5>Menu</h5>
+              <DButtonIcon 
+                icon="X" 
+                ariaLabel="Close"
+                onClick={() => setIsOpen(false)} 
+              />
+            </DOffcanvas.Header>
+            <DOffcanvas.Body>
+              Navigation content
+            </DOffcanvas.Body>
+          </DOffcanvas>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+```
+
+### Props
+
+<ParamField path="name" type="string" required>
+  Unique offcanvas identifier
+</ParamField>
+
+<ParamField path="openFrom" type="OffcanvasPositionToggleFrom" default="end">
+  Edge to open from - 'top', 'bottom', 'start', or 'end'
+</ParamField>
+
+<ParamField path="staticBackdrop" type="boolean" default="false">
+  Prevents closing on backdrop click
+</ParamField>
+
+<ParamField path="scrollable" type="boolean" default="false">
+  Allows body scroll when offcanvas is open
+</ParamField>
+
+<ParamField path="transition" type="Transition">
+  Custom Framer Motion transition
+</ParamField>
+
+### Subcomponents
+
+#### DOffcanvas.Header
+Offcanvas header section
+
+#### DOffcanvas.Body
+Offcanvas body section
+
+#### DOffcanvas.Footer
+Offcanvas footer section
+
+### Examples
+
+<Tabs>
+  <Tab title="From End (Right)">
+    ```tsx
+    <AnimatePresence>
+      {isOpen && (
+        <DOffcanvas name="sideMenu" openFrom="end">
+          <DOffcanvas.Header>Menu</DOffcanvas.Header>
+          <DOffcanvas.Body>
+            <nav>
+              <a href="#">Home</a>
+              <a href="#">Profile</a>
+              <a href="#">Settings</a>
+            </nav>
+          </DOffcanvas.Body>
+        </DOffcanvas>
+      )}
+    </AnimatePresence>
+    ```
+  </Tab>
+  <Tab title="From Start (Left)">
+    ```tsx
+    <DOffcanvas name="leftPanel" openFrom="start">
+      <DOffcanvas.Header>Filters</DOffcanvas.Header>
+      <DOffcanvas.Body>
+        <p>Filter options here</p>
+      </DOffcanvas.Body>
+    </DOffcanvas>
+    ```
+  </Tab>
+  <Tab title="From Top">
+    ```tsx
+    <DOffcanvas name="topNotifications" openFrom="top">
+      <DOffcanvas.Header>Notifications</DOffcanvas.Header>
+      <DOffcanvas.Body>
+        <p>Recent notifications</p>
+      </DOffcanvas.Body>
+    </DOffcanvas>
+    ```
+  </Tab>
+  <Tab title="From Bottom">
+    ```tsx
+    <DOffcanvas name="bottomSheet" openFrom="bottom">
+      <DOffcanvas.Header>Actions</DOffcanvas.Header>
+      <DOffcanvas.Body>
+        <DButton text="Option 1" />
+        <DButton text="Option 2" />
+      </DOffcanvas.Body>
+    </DOffcanvas>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & PropsWithChildren<{
+  name: string;
+  staticBackdrop?: boolean;
+  scrollable?: boolean;
+  openFrom?: OffcanvasPositionToggleFrom;
+  transition?: Transition;
+}>;
+
+type OffcanvasPositionToggleFrom = 'top' | 'bottom' | 'start' | 'end';
+```
+
+## DPopover
+
+Popover component with floating UI positioning.
+
+### Basic Usage
+
+```tsx
+import DPopover from '@dynamic-ui/components';
+
+function App() {
+  const [open, setOpen] = useState(false);
+  
+  return (
+    <DPopover
+      open={open}
+      setOpen={setOpen}
+      renderComponent={(isOpen) => (
+        <DButton text="Toggle Popover" />
+      )}
+    >
+      <div className="p-3">
+        <h6>Popover Title</h6>
+        <p>Popover content goes here</p>
+      </div>
+    </DPopover>
+  );
+}
+```
+
+### Props
+
+<ParamField path="open" type="boolean" required>
+  Controls popover visibility
+</ParamField>
+
+<ParamField path="setOpen" type="(open: boolean) => void">
+  Callback to update open state
+</ParamField>
+
+<ParamField path="renderComponent" type="(open: boolean) => ReactElement" required>
+  Function that renders the trigger element
+</ParamField>
+
+<ParamField path="adjustContentToRender" type="boolean" default="false">
+  Adjusts popover width to content
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    function BasicPopover() {
+      const [open, setOpen] = useState(false);
+      
+      return (
+        <DPopover
+          open={open}
+          setOpen={setOpen}
+          renderComponent={(isOpen) => (
+            <DButtonIcon 
+              icon="Info" 
+              ariaLabel="Info"
+            />
+          )}
+        >
+          <div className="p-3">
+            <p>Additional information here</p>
+          </div>
+        </DPopover>
+      );
+    }
+    ```
+  </Tab>
+  <Tab title="User Menu">
+    ```tsx
+    <DPopover
+      open={menuOpen}
+      setOpen={setMenuOpen}
+      renderComponent={(isOpen) => (
+        <DAvatar name="John Doe" />
+      )}
+    >
+      <div className="p-2">
+        <div className="p-2">John Doe</div>
+        <hr />
+        <DButton text="Profile" variant="link" />
+        <DButton text="Settings" variant="link" />
+        <DButton text="Logout" variant="link" />
+      </div>
+    </DPopover>
+    ```
+  </Tab>
+  <Tab title="Form Help">
+    ```tsx
+    <div className="d-flex align-items-center gap-2">
+      <DInput label="Password" type="password" />
+      <DPopover
+        open={helpOpen}
+        setOpen={setHelpOpen}
+        renderComponent={() => (
+          <DButtonIcon icon="HelpCircle" ariaLabel="Help" />
+        )}
+      >
+        <div className="p-3" style={{ maxWidth: '250px' }}>
+          <h6>Password Requirements</h6>
+          <ul>
+            <li>At least 8 characters</li>
+            <li>One uppercase letter</li>
+            <li>One number</li>
+          </ul>
+        </div>
+      </DPopover>
+    </div>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & PropsWithChildren<{
+  renderComponent: (open: boolean) => ReactElement<unknown>;
+  open: boolean;
+  setOpen?: (open: boolean) => void;
+  adjustContentToRender?: boolean;
+}>;
+```
+
+## DTooltip
+
+Tooltip component with customizable triggers and positioning.
+
+### Basic Usage
+
+```tsx
+import DTooltip from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DTooltip 
+      Component={<DButton text="Hover me" />}
+      placement="top"
+    >
+      This is a tooltip
+    </DTooltip>
+  );
+}
+```
+
+### Props
+
+<ParamField path="Component" type="ReactNode" required>
+  Element that triggers the tooltip
+</ParamField>
+
+<ParamField path="placement" type="Placement" default="top">
+  Tooltip position - 'top', 'bottom', 'left', 'right', etc.
+</ParamField>
+
+<ParamField path="withHover" type="boolean" default="true">
+  Trigger on hover
+</ParamField>
+
+<ParamField path="withFocus" type="boolean" default="false">
+  Trigger on focus
+</ParamField>
+
+<ParamField path="withClick" type="boolean" default="false">
+  Trigger on click
+</ParamField>
+
+<ParamField path="open" type="boolean" default="false">
+  Controlled open state
+</ParamField>
+
+<ParamField path="size" type="ComponentSize">
+  Tooltip size - 'sm' or 'lg'
+</ParamField>
+
+<ParamField path="offSet" type="number">
+  Distance from trigger element
+</ParamField>
+
+<ParamField path="padding" type="number">
+  Padding for shift middleware
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    <DTooltip Component={<DButton text="Hover" />}>
+      Helpful tooltip text
+    </DTooltip>
+    ```
+  </Tab>
+  <Tab title="Placements">
+    ```tsx
+    <DTooltip Component={<DButton text="Top" />} placement="top">
+      Top tooltip
+    </DTooltip>
+    
+    <DTooltip Component={<DButton text="Right" />} placement="right">
+      Right tooltip
+    </DTooltip>
+    
+    <DTooltip Component={<DButton text="Bottom" />} placement="bottom">
+      Bottom tooltip
+    </DTooltip>
+    
+    <DTooltip Component={<DButton text="Left" />} placement="left">
+      Left tooltip
+    </DTooltip>
+    ```
+  </Tab>
+  <Tab title="Click Trigger">
+    ```tsx
+    <DTooltip 
+      Component={<DButtonIcon icon="Info" ariaLabel="Info" />}
+      withHover={false}
+      withClick={true}
+    >
+      Click the icon to see this tooltip
+    </DTooltip>
+    ```
+  </Tab>
+  <Tab title="Icon Tooltips">
+    ```tsx
+    <DTooltip Component={<DButtonIcon icon="Save" ariaLabel="Save" />}>
+      Save changes
+    </DTooltip>
+    
+    <DTooltip Component={<DButtonIcon icon="Edit" ariaLabel="Edit" />}>
+      Edit item
+    </DTooltip>
+    
+    <DTooltip Component={<DButtonIcon icon="Delete" ariaLabel="Delete" />}>
+      Delete item
+    </DTooltip>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+export type Props = BaseProps & PropsWithChildren<{
+  childrenClassName?: string;
+  offSet?: number;
+  padding?: number;
+  withHover?: boolean;
+  withFocus?: boolean;
+  withClick?: boolean;
+  open?: boolean;
+  size?: ComponentSize;
+  placement?: Placement;
+  Component: ReactNode;
+}>;
+```
+
+## DDropdown
+
+Dropdown menu component with action items.
+
+### Basic Usage
+
+```tsx
+import DDropdown from '@dynamic-ui/components';
+
+function App() {
+  const actions = [
+    {
+      label: 'Edit',
+      icon: 'Edit',
+      onClick: () => console.log('Edit clicked')
+    },
+    {
+      label: 'Delete',
+      icon: 'Trash',
+      color: 'danger' as const,
+      onClick: () => console.log('Delete clicked')
+    },
+  ];
+  
+  return <DDropdown actions={actions} />;
+}
+```
+
+### Props
+
+<ParamField path="actions" type="DropdownAction[]" required>
+  Array of dropdown actions
+</ParamField>
+
+<ParamField path="dropdownToggle" type="(props: { open: boolean, toggle: () => void }) => ReactNode">
+  Custom toggle element renderer
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes
+</ParamField>
+
+### DropdownAction Interface
+
+<ParamField path="label" type="string" required>
+  Action label
+</ParamField>
+
+<ParamField path="onClick" type="() => void">
+  Click handler for button actions
+</ParamField>
+
+<ParamField path="href" type="string">
+  Link URL (renders as anchor)
+</ParamField>
+
+<ParamField path="icon" type="string">
+  Icon name
+</ParamField>
+
+<ParamField path="color" type="'default' | 'danger' | 'success' | 'warning' | 'info'">
+  Action color variant
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Disables the action
+</ParamField>
+
+<ParamField path="isDivider" type="boolean">
+  Renders as divider instead of action
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic Actions">
+    ```tsx
+    const actions = [
+      {
+        label: 'View',
+        icon: 'Eye',
+        onClick: () => handleView()
+      },
+      {
+        label: 'Edit',
+        icon: 'Edit',
+        onClick: () => handleEdit()
+      },
+      { isDivider: true },
+      {
+        label: 'Delete',
+        icon: 'Trash',
+        color: 'danger',
+        onClick: () => handleDelete()
+      },
+    ];
+    
+    <DDropdown actions={actions} />
+    ```
+  </Tab>
+  <Tab title="With Links">
+    ```tsx
+    const actions = [
+      {
+        label: 'Profile',
+        href: '/profile',
+        icon: 'User'
+      },
+      {
+        label: 'Settings',
+        href: '/settings',
+        icon: 'Settings'
+      },
+      { isDivider: true },
+      {
+        label: 'Logout',
+        onClick: handleLogout,
+        icon: 'LogOut'
+      },
+    ];
+    
+    <DDropdown actions={actions} />
+    ```
+  </Tab>
+  <Tab title="Custom Toggle">
+    ```tsx
+    <DDropdown
+      actions={actions}
+      dropdownToggle={({ open, toggle }) => (
+        <DButton 
+          text="Actions"
+          iconEnd="ChevronDown"
+          onClick={toggle}
+        />
+      )}
+    />
+    ```
+  </Tab>
+  <Tab title="Disabled Items">
+    ```tsx
+    const actions = [
+      {
+        label: 'Available Action',
+        onClick: () => {}
+      },
+      {
+        label: 'Disabled Action',
+        onClick: () => {},
+        disabled: true
+      },
+    ];
+    
+    <DDropdown actions={actions} />
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+export type DropdownAction = {
+  onClick?: () => void;
+  href?: string;
+  disabled?: boolean;
+  icon?: string;
+  color?: 'default' | 'danger' | 'success' | 'warning' | 'info';
+  isDivider?: boolean;
+  label: string;
+};
+
+type Props = {
+  actions: DropdownAction[];
+  dropdownToggle?: ((props: { open: boolean, toggle: () => void }) => React.ReactNode);
+  className?: string;
+};
+```

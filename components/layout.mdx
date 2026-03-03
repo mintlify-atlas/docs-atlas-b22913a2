@@ -1,0 +1,353 @@
+---
+title: Layout Components
+description: Structural components for organizing content
+---
+
+## DCard
+
+Card container component with composable header, body, and footer sections.
+
+### Basic Usage
+
+```tsx
+import DCard from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DCard>
+      <DCard.Header>Card Header</DCard.Header>
+      <DCard.Body>Card content goes here</DCard.Body>
+      <DCard.Footer>Card Footer</DCard.Footer>
+    </DCard>
+  );
+}
+```
+
+### Props
+
+<ParamField path="className" type="string">
+  Additional CSS classes
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles
+</ParamField>
+
+<ParamField path="dataAttributes" type="DataAttributes">
+  Data attributes
+</ParamField>
+
+### Subcomponents
+
+#### DCard.Header
+Card header section
+
+#### DCard.Body
+Card body section (main content area)
+
+#### DCard.Footer
+Card footer section
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic Card">
+    ```tsx
+    <DCard>
+      <DCard.Body>
+        This is a simple card with just a body.
+      </DCard.Body>
+    </DCard>
+    ```
+  </Tab>
+  <Tab title="Full Card">
+    ```tsx
+    <DCard>
+      <DCard.Header>
+        <h5>Account Summary</h5>
+      </DCard.Header>
+      <DCard.Body>
+        <p>Your current balance: $1,234.56</p>
+        <p>Available credit: $5,000.00</p>
+      </DCard.Body>
+      <DCard.Footer>
+        <DButton text="View Details" variant="link" />
+      </DCard.Footer>
+    </DCard>
+    ```
+  </Tab>
+  <Tab title="Custom Styling">
+    ```tsx
+    <DCard className="shadow-lg" style={{ borderRadius: '1rem' }}>
+      <DCard.Header className="bg-primary text-white">
+        Featured Product
+      </DCard.Header>
+      <DCard.Body>
+        <h6>Premium Account</h6>
+        <p>Get access to exclusive features</p>
+      </DCard.Body>
+      <DCard.Footer className="text-end">
+        <DButton text="Learn More" color="primary" />
+      </DCard.Footer>
+    </DCard>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Props = PropsWithChildren<BaseProps>;
+
+function DCard(props: Props): JSX.Element;
+
+DCard.Header: (props: PropsWithChildren<BaseProps>) => JSX.Element;
+DCard.Body: (props: PropsWithChildren<BaseProps>) => JSX.Element;
+DCard.Footer: (props: PropsWithChildren<BaseProps>) => JSX.Element;
+```
+
+## DLayout
+
+Grid-based layout system with responsive gap control.
+
+### Basic Usage
+
+```tsx
+import DLayout from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DLayout gap={3} columns={12}>
+      <DLayout.Pane columnSpan={6}>
+        Left Column
+      </DLayout.Pane>
+      <DLayout.Pane columnSpan={6}>
+        Right Column
+      </DLayout.Pane>
+    </DLayout>
+  );
+}
+```
+
+### Props
+
+<ParamField path="gap" type="number">
+  Gap spacing on scale from 0 to 30
+</ParamField>
+
+<ParamField path="gapSm" type="number">
+  Gap spacing for small breakpoint
+</ParamField>
+
+<ParamField path="gapMd" type="number">
+  Gap spacing for medium breakpoint
+</ParamField>
+
+<ParamField path="gapLg" type="number">
+  Gap spacing for large breakpoint
+</ParamField>
+
+<ParamField path="gapXl" type="number">
+  Gap spacing for extra large breakpoint
+</ParamField>
+
+<ParamField path="gapXxl" type="number">
+  Gap spacing for 2x extra large breakpoint
+</ParamField>
+
+<ParamField path="columns" type="number">
+  Number of columns in grid (sets --bs-columns CSS variable)
+</ParamField>
+
+### DLayout.Pane Props
+
+The `DLayout.Pane` component accepts responsive column span props:
+
+<ParamField path="columnSpan" type="number">
+  Default column span
+</ParamField>
+
+<ParamField path="columnSpanSm" type="number">
+  Column span for small breakpoint
+</ParamField>
+
+<ParamField path="columnSpanMd" type="number">
+  Column span for medium breakpoint
+</ParamField>
+
+<ParamField path="columnSpanLg" type="number">
+  Column span for large breakpoint
+</ParamField>
+
+<ParamField path="columnSpanXl" type="number">
+  Column span for extra large breakpoint
+</ParamField>
+
+<ParamField path="columnSpanXxl" type="number">
+  Column span for 2x extra large breakpoint
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Two Columns">
+    ```tsx
+    <DLayout gap={4} columns={12}>
+      <DLayout.Pane columnSpan={8}>
+        <DCard>
+          <DCard.Body>Main content (8 columns)</DCard.Body>
+        </DCard>
+      </DLayout.Pane>
+      <DLayout.Pane columnSpan={4}>
+        <DCard>
+          <DCard.Body>Sidebar (4 columns)</DCard.Body>
+        </DCard>
+      </DLayout.Pane>
+    </DLayout>
+    ```
+  </Tab>
+  <Tab title="Responsive">
+    ```tsx
+    <DLayout gap={3} gapMd={4} gapLg={5}>
+      <DLayout.Pane 
+        columnSpan={12} 
+        columnSpanMd={6} 
+        columnSpanLg={4}
+      >
+        <DCard>
+          <DCard.Body>Card 1</DCard.Body>
+        </DCard>
+      </DLayout.Pane>
+      <DLayout.Pane 
+        columnSpan={12} 
+        columnSpanMd={6} 
+        columnSpanLg={4}
+      >
+        <DCard>
+          <DCard.Body>Card 2</DCard.Body>
+        </DCard>
+      </DLayout.Pane>
+      <DLayout.Pane 
+        columnSpan={12} 
+        columnSpanMd={12} 
+        columnSpanLg={4}
+      >
+        <DCard>
+          <DCard.Body>Card 3</DCard.Body>
+        </DCard>
+      </DLayout.Pane>
+    </DLayout>
+    ```
+  </Tab>
+  <Tab title="Dashboard">
+    ```tsx
+    <DLayout gap={3} columns={12}>
+      <DLayout.Pane columnSpan={12}>
+        <DCard>
+          <DCard.Header>Dashboard Header</DCard.Header>
+          <DCard.Body>Full width header</DCard.Body>
+        </DCard>
+      </DLayout.Pane>
+      
+      <DLayout.Pane columnSpan={8}>
+        <DCard>
+          <DCard.Header>Analytics</DCard.Header>
+          <DCard.Body>Main analytics chart</DCard.Body>
+        </DCard>
+      </DLayout.Pane>
+      
+      <DLayout.Pane columnSpan={4}>
+        <DCard>
+          <DCard.Header>Quick Stats</DCard.Header>
+          <DCard.Body>Statistics overview</DCard.Body>
+        </DCard>
+      </DLayout.Pane>
+    </DLayout>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Gap = number; // 0 to 30
+
+type Props = PropsWithChildren<BaseProps & {
+  gap?: Gap;
+  gapSm?: Gap;
+  gapMd?: Gap;
+  gapLg?: Gap;
+  gapXl?: Gap;
+  gapXxl?: Gap;
+  columns?: number;
+}>;
+```
+
+## DBox
+
+Simple container component for wrapping content.
+
+### Basic Usage
+
+```tsx
+import DBox from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DBox className="p-4 bg-light rounded">
+      <h3>Content Title</h3>
+      <p>Content goes here</p>
+    </DBox>
+  );
+}
+```
+
+### Props
+
+<ParamField path="className" type="string">
+  Additional CSS classes
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles
+</ParamField>
+
+<ParamField path="dataAttributes" type="DataAttributes">
+  Data attributes
+</ParamField>
+
+### Examples
+
+```tsx
+// Simple container
+<DBox className="p-3">
+  <p>Simple box with padding</p>
+</DBox>
+
+// Custom styled box
+<DBox 
+  className="border rounded shadow-sm" 
+  style={{ backgroundColor: '#f8f9fa' }}
+>
+  <h4>Custom Box</h4>
+  <p>With custom styling</p>
+</DBox>
+
+// Data attributes
+<DBox 
+  dataAttributes={{
+    'data-testid': 'content-box',
+    'data-section': 'main'
+  }}
+>
+  <p>Box with data attributes</p>
+</DBox>
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = PropsWithChildren<BaseProps>;
+
+export default function DBox(props: Props): JSX.Element;
+```

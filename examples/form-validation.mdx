@@ -1,0 +1,412 @@
+---
+title: Form Validation Examples
+description: Real-world form validation patterns using Dynamic UI components
+---
+
+# Form Validation Examples
+
+Learn how to implement comprehensive form validation using Dynamic UI's form components with validation states, error messages, and user feedback.
+
+## Basic Input Validation
+
+Dynamic UI form components support `invalid` and `valid` props to indicate validation state:
+
+```tsx
+import { DInput, DButton } from '@dynamic-ui/react';
+import { useState } from 'react';
+
+function BasicValidation() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  
+  const isValidEmail = email.includes('@') && email.includes('.');
+  const showValidation = submitted && email.length > 0;
+  
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+      <DInput
+        id="email"
+        type="email"
+        label="Email Address"
+        placeholder="Enter your email"
+        value={email}
+        onChange={setEmail}
+        invalid={showValidation && !isValidEmail}
+        valid={showValidation && isValidEmail}
+        hint={showValidation && !isValidEmail ? 'Please enter a valid email address' : ''}
+      />
+      <DButton type="submit" text="Submit" className="mt-3" />
+    </form>
+  );
+}
+```
+
+## Password Validation with Strength Indicator
+
+Combine `DInputPassword` with `DPasswordStrengthMeter` for comprehensive password validation:
+
+```tsx
+import { DInputPassword, DPasswordStrengthMeter } from '@dynamic-ui/react';
+import { useState } from 'react';
+
+function PasswordValidation() {
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [touched, setTouched] = useState({ password: false, confirm: false });
+  
+  const passwordsMatch = password === confirmPassword && confirmPassword.length > 0;
+  const showConfirmError = touched.confirm && !passwordsMatch;
+  
+  return (
+    <div>
+      <DInputPassword
+        id="password"
+        label="Password"
+        placeholder="Enter password"
+        value={password}
+        onChange={setPassword}
+        onBlur={() => setTouched({ ...touched, password: true })}
+        className="mb-3"
+      />
+      
+      <DPasswordStrengthMeter
+        password={password}
+        className="mb-4"
+      />
+      
+      <DInputPassword
+        id="confirmPassword"
+        label="Confirm Password"
+        placeholder="Re-enter password"
+        value={confirmPassword}
+        onChange={setConfirmPassword}
+        onBlur={() => setTouched({ ...touched, confirm: true })}
+        invalid={showConfirmError}
+        valid={touched.confirm && passwordsMatch}
+        hint={showConfirmError ? 'Passwords do not match' : ''}
+      />
+    </div>
+  );
+}
+```
+
+## Multi-Field Form Validation
+
+<Steps>
+  <Step title="Define validation rules">
+    Create validation functions for each field:
+    
+    ```tsx
+    const validateName = (name: string) => name.length >= 2;
+    const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const validatePhone = (phone: string) => phone.length >= 10;
+    ```
+  </Step>
+  
+  <Step title="Manage form state">
+    Track values and validation states:
+    
+    ```tsx
+    const [formData, setFormData] = useState({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+    });
+    
+    const [touched, setTouched] = useState({
+      firstName: false,
+      lastName: false,
+      email: false,
+      phone: false,
+    });
+    ```
+  </Step>
+  
+  <Step title="Build the form">
+    Use Dynamic UI components with validation states:
+    
+    ```tsx
+    import { DInput, DSelect, DButton, DBox } from '@dynamic-ui/react';
+    
+    function ContactForm() {
+      const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        country: '',
+      });
+      
+      const [touched, setTouched] = useState({
+        firstName: false,
+        lastName: false,
+        email: false,
+        phone: false,
+      });
+      
+      const handleBlur = (field: string) => {
+        setTouched({ ...touched, [field]: true });
+      };
+      
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+      const isValidPhone = formData.phone.length >= 10;
+      
+      return (
+        <DBox className="p-8" style={{ maxWidth: '800px' }}>
+          <form>
+            <fieldset>
+              <legend className="fw-semibold">Contact Information</legend>
+              
+              <div className="grid gap-3">
+                <div className="g-col-12 g-col-lg-6">
+                  <DInput
+                    id="firstName"
+                    label="First Name"
+                    placeholder="Enter your first name"
+                    value={formData.firstName}
+                    onChange={(val) => setFormData({ ...formData, firstName: val })}
+                    onBlur={() => handleBlur('firstName')}
+                    invalid={touched.firstName && formData.firstName.length < 2}
+                    valid={touched.firstName && formData.firstName.length >= 2}
+                  />
+                </div>
+                
+                <div className="g-col-12 g-col-lg-6">
+                  <DInput
+                    id="lastName"
+                    label="Last Name"
+                    placeholder="Enter your last name"
+                    value={formData.lastName}
+                    onChange={(val) => setFormData({ ...formData, lastName: val })}
+                    onBlur={() => handleBlur('lastName')}
+                    invalid={touched.lastName && formData.lastName.length < 2}
+                    valid={touched.lastName && formData.lastName.length >= 2}
+                  />
+                </div>
+                
+                <div className="g-col-12">
+                  <DInput
+                    id="email"
+                    type="email"
+                    label="Email Address"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={(val) => setFormData({ ...formData, email: val })}
+                    onBlur={() => handleBlur('email')}
+                    invalid={touched.email && !isValidEmail}
+                    valid={touched.email && isValidEmail}
+                    hint={touched.email && !isValidEmail ? 'Please enter a valid email' : ''}
+                  />
+                </div>
+                
+                <div className="g-col-12 g-col-lg-6">
+                  <DInput
+                    id="phone"
+                    type="tel"
+                    label="Phone Number"
+                    placeholder="(123) 456-7890"
+                    value={formData.phone}
+                    onChange={(val) => setFormData({ ...formData, phone: val })}
+                    onBlur={() => handleBlur('phone')}
+                    invalid={touched.phone && !isValidPhone}
+                    valid={touched.phone && isValidPhone}
+                  />
+                </div>
+                
+                <div className="g-col-12 g-col-lg-6">
+                  <DSelect
+                    id="country"
+                    label="Country"
+                    value={formData.country}
+                    onChange={(val) => setFormData({ ...formData, country: val })}
+                    options={[
+                      { label: 'Select a country', value: '' },
+                      { label: 'United States', value: 'us' },
+                      { label: 'Canada', value: 'ca' },
+                      { label: 'Mexico', value: 'mx' },
+                    ]}
+                  />
+                </div>
+                
+                <div className="g-col-12">
+                  <DButton type="submit" text="Submit" className="me-2" />
+                  <DButton type="reset" variant="outline" text="Reset" />
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </DBox>
+      );
+    }
+    ```
+  </Step>
+</Steps>
+
+## Currency Input Validation
+
+Validate currency inputs with min/max values:
+
+```tsx
+import { DInputCurrency, DButton } from '@dynamic-ui/react';
+import { useState } from 'react';
+
+function CurrencyValidation() {
+  const [amount, setAmount] = useState<number | undefined>(undefined);
+  const [submitted, setSubmitted] = useState(false);
+  
+  const MIN_AMOUNT = 10;
+  const MAX_AMOUNT = 10000;
+  
+  const isValid = amount !== undefined && amount >= MIN_AMOUNT && amount <= MAX_AMOUNT;
+  const showValidation = submitted;
+  
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+      <DInputCurrency
+        id="amount"
+        label="Transfer Amount"
+        value={amount}
+        onChange={setAmount}
+        invalid={showValidation && !isValid}
+        valid={showValidation && isValid}
+        hint={
+          showValidation && !isValid
+            ? `Amount must be between $${MIN_AMOUNT} and $${MAX_AMOUNT}`
+            : `Min: $${MIN_AMOUNT}, Max: $${MAX_AMOUNT}`
+        }
+        className="mb-3"
+      />
+      <DButton type="submit" text="Continue" />
+    </form>
+  );
+}
+```
+
+## Checkbox and Radio Validation
+
+Validate required checkboxes and radio groups:
+
+```tsx
+import { DInputCheck, DButton } from '@dynamic-ui/react';
+import { useState } from 'react';
+
+function CheckboxValidation() {
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+      <fieldset className="mb-4">
+        <legend className="form-label">Select a Plan *</legend>
+        <div className="d-flex flex-column gap-2">
+          <DInputCheck
+            id="planBasic"
+            type="radio"
+            name="plan"
+            label="Basic Plan - $9.99/month"
+            checked={selectedPlan === 'basic'}
+            onChange={() => setSelectedPlan('basic')}
+          />
+          <DInputCheck
+            id="planPro"
+            type="radio"
+            name="plan"
+            label="Pro Plan - $19.99/month"
+            checked={selectedPlan === 'pro'}
+            onChange={() => setSelectedPlan('pro')}
+          />
+          <DInputCheck
+            id="planEnterprise"
+            type="radio"
+            name="plan"
+            label="Enterprise Plan - $49.99/month"
+            checked={selectedPlan === 'enterprise'}
+            onChange={() => setSelectedPlan('enterprise')}
+          />
+        </div>
+        {submitted && !selectedPlan && (
+          <div className="text-danger small mt-2">Please select a plan</div>
+        )}
+      </fieldset>
+      
+      <div className="mb-4">
+        <DInputCheck
+          id="terms"
+          type="checkbox"
+          label="I agree to the terms and conditions *"
+          checked={agreedToTerms}
+          onChange={() => setAgreedToTerms(!agreedToTerms)}
+        />
+        {submitted && !agreedToTerms && (
+          <div className="text-danger small mt-1">You must agree to the terms</div>
+        )}
+      </div>
+      
+      <DButton type="submit" text="Subscribe" />
+    </form>
+  );
+}
+```
+
+## Real-time Validation with Icons
+
+Provide immediate feedback using input icons:
+
+```tsx
+import { DInput } from '@dynamic-ui/react';
+import { useState } from 'react';
+
+function RealtimeValidation() {
+  const [username, setUsername] = useState('');
+  const [checking, setChecking] = useState(false);
+  const [available, setAvailable] = useState<boolean | null>(null);
+  
+  const checkUsername = async (value: string) => {
+    if (value.length < 3) {
+      setAvailable(null);
+      return;
+    }
+    
+    setChecking(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setAvailable(value.toLowerCase() !== 'admin');
+    setChecking(false);
+  };
+  
+  return (
+    <DInput
+      id="username"
+      label="Username"
+      placeholder="Choose a username"
+      value={username}
+      onChange={(val) => {
+        setUsername(val);
+        checkUsername(val);
+      }}
+      loading={checking}
+      iconEnd={available === true ? 'CircleCheck' : available === false ? 'CircleX' : undefined}
+      invalid={available === false}
+      valid={available === true}
+      hint={
+        available === false
+          ? 'Username is already taken'
+          : available === true
+          ? 'Username is available'
+          : 'Enter at least 3 characters'
+      }
+    />
+  );
+}
+```
+
+## Related Components
+
+- [DInput](/components/inputs) - Text input component with validation states
+- [DInputPassword](/components/inputs) - Password input with visibility toggle
+- [DInputCurrency](/components/inputs) - Currency input with formatting
+- [DInputCheck](/components/inputs) - Checkbox and radio components
+- [DSelect](/components/forms) - Select dropdown with validation
+- [Form Components](/components/forms) - All form-related components

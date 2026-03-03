@@ -1,0 +1,264 @@
+---
+title: Architecture
+description: Understanding Dynamic UI's micro frontend architecture and component system
+---
+
+## Overview
+
+Dynamic UI is built on a robust micro frontend architecture designed specifically for financial applications. The library provides a modular, context-driven system that enables seamless integration across distributed applications while maintaining consistency and performance.
+
+## Core Architecture Patterns
+
+### Context-Based Configuration
+
+Dynamic UI uses React Context to provide centralized configuration across all components in your application. The architecture is built around two primary contexts:
+
+#### DContext Provider
+
+The `DContext` serves as the main configuration hub for the entire component library:
+
+```tsx src/contexts/DContext.tsx
+import { DContextProvider } from '@dynamic-framework/ui-react';
+
+function App() {
+  return (
+    <DContextProvider
+      language="en"
+      currency={{
+        symbol: '$',
+        precision: 2,
+        separator: ',',
+        decimal: '.'
+      }}
+      icon={{
+        familyClass: 'bi',
+        familyPrefix: 'bi-',
+        materialStyle: false
+      }}
+      portalName="d-portal"
+    >
+      {/* Your app components */}
+    </DContextProvider>
+  );
+}
+```
+
+<Info>
+The context provider automatically reads CSS variables for responsive breakpoints using the `getCssVariable` utility, syncing your JavaScript logic with SCSS design tokens.
+</Info>
+
+**Key Configuration Options:**
+
+- **language**: Internationalization locale (default: `'en'`)
+- **currency**: Financial formatting configuration with symbol, precision, and separators
+- **icon**: Icon library integration settings (supports Bootstrap Icons, Lucide, etc.)
+- **breakpoints**: Responsive breakpoints automatically synced from CSS variables
+- **portalName**: Portal container identifier for modals and overlays
+
+#### Portal Architecture
+
+The `DPortalContext` manages modal layers, overlays, and floating UI elements using a stack-based architecture:
+
+```tsx src/contexts/DPortalContext.tsx
+const { openPortal, closePortal } = useDPortalContext();
+
+// Open a modal with payload
+openPortal('userProfile', { userId: '123' });
+
+// Close the top-most portal
+closePortal();
+```
+
+**Portal Features:**
+
+- Stack-based layer management for nested modals
+- Automatic body scroll locking when portals are active
+- Keyboard trap for accessibility (Tab cycling within active portal)
+- Backdrop click handling with configurable dismissal
+- Framer Motion animations for smooth transitions
+
+### Hook-Based Utilities
+
+Dynamic UI provides specialized hooks for common patterns:
+
+<CardGroup cols={2}>
+  <Card title="usePortal" icon="layer-group">
+    Creates and manages DOM portal containers dynamically
+  </Card>
+  
+  <Card title="useStackState" icon="layers">
+    Manages stack-based state for portal layers
+  </Card>
+  
+  <Card title="useMediaBreakpointUp" icon="mobile">
+    Responsive utilities matching SCSS breakpoint system
+  </Card>
+  
+  <Card title="useDisableBodyScrollEffect" icon="lock">
+    Prevents body scroll when overlays are active
+  </Card>
+</CardGroup>
+
+## Component Structure
+
+All components follow a consistent architecture pattern:
+
+### File Organization
+
+```
+src/components/
+├── DButton/
+│   ├── DButton.tsx          # Main component implementation
+│   ├── DButton.spec.tsx     # Unit tests
+│   └── index.ts             # Public exports
+├── DModal/
+│   ├── DModal.tsx
+│   ├── components/          # Sub-components
+│   │   ├── DModalHeader.tsx
+│   │   ├── DModalBody.tsx
+│   │   └── DModalFooter.tsx
+│   ├── DModal.spec.tsx
+│   └── index.ts
+```
+
+### Component Props Pattern
+
+Components extend standard HTML attributes while adding custom functionality:
+
+```tsx
+interface Props
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
+  BaseProps,
+  StartIconProps,
+  EndIconProps {
+  color?: ComponentColor;
+  size?: ComponentSize;
+  variant?: ButtonVariant;
+  loading?: boolean;
+  loadingAriaLabel?: string;
+}
+```
+
+This pattern ensures:
+- Full TypeScript type safety
+- Native HTML attribute support
+- Consistent prop interfaces across components
+- Extensibility for custom implementations
+
+## Micro Frontend Integration
+
+### Independent Deployment
+
+Dynamic UI is designed for micro frontend architectures where different teams manage separate applications:
+
+<Steps>
+  <Step title="Install via NPM">
+    Each micro frontend installs the library independently:
+    ```bash
+    npm install @dynamic-framework/ui-react
+    ```
+  </Step>
+  
+  <Step title="Wrap with Context">
+    Configure the library for your specific micro frontend:
+    ```tsx
+    <DContextProvider
+      language={currentLocale}
+      currency={regionalSettings}
+    >
+      <YourMicroFrontend />
+    </DContextProvider>
+    ```
+  </Step>
+  
+  <Step title="Share Design Tokens">
+    Import shared SCSS variables across micro frontends:
+    ```scss
+    @import '@dynamic-framework/ui-react/dist/css/dynamic-ui';
+    ```
+  </Step>
+</Steps>
+
+### Portal Communication
+
+For cross-micro-frontend communication, use the portal system:
+
+```tsx
+// Define available portals with TypeScript
+type AvailablePortals = {
+  checkout: { amount: number; items: string[] };
+  userProfile: { userId: string };
+};
+
+<DContextProvider<AvailablePortals>
+  availablePortals={{
+    checkout: CheckoutModal,
+    userProfile: UserProfileModal,
+  }}
+  portalName="app-portal"
+>
+  {/* App content */}
+</DContextProvider>
+```
+
+## Bootstrap Foundation
+
+Dynamic UI is built on top of Bootstrap 5.3.8, extending its capabilities for financial applications:
+
+- **CSS Variable System**: All components use CSS custom properties (src/style/root/_root.scss:355)
+- **Utility Classes**: Bootstrap utilities enhanced with financial-specific helpers
+- **Grid System**: Responsive layout system with configurable breakpoints
+- **Component Prefix**: Uses `bs-` prefix for Bootstrap compatibility (src/components/config.ts:1)
+
+## State Management
+
+Components manage internal state using React hooks while exposing controlled and uncontrolled modes:
+
+```tsx
+// Uncontrolled - component manages state
+<DInputSwitch id="terms" />
+
+// Controlled - parent manages state
+<DInputSwitch 
+  id="terms" 
+  checked={termsAccepted}
+  onChange={setTermsAccepted}
+/>
+```
+
+## Performance Considerations
+
+<AccordionGroup>
+  <Accordion title="Tree Shaking">
+    The library is built with Rollup to support tree shaking. Import only the components you need:
+    ```tsx
+    import { DButton, DModal } from '@dynamic-framework/ui-react';
+    ```
+  </Accordion>
+  
+  <Accordion title="CSS Optimization">
+    SCSS is compiled separately, allowing you to:
+    - Import only required component styles
+    - Override variables before compilation
+    - Use PostCSS for autoprefixing and minification
+  </Accordion>
+  
+  <Accordion title="Lazy Loading">
+    Portal components can be lazy loaded:
+    ```tsx
+    const CheckoutModal = lazy(() => import('./CheckoutModal'));
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Theming System" icon="palette" href="/concepts/theming">
+    Learn how to customize colors, typography, and design tokens
+  </Card>
+  
+  <Card title="Accessibility" icon="universal-access" href="/concepts/accessibility">
+    Understand built-in accessibility features and WCAG compliance
+  </Card>
+</CardGroup>

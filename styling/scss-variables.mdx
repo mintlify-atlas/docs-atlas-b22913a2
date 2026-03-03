@@ -1,0 +1,422 @@
+---
+title: "SCSS Variables Reference"
+description: "Complete reference of all SCSS variables available for customization"
+---
+
+All Dynamic UI SCSS variables use the `!default` flag and can be overridden before importing the library.
+
+## Configuration
+
+### Variable Prefix
+
+```scss
+$variable-prefix: bs- !default;
+$prefix: $variable-prefix !default;
+```
+
+All CSS variables use the `bs-` prefix.
+
+## Colors
+
+### Gray Scale
+
+11 shades from lightest to darkest:
+
+```scss
+$white: #fff !default;
+$gray-25: #fbfbfc !default;
+$gray-50: #f0f0f2 !default;
+$gray-100: #e1e1e6 !default;
+$gray-200: #c4c4cd !default;
+$gray-300: #a7a7b4 !default;
+$gray-400: #8a8a9b !default;
+$gray-500: #6d6d82 !default;
+$gray-600: #575768 !default;
+$gray-700: #41414e !default;
+$gray-800: #2b2b34 !default;
+$gray-900: #15151a !default;
+$black: #000 !default;
+```
+
+### Base Colors
+
+Foundational color palette:
+
+```scss
+$blue: #2068d5 !default;
+$indigo: #6610f2 !default;
+$purple: #4848b7 !default;
+$pink: #d81b60 !default;
+$red: #dc3545 !default;
+$orange: #fd7e14 !default;
+$yellow: #ffc107 !default;
+$green: #198754 !default;
+$teal: #20c997 !default;
+$cyan: #0dcaf0 !default;
+```
+
+### Theme Colors
+
+Semantic color mappings:
+
+```scss
+$primary: $blue !default;      // #2068d5
+$secondary: $gray-400 !default;
+$success: $green !default;     // #198754
+$info: $blue !default;
+$warning: $yellow !default;    // #ffc107
+$danger: $red !default;        // #dc3545
+$light: $gray-25 !default;
+$dark: $gray-900 !default;
+```
+
+### Color Palettes
+
+Each base and theme color has an 11-shade palette:
+
+```scss
+// Blue palette example
+$blue-25: tint-color($blue, 95%) !default;   // Lightest
+$blue-50: tint-color($blue, 90%) !default;
+$blue-100: tint-color($blue, 80%) !default;
+$blue-200: tint-color($blue, 60%) !default;
+$blue-300: tint-color($blue, 40%) !default;
+$blue-400: tint-color($blue, 20%) !default;
+$blue-500: $blue !default;                    // Base color
+$blue-600: shade-color($blue, 20%) !default;
+$blue-700: shade-color($blue, 40%) !default;
+$blue-800: shade-color($blue, 60%) !default;
+$blue-900: shade-color($blue, 80%) !default;  // Darkest
+
+// Same pattern for: indigo, purple, pink, red, orange, 
+// yellow, green, teal, cyan
+```
+
+### Theme Color Palettes
+
+```scss
+// Primary palette
+$primary-25: $blue-25 !default;
+$primary-50: $blue-50 !default;
+$primary-100: $blue-100 !default;
+// ... through primary-900
+
+// Success palette
+$success-25: $green-25 !default;
+$success-50: $green-50 !default;
+// ... through success-900
+
+// Similar for: secondary, info, warning, danger
+```
+
+### Contrast Settings
+
+```scss
+$min-contrast-ratio: 4.5 !default;
+$color-contrast-dark: $gray-700 !default;
+$color-contrast-light: $white !default;
+```
+
+## Typography
+
+### Font Families
+
+```scss
+$font-family-sans-serif: "Jost", sans-serif !default;
+```
+
+### Font Sizes
+
+```scss
+$font-size-root: 16px !default;
+$font-size-base: 1rem !default;
+$font-size-sm-value: .875em !default;
+
+// Heading sizes
+$h1-font-size-value: $font-size-base * 3 !default;     // 48px
+$h2-font-size-value: $font-size-base * 2.5 !default;   // 40px
+$h3-font-size-value: $font-size-base * 2 !default;     // 32px
+$h4-font-size-value: $font-size-base * 1.5 !default;   // 24px
+$h5-font-size-value: $font-size-base * 1.25 !default;  // 20px
+$h6-font-size-value: $font-size-base !default;         // 16px
+
+// Display sizes
+$display1-font-size-value: $font-size-base * 6 !default;    // 96px
+$display2-font-size-value: $font-size-base * 5.5 !default;  // 88px
+$display3-font-size-value: $font-size-base * 5 !default;    // 80px
+$display4-font-size-value: $font-size-base * 4.5 !default;  // 72px
+$display5-font-size-value: $font-size-base * 4 !default;    // 64px
+$display6-font-size-value: $font-size-base * 3.5 !default;  // 56px
+```
+
+### Font Weights
+
+```scss
+$font-weight-lighter-value: lighter !default;
+$font-weight-light-value: 200 !default;
+$font-weight-normal-value: 400 !default;
+$font-weight-semibold-value: 500 !default;
+$font-weight-bold-value: 600 !default;
+$font-weight-bolder-value: 600 !default;
+
+$font-weight-base: $font-weight-normal !default;
+```
+
+### Line Heights
+
+```scss
+$line-height-base: 1.5 !default;
+$line-height-sm: 1.25 !default;
+$line-height-lg: 2 !default;
+$headings-line-height-value: 1.2 !default;
+```
+
+### Typography Settings
+
+```scss
+$headings-margin-bottom: 0 !default;
+$headings-font-weight: $font-weight-bold !default;
+
+$small-font-size-value: $font-size-sm-value !default;
+$sub-sup-font-size: .75em !default;
+```
+
+## Spacing
+
+### Base Spacer
+
+```scss
+$spacer: 1rem !default;  // 16px
+```
+
+### Spacer Scale
+
+Extended 30-step scale:
+
+```scss
+$spacer-1: $spacer * .25 !default;     // 4px
+$spacer-2: $spacer * .5 !default;      // 8px
+$spacer-3: $spacer * .75 !default;     // 12px
+$spacer-4: $spacer !default;           // 16px
+$spacer-5: $spacer * 1.25 !default;    // 20px
+$spacer-6: $spacer * 1.5 !default;     // 24px
+$spacer-7: $spacer * 1.75 !default;    // 28px
+$spacer-8: $spacer * 2 !default;       // 32px
+$spacer-9: $spacer * 2.25 !default;    // 36px
+$spacer-10: $spacer * 2.5 !default;    // 40px
+$spacer-11: $spacer * 2.75 !default;   // 44px
+$spacer-12: $spacer * 3 !default;      // 48px
+$spacer-13: $spacer * 3.25 !default;   // 52px
+$spacer-14: $spacer * 3.5 !default;    // 56px
+$spacer-15: $spacer * 3.75 !default;   // 60px
+$spacer-16: $spacer * 4 !default;      // 64px
+$spacer-17: $spacer * 4.25 !default;   // 68px
+$spacer-18: $spacer * 4.5 !default;    // 72px
+$spacer-19: $spacer * 4.75 !default;   // 76px
+$spacer-20: $spacer * 5 !default;      // 80px
+$spacer-21: $spacer * 5.25 !default;   // 84px
+$spacer-22: $spacer * 5.5 !default;    // 88px
+$spacer-23: $spacer * 5.75 !default;   // 92px
+$spacer-24: $spacer * 6 !default;      // 96px
+$spacer-25: $spacer * 6.25 !default;   // 100px
+$spacer-26: $spacer * 6.5 !default;    // 104px
+$spacer-27: $spacer * 6.75 !default;   // 108px
+$spacer-28: $spacer * 7 !default;      // 112px
+$spacer-29: $spacer * 7.25 !default;   // 116px
+$spacer-30: $spacer * 7.5 !default;    // 120px
+```
+
+## Borders
+
+### Border Colors
+
+```scss
+$border-color: var(--#{$prefix}gray-100) !default;
+$border-color-translucent: rgba(var(--#{$prefix}black-rgb), .175) !default;
+```
+
+### Border Radius
+
+```scss
+$border-radius: .5rem !default;      // 8px
+$border-radius-sm: .25rem !default;  // 4px
+$border-radius-lg: 1rem !default;    // 16px
+$border-radius-xl: 1.5rem !default;  // 24px
+$border-radius-xxl: 2rem !default;   // 32px
+$border-radius-pill: 50rem !default; // Fully rounded
+```
+
+## Shadows
+
+```scss
+$box-shadow-lg: 0 10px 10px rgba(0, 0, 0, .02) !default;
+```
+
+## Focus Ring
+
+```scss
+$focus-ring-width: .25rem !default;
+$focus-ring-opacity: .25 !default;
+$focus-ring-blur: 0 !default;
+$focus-ring-border-color: transparent !default;
+$focus-ring-color-mapping: "secondary-rgb" !default;
+$focus-ring-color: var(--#{$prefix}gray-100) !default;
+$focus-ring-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color !default;
+```
+
+## Components
+
+### Buttons
+
+```scss
+// Button base
+$btn-color: var(--#{$prefix}body-color) !default;
+$btn-padding-y: $spacer-2 !default;           // 8px
+$btn-padding-x: $spacer-4 !default;           // 16px
+$btn-line-height: 1.5 !default;
+$btn-font-weight: $font-weight-semibold !default;
+$btn-border-width: var(--#{$prefix}border-width) !default;
+$btn-border-radius: .5rem !default;           // 8px
+$btn-disabled-opacity: .65 !default;
+
+// Small buttons
+$btn-padding-y-sm: $spacer-1 !default;        // 4px
+$btn-padding-x-sm: $spacer-3 !default;        // 12px
+$btn-font-size-sm: $small-font-size !default;
+$btn-border-radius-sm: .25rem !default;       // 4px
+
+// Large buttons
+$btn-padding-y-lg: $spacer-3 !default;        // 12px
+$btn-padding-x-lg: $spacer-5 !default;        // 20px
+$btn-lg-font-size: 1.15rem !default;
+$btn-border-radius-lg: .5rem !default;        // 8px
+
+// Button effects
+$btn-box-shadow: inset 0 1px 1px rgba(255, 255, 255, .1) !default;
+$btn-active-box-shadow: 0 0 0 transparent !default;
+$btn-transition: color .15s ease-in-out, background-color .15s ease-in-out, 
+                 border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
+```
+
+### Forms
+
+```scss
+// Input base
+$input-btn-padding-y: $spacer-3 !default;           // 12px
+$input-btn-padding-x: $spacer-4 !default;           // 16px
+$input-btn-border-width: var(--#{$prefix}border-width) !default;
+
+// Small inputs
+$input-btn-padding-y-sm: $spacer-2 !default;        // 8px
+$input-btn-padding-x-sm: var(--#{$prefix}ref-spacer-4) !default;
+$input-btn-font-size-sm: $small-font-size !default;
+
+// Large inputs
+$input-btn-padding-y-lg: $spacer-4 !default;        // 16px
+$input-btn-padding-x-lg: var(--#{$prefix}ref-spacer-6) !default;
+$input-btn-font-size-lg: var(--#{$prefix}ref-spacer-4) !default;
+
+// Focus states
+$input-btn-focus-width: $focus-ring-width !default;
+$input-btn-focus-color-opacity: 1 !default;
+$input-btn-focus-color: rgba(var(--#{$prefix}secondary-rgb), $input-btn-focus-color-opacity) !default;
+$input-btn-focus-blur: 0 !default;
+$input-btn-focus-box-shadow: $focus-ring-box-shadow !default;
+```
+
+## Transitions
+
+```scss
+$transition-fade: opacity .3s linear !default;
+```
+
+## Component Active States
+
+```scss
+$component-active-color: var(--#{$prefix}white) !default;
+$component-active-bg: var(--#{$prefix}primary) !default;
+$component-focus-border-color: var(--#{$prefix}focus-ring-border-color) !default;
+```
+
+## Variable Usage Examples
+
+### Override Before Import
+
+```scss
+// custom-theme.scss
+
+// Colors
+$primary: #0066cc;
+$success: #00b894;
+$danger: #d63031;
+
+// Typography
+$font-family-sans-serif: "Inter", sans-serif;
+$h1-font-size-value: 3.5rem;
+$font-weight-bold-value: 700;
+
+// Spacing
+$spacer: 1.25rem;  // 20px base instead of 16px
+
+// Borders
+$border-radius: 0.25rem;
+$border-radius-lg: 0.5rem;
+
+// Buttons
+$btn-padding-y: $spacer-3;
+$btn-padding-x: $spacer-6;
+$btn-font-weight: $font-weight-bold;
+$btn-border-radius: 0.5rem;
+
+// Import Dynamic UI with overrides
+@import "dynamic-ui";
+```
+
+### Access in Components
+
+```scss
+// After importing Dynamic UI, use CSS variables
+.custom-card {
+  background: var(--bs-white);
+  border: 1px solid var(--bs-gray-100);
+  border-radius: var(--bs-border-radius-lg);
+  padding: var(--bs-ref-spacer-6);
+  color: var(--bs-gray-700);
+}
+
+.custom-button {
+  background: var(--bs-primary-500);
+  color: var(--bs-white);
+  padding: var(--bs-ref-spacer-3) var(--bs-ref-spacer-6);
+  font-weight: var(--bs-fw-semibold);
+  border-radius: var(--bs-btn-border-radius);
+  
+  &:hover {
+    background: var(--bs-primary-600);
+  }
+}
+```
+
+## Dark Mode Variables
+
+When dark mode is enabled:
+
+```scss
+$enable-dark-mode: true;
+
+// Dark mode color overrides
+$body-color-dark: /* dark mode text color */;
+$body-bg-dark: /* dark mode background */;
+$border-color-dark: /* dark mode border */;
+```
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Customization Guide" icon="palette" href="/styling/customization">
+    Learn how to override these variables
+  </Card>
+  <Card title="CSS Utilities" icon="sparkles" href="/styling/css-utilities">
+    Utility classes generated from these variables
+  </Card>
+</CardGroup>

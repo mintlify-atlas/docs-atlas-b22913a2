@@ -1,0 +1,127 @@
+---
+title: Components Overview
+description: Comprehensive React component library for financial applications
+---
+
+Dynamic UI provides a comprehensive set of React components designed specifically for financial applications. All components are built with TypeScript, accessibility, and customization in mind.
+
+## Component Categories
+
+### Buttons
+Interactive button components for user actions.
+
+- **DButton** - Primary button component with variants, icons, and loading states
+- **DButtonIcon** - Icon-only button for compact interfaces
+
+[View Button Components](/components/buttons)
+
+### Inputs
+Form input components for data collection.
+
+- **DInput** - Standard text input with icon support
+- **DInputMask** - Masked input for formatted data
+- **DInputPassword** - Password input with show/hide toggle
+- **DInputPin** - PIN code input with multiple characters
+- **DInputCheck** - Checkbox and radio input
+- **DInputSwitch** - Toggle switch component
+
+[View Input Components](/components/inputs)
+
+### Forms
+Advanced form controls for selection and range inputs.
+
+- **DInputSelect** - Native select with icon support
+- **DInputRange** - Range slider with value indicator
+- **DSelect** - Advanced select with react-select integration
+
+[View Form Components](/components/forms)
+
+### Layout
+Structural components for organizing content.
+
+- **DCard** - Card container with header, body, and footer
+- **DLayout** - Grid-based layout system with responsive gaps
+- **DBox** - Simple container component
+
+[View Layout Components](/components/layout)
+
+### Feedback
+Components for user feedback and status indication.
+
+- **DAlert** - Alert messages with color variants
+- **DToast** - Toast notifications
+- **DProgress** - Progress bar with percentage display
+- **DDataStateWrapper** - Loading, error, and empty state handler
+
+[View Feedback Components](/components/feedback)
+
+### Data Display
+Components for displaying formatted data.
+
+- **DAvatar** - User avatar with initials support
+- **DBadge** - Badge for labels and status indicators
+- **DCurrencyText** - Formatted currency display
+- **DCreditCard** - Credit card display component
+- **DVoucher** - Voucher/receipt component with share/download
+- **DTimeline** - Timeline component for sequential events
+
+[View Data Display Components](/components/data-display)
+
+### Navigation
+Components for navigation and pagination.
+
+- **DTabs** - Tabbed interface with variants
+- **DPaginator** - Pagination controls
+- **DStepper** - Step indicator for multi-step processes
+
+[View Navigation Components](/components/navigation)
+
+### Overlays
+Overlay components for modals, popovers, and tooltips.
+
+- **DModal** - Modal dialog with animations
+- **DOffcanvas** - Offcanvas panel from any edge
+- **DPopover** - Popover with floating UI
+- **DTooltip** - Tooltip with customizable triggers
+- **DDropdown** - Dropdown menu with actions
+
+[View Overlay Components](/components/overlays)
+
+## Common Props
+
+Most components share common props from the `BaseProps` interface:
+
+```typescript
+type BaseProps = {
+  style?: CSSProperties;
+  className?: string;
+  dataAttributes?: Record<`data-${string}`, string | number | undefined | null | boolean>;
+};
+```
+
+## TypeScript Support
+
+All components are written in TypeScript and include full type definitions. Import types directly from the component files:
+
+```typescript
+import DButton from '@dynamic-ui/components';
+import type { ComponentColor, ComponentSize } from '@dynamic-ui/components/interface';
+```
+
+## Accessibility
+
+All components follow WCAG 2.1 guidelines and include:
+
+- Proper ARIA attributes
+- Keyboard navigation support
+- Screen reader compatibility
+- Focus management
+
+## Customization
+
+Components can be customized through:
+
+- CSS class names via `className` prop
+- Inline styles via `style` prop
+- Data attributes via `dataAttributes` prop
+- Component-specific variant props

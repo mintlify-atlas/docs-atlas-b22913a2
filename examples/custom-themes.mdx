@@ -1,0 +1,440 @@
+---
+title: Custom Theme Examples
+description: Customize Dynamic UI with SCSS variables and CSS custom properties
+---
+
+# Custom Theme Examples
+
+Dynamic UI is built on top of Bootstrap 5.3 and provides extensive customization through SCSS variables and CSS custom properties. Learn how to create custom themes for your application.
+
+## Color System
+
+Dynamic UI extends Bootstrap's color palette with additional shades:
+
+### Base Colors
+
+```scss
+// src/styles/custom-theme.scss
+
+// Override base colors
+$blue: #2068d5;
+$indigo: #6610f2;
+$purple: #4848b7;
+$pink: #d81b60;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #198754;
+$teal: #20c997;
+$cyan: #0dcaf0;
+
+// Gray scale
+$gray-25: #fbfbfc;
+$gray-50: #f0f0f2;
+$gray-100: #e1e1e6;
+$gray-200: #c4c4cd;
+$gray-300: #a7a7b4;
+$gray-400: #8a8a9b;
+$gray-500: #6d6d82;
+$gray-600: #575768;
+$gray-700: #41414e;
+$gray-800: #2b2b34;
+$gray-900: #15151a;
+```
+
+### Color Shades
+
+Dynamic UI provides 25-900 shades for each theme color:
+
+```scss
+// Primary color shades (automatically generated)
+$primary-25: tint-color($primary, 95%);
+$primary-50: tint-color($primary, 90%);
+$primary-100: tint-color($primary, 80%);
+$primary-200: tint-color($primary, 60%);
+$primary-300: tint-color($primary, 40%);
+$primary-400: tint-color($primary, 20%);
+$primary-500: $primary;
+$primary-600: shade-color($primary, 20%);
+$primary-700: shade-color($primary, 40%);
+$primary-800: shade-color($primary, 60%);
+$primary-900: shade-color($primary, 80%);
+```
+
+## Creating a Custom Theme
+
+<Steps>
+  <Step title="Create a custom SCSS file">
+    Create a new file in your project to override variables:
+    
+    ```scss
+    // src/styles/custom-theme.scss
+    
+    // 1. Override Bootstrap and Dynamic UI variables
+    $primary: #6366f1;  // Indigo
+    $secondary: #8b5cf6;  // Purple
+    $success: #10b981;  // Emerald
+    $danger: #ef4444;  // Red
+    $warning: #f59e0b;  // Amber
+    $info: #06b6d4;  // Cyan
+    
+    // 2. Import Dynamic UI styles
+    @import '@dynamic-ui/react/dist/style/dynamic-ui.scss';
+    ```
+  </Step>
+  
+  <Step title="Customize component styles">
+    Override component-specific variables:
+    
+    ```scss
+    // Button customization
+    $btn-border-radius: 0.5rem;
+    $btn-font-weight: 600;
+    $btn-padding-y: 0.75rem;
+    $btn-padding-x: 1.5rem;
+    
+    // Input customization
+    $input-border-radius: 0.5rem;
+    $input-border-color: #e5e7eb;
+    $input-focus-border-color: $primary;
+    $input-focus-box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    
+    // Card customization
+    $card-border-radius: 1rem;
+    $card-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    
+    @import '@dynamic-ui/react/dist/style/dynamic-ui.scss';
+    ```
+  </Step>
+  
+  <Step title="Import in your application">
+    ```tsx
+    // src/main.tsx or src/App.tsx
+    import './styles/custom-theme.scss';
+    import { DContextProvider } from '@dynamic-ui/react';
+    
+    function App() {
+      return (
+        <DContextProvider>
+          {/* Your app components */}
+        </DContextProvider>
+      );
+    }
+    ```
+  </Step>
+</Steps>
+
+## Runtime Customization with CSS Variables
+
+Use CSS custom properties for runtime theme changes:
+
+```tsx
+import { DBox, DButton, DInput } from '@dynamic-ui/react';
+import { useState } from 'react';
+
+function ThemeSwitcher() {
+  const [theme, setTheme] = useState('light');
+  
+  const applyTheme = (themeName: string) => {
+    const root = document.documentElement;
+    
+    if (themeName === 'dark') {
+      root.style.setProperty('--bs-body-bg', '#1a1a1a');
+      root.style.setProperty('--bs-body-color', '#ffffff');
+      root.style.setProperty('--bs-border-color', '#404040');
+      root.style.setProperty('--bs-box-bg', '#262626');
+    } else {
+      root.style.setProperty('--bs-body-bg', '#ffffff');
+      root.style.setProperty('--bs-body-color', '#15151a');
+      root.style.setProperty('--bs-border-color', '#e1e1e6');
+      root.style.setProperty('--bs-box-bg', '#ffffff');
+    }
+    
+    setTheme(themeName);
+  };
+  
+  return (
+    <div>
+      <div className="mb-4">
+        <DButton
+          text="Light Theme"
+          variant={theme === 'light' ? 'primary' : 'outline'}
+          onClick={() => applyTheme('light')}
+          className="me-2"
+        />
+        <DButton
+          text="Dark Theme"
+          variant={theme === 'dark' ? 'primary' : 'outline'}
+          onClick={() => applyTheme('dark')}
+        />
+      </div>
+      
+      <DBox className="p-8">
+        <h3>Sample Content</h3>
+        <DInput label="Email" placeholder="Enter your email" className="mb-3" />
+        <DButton text="Submit" />
+      </DBox>
+    </div>
+  );
+}
+```
+
+## Component-Level CSS Variables
+
+Each component exposes CSS variables for customization:
+
+### Input Component Variables
+
+```css
+/* Custom input styling */
+.custom-input .input-group {
+  --bs-input-border-color: #e5e7eb;
+  --bs-input-border-width: 2px;
+  --bs-input-border-radius: 0.75rem;
+  --bs-input-focus-border-color: #6366f1;
+  --bs-input-focus-box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+```
+
+```tsx
+import { DInput } from '@dynamic-ui/react';
+
+function CustomStyledInput() {
+  return (
+    <DInput
+      className="custom-input"
+      label="Custom Styled Input"
+      placeholder="Enter text"
+    />
+  );
+}
+```
+
+### Button Component Variables
+
+```css
+/* Custom button styling */
+.custom-button {
+  --bs-btn-padding-y: 1rem;
+  --bs-btn-padding-x: 2rem;
+  --bs-btn-font-weight: 700;
+  --bs-btn-border-radius: 9999px;
+  --bs-btn-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+```
+
+### Card Component Variables
+
+```css
+/* Custom card styling */
+.custom-card {
+  --bs-box-border-radius: 1.5rem;
+  --bs-box-padding: 2rem;
+  --bs-box-box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --bs-box-border-color: transparent;
+  --bs-box-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+```
+
+## Typography Customization
+
+Customize font families and sizes:
+
+```scss
+// Typography variables
+$font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+$font-family-monospace: 'JetBrains Mono', 'Courier New', monospace;
+
+$font-size-base: 1rem;
+$h1-font-size: 2.5rem;
+$h2-font-size: 2rem;
+$h3-font-size: 1.75rem;
+$h4-font-size: 1.5rem;
+$h5-font-size: 1.25rem;
+$h6-font-size: 1rem;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-base: 1.6;
+$line-height-sm: 1.4;
+$line-height-lg: 1.8;
+
+@import '@dynamic-ui/react/dist/style/dynamic-ui.scss';
+```
+
+## Spacing System
+
+Customize the spacing scale:
+
+```scss
+// Spacing scale (0-30)
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,   // 4px
+  2: $spacer * 0.5,    // 8px
+  3: $spacer * 0.75,   // 12px
+  4: $spacer,          // 16px
+  5: $spacer * 1.5,    // 24px
+  6: $spacer * 2,      // 32px
+  7: $spacer * 2.5,    // 40px
+  8: $spacer * 3,      // 48px
+  // ... up to 30
+);
+
+@import '@dynamic-ui/react/dist/style/dynamic-ui.scss';
+```
+
+## Border Radius System
+
+```scss
+// Border radius variables
+$border-radius: 0.5rem;
+$border-radius-sm: 0.25rem;
+$border-radius-lg: 1rem;
+$border-radius-xl: 1.5rem;
+$border-radius-2xl: 2rem;
+$border-radius-pill: 9999px;
+
+@import '@dynamic-ui/react/dist/style/dynamic-ui.scss';
+```
+
+## Complete Theme Example
+
+Here's a complete custom theme:
+
+```scss
+// custom-theme.scss
+
+// 1. Color System
+$primary: #6366f1;
+$secondary: #8b5cf6;
+$success: #10b981;
+$danger: #ef4444;
+$warning: #f59e0b;
+$info: #06b6d4;
+
+// 2. Typography
+$font-family-base: 'Inter', system-ui, sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1.6;
+$font-weight-semibold: 600;
+
+// 3. Spacing
+$spacer: 1rem;
+
+// 4. Border Radius
+$border-radius: 0.75rem;
+$border-radius-lg: 1rem;
+$border-radius-sm: 0.5rem;
+
+// 5. Shadows
+$box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+$box-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+
+// 6. Components
+$btn-border-radius: 0.5rem;
+$btn-font-weight: 600;
+$btn-padding-y: 0.75rem;
+$btn-padding-x: 1.5rem;
+
+$input-border-radius: 0.5rem;
+$input-border-color: #e5e7eb;
+$input-focus-border-color: $primary;
+$input-padding-y: 0.75rem;
+$input-padding-x: 1rem;
+
+$card-border-radius: 1rem;
+$card-box-shadow: $box-shadow;
+
+// 7. Import Dynamic UI
+@import '@dynamic-ui/react/dist/style/dynamic-ui.scss';
+
+// 8. Custom overrides (optional)
+.btn-primary {
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba($primary, 0.2);
+    transition: all 0.2s;
+  }
+}
+
+.form-control:focus {
+  border-width: 2px;
+}
+```
+
+## Using the Custom Theme
+
+```tsx
+import './styles/custom-theme.scss';
+import {
+  DContextProvider,
+  DBox,
+  DButton,
+  DInput,
+  DCard,
+} from '@dynamic-ui/react';
+
+function App() {
+  return (
+    <DContextProvider>
+      <div className="container py-8">
+        <DBox className="p-8 mb-4">
+          <h1>Custom Themed Application</h1>
+          <p className="text-muted">Built with Dynamic UI</p>
+        </DBox>
+        
+        <div className="grid gap-4">
+          <div className="g-col-12 g-col-md-6">
+            <DBox className="p-8">
+              <h3>Contact Form</h3>
+              <DInput label="Name" placeholder="Enter your name" className="mb-3" />
+              <DInput label="Email" placeholder="Enter your email" className="mb-3" />
+              <DButton text="Submit" className="w-100" />
+            </DBox>
+          </div>
+          
+          <div className="g-col-12 g-col-md-6">
+            <DBox className="p-8">
+              <h3>Actions</h3>
+              <div className="d-flex gap-2">
+                <DButton text="Primary" />
+                <DButton text="Secondary" variant="secondary" />
+                <DButton text="Success" variant="success" />
+              </div>
+            </DBox>
+          </div>
+        </div>
+      </div>
+    </DContextProvider>
+  );
+}
+```
+
+## Available SCSS Variables
+
+Dynamic UI exposes hundreds of SCSS variables. Key categories include:
+
+- **Colors**: `$primary`, `$secondary`, `$success`, `$danger`, etc.
+- **Typography**: `$font-family-base`, `$font-size-base`, `$line-height-base`
+- **Spacing**: `$spacer`, `$spacers` map
+- **Borders**: `$border-width`, `$border-color`, `$border-radius`
+- **Shadows**: `$box-shadow`, `$box-shadow-sm`, `$box-shadow-lg`
+- **Forms**: `$input-*`, `$form-*`, `$label-*`
+- **Buttons**: `$btn-*`
+- **Cards**: `$card-*`
+- **Modals**: `$modal-*`
+- **Tooltips**: `$tooltip-*`
+
+Refer to the source files in `/src/style/abstracts/variables/` for the complete list.
+
+## Related Documentation
+
+- [SCSS Variables Reference](/styling/scss-variables) - Complete variable list
+- [CSS Utilities](/styling/css-utilities) - CSS utility classes
+- [Theming Guide](/concepts/theming) - Theme configuration
+- [Bootstrap Customization](https://getbootstrap.com/docs/5.3/customize/overview/) - Bootstrap theming guide

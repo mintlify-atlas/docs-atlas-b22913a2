@@ -1,0 +1,277 @@
+---
+title: DCarousel
+description: API reference for the DCarousel component family
+---
+
+## DCarousel
+
+A carousel/slider component built on top of Splide.js for displaying multiple items.
+
+### Import
+
+```tsx
+import { DCarousel } from '@dynamic-labs/ui';
+import '@splidejs/react-splide/css';
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = SplideProps & PropsWithChildren<BaseProps>;
+
+// Inherits all props from @splidejs/react-splide's SplideProps
+// See: https://splidejs.com/guides/options/
+
+type BaseProps = {
+  style?: CSSProperties;
+  className?: string;
+  dataAttributes?: DataAttributes;
+};
+```
+
+### Props
+
+<ParamField path="options" type="SplideOptions">
+  Configuration options for the carousel. See [Splide Options Documentation](https://splidejs.com/guides/options/) for all available options.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the carousel container.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the carousel container.
+</ParamField>
+
+<ParamField path="dataAttributes" type="Record<`data-${string}`, string | number | undefined | null | boolean>">
+  Custom data attributes to add to the carousel element.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Carousel slides (typically `DCarousel.Slide` components).
+</ParamField>
+
+---
+
+## DCarousel.Slide
+
+Individual slide component for the carousel.
+
+### TypeScript Interface
+
+```typescript
+type Props = Omit<React.ComponentProps<typeof SplideSlide>, 'className'> & {
+  className?: string;
+};
+
+// Inherits all props from @splidejs/react-splide's SplideSlide
+```
+
+### Props
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the slide.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Content to display inside the slide.
+</ParamField>
+
+---
+
+## Usage Examples
+
+### Basic Carousel
+
+```tsx
+import { DCarousel } from '@dynamic-labs/ui';
+import '@splidejs/react-splide/css';
+
+export default function Example() {
+  return (
+    <DCarousel>
+      <DCarousel.Slide>
+        <img src="/image1.jpg" alt="Slide 1" />
+      </DCarousel.Slide>
+      <DCarousel.Slide>
+        <img src="/image2.jpg" alt="Slide 2" />
+      </DCarousel.Slide>
+      <DCarousel.Slide>
+        <img src="/image3.jpg" alt="Slide 3" />
+      </DCarousel.Slide>
+    </DCarousel>
+  );
+}
+```
+
+### Auto-play Carousel
+
+```tsx
+import { DCarousel } from '@dynamic-labs/ui';
+import '@splidejs/react-splide/css';
+
+export default function Example() {
+  return (
+    <DCarousel
+      options={{
+        type: 'loop',
+        autoplay: true,
+        interval: 3000,
+      }}
+    >
+      <DCarousel.Slide>
+        <img src="/image1.jpg" alt="Slide 1" />
+      </DCarousel.Slide>
+      <DCarousel.Slide>
+        <img src="/image2.jpg" alt="Slide 2" />
+      </DCarousel.Slide>
+      <DCarousel.Slide>
+        <img src="/image3.jpg" alt="Slide 3" />
+      </DCarousel.Slide>
+    </DCarousel>
+  );
+}
+```
+
+### Multiple Slides Per View
+
+```tsx
+import { DCarousel } from '@dynamic-labs/ui';
+import '@splidejs/react-splide/css';
+
+export default function Example() {
+  const products = [
+    { id: 1, name: 'Product 1', image: '/product1.jpg' },
+    { id: 2, name: 'Product 2', image: '/product2.jpg' },
+    { id: 3, name: 'Product 3', image: '/product3.jpg' },
+    { id: 4, name: 'Product 4', image: '/product4.jpg' },
+    { id: 5, name: 'Product 5', image: '/product5.jpg' },
+  ];
+
+  return (
+    <DCarousel
+      options={{
+        perPage: 3,
+        perMove: 1,
+        gap: '1rem',
+        breakpoints: {
+          768: {
+            perPage: 2,
+          },
+          480: {
+            perPage: 1,
+          },
+        },
+      }}
+    >
+      {products.map((product) => (
+        <DCarousel.Slide key={product.id}>
+          <div className="card">
+            <img src={product.image} alt={product.name} />
+            <div className="card-body">
+              <h5>{product.name}</h5>
+            </div>
+          </div>
+        </DCarousel.Slide>
+      ))}
+    </DCarousel>
+  );
+}
+```
+
+### Testimonials Carousel
+
+```tsx
+import { DCarousel } from '@dynamic-labs/ui';
+import '@splidejs/react-splide/css';
+
+export default function Example() {
+  const testimonials = [
+    {
+      quote: "This product changed my life!",
+      author: "John Doe",
+      role: "CEO, Company"
+    },
+    {
+      quote: "Absolutely amazing experience.",
+      author: "Jane Smith",
+      role: "Designer"
+    },
+    {
+      quote: "Highly recommend to everyone.",
+      author: "Bob Johnson",
+      role: "Developer"
+    },
+  ];
+
+  return (
+    <DCarousel
+      options={{
+        type: 'loop',
+        autoplay: true,
+        interval: 5000,
+        arrows: false,
+      }}
+    >
+      {testimonials.map((testimonial, index) => (
+        <DCarousel.Slide key={index}>
+          <div className="text-center p-5">
+            <blockquote className="blockquote">
+              <p className="mb-4">"{testimonial.quote}"</p>
+            </blockquote>
+            <div>
+              <strong>{testimonial.author}</strong>
+              <div className="text-muted">{testimonial.role}</div>
+            </div>
+          </div>
+        </DCarousel.Slide>
+      ))}
+    </DCarousel>
+  );
+}
+```
+
+### With Ref for Programmatic Control
+
+```tsx
+import { DCarousel } from '@dynamic-labs/ui';
+import { useRef } from 'react';
+import type { Splide } from '@splidejs/react-splide';
+import '@splidejs/react-splide/css';
+
+export default function Example() {
+  const carouselRef = useRef<Splide>(null);
+
+  const goToSlide = (index: number) => {
+    carouselRef.current?.go(index);
+  };
+
+  return (
+    <div>
+      <div className="mb-3">
+        <button onClick={() => goToSlide(0)} className="btn btn-sm btn-outline-primary me-2">
+          Slide 1
+        </button>
+        <button onClick={() => goToSlide(1)} className="btn btn-sm btn-outline-primary me-2">
+          Slide 2
+        </button>
+        <button onClick={() => goToSlide(2)} className="btn btn-sm btn-outline-primary">
+          Slide 3
+        </button>
+      </div>
+
+      <DCarousel ref={carouselRef}>
+        <DCarousel.Slide>
+          <img src="/image1.jpg" alt="Slide 1" />
+        </DCarousel.Slide>
+        <DCarousel.Slide>
+          <img src="/image2.jpg" alt="Slide 2" />
+        </DCarousel.Slide>
+        <DCarousel.Slide>
+          <img src="/image3.jpg" alt="Slide 3" />
+        </DCarousel.Slide>
+      </DCarousel>
+    </div>
+  );
+}
+```

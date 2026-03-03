@@ -1,0 +1,323 @@
+---
+title: useMediaQuery
+description: React hooks for responsive design with media queries and breakpoints
+---
+
+Dynamic UI provides hooks for responsive design that work with SSR and support optional listeners for real-time updates.
+
+## useMediaQuery
+
+A low-level hook that checks if a media query matches using React 18's `useSyncExternalStore`.
+
+### Import
+
+```tsx
+import { useMediaQuery } from 'dynamic-ui';
+```
+
+### Signature
+
+```typescript
+function useMediaQuery(
+  mediaQuery: string,
+  useListener?: boolean
+): boolean
+```
+
+### Parameters
+
+<ParamField path="mediaQuery" type="string" required>
+  A CSS media query string (e.g., `"(min-width: 768px)"`)
+</ParamField>
+
+<ParamField path="useListener" type="boolean" default={false}>
+  Whether to subscribe to media query changes. When `false`, the query is only evaluated on mount.
+</ParamField>
+
+### Return Value
+
+<ResponseField name="matches" type="boolean">
+  `true` if the media query matches, `false` otherwise
+</ResponseField>
+
+### Usage
+
+#### Basic Usage
+
+```tsx
+import { useMediaQuery } from 'dynamic-ui';
+
+function ResponsiveComponent() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
+  return (
+    <div>
+      {isMobile ? <MobileView /> : <DesktopView />}
+    </div>
+  );
+}
+```
+
+#### With Live Updates
+
+```tsx
+import { useMediaQuery } from 'dynamic-ui';
+
+function DynamicLayout() {
+  // Re-renders when viewport size changes
+  const isWide = useMediaQuery('(min-width: 1200px)', true);
+
+  return (
+    <div className={isWide ? 'wide-layout' : 'narrow-layout'}>
+      <h1>Window width is {isWide ? 'wide' : 'narrow'}</h1>
+    </div>
+  );
+}
+```
+
+#### Multiple Media Queries
+
+```tsx
+import { useMediaQuery } from 'dynamic-ui';
+
+function AdaptiveComponent() {
+  const isMobile = useMediaQuery('(max-width: 576px)', true);
+  const isTablet = useMediaQuery(
+    '(min-width: 577px) and (max-width: 992px)',
+    true
+  );
+  const isDesktop = useMediaQuery('(min-width: 993px)', true);
+
+  if (isMobile) return <MobileLayout />;
+  if (isTablet) return <TabletLayout />;
+  if (isDesktop) return <DesktopLayout />;
+  
+  return null;
+}
+```
+
+#### Orientation Detection
+
+```tsx
+import { useMediaQuery } from 'dynamic-ui';
+
+function OrientationAware() {
+  const isPortrait = useMediaQuery('(orientation: portrait)', true);
+
+  return (
+    <div>
+      Device is in {isPortrait ? 'portrait' : 'landscape'} mode
+    </div>
+  );
+}
+```
+
+---
+
+## useMediaBreakpointUp
+
+A higher-level hook that checks if the viewport is at or above a specific breakpoint defined in `DContext`.
+
+### Import
+
+```tsx
+import {
+  useMediaBreakpointUpXs,
+  useMediaBreakpointUpSm,
+  useMediaBreakpointUpMd,
+  useMediaBreakpointUpLg,
+  useMediaBreakpointUpXl,
+  useMediaBreakpointUpXxl,
+} from 'dynamic-ui';
+```
+
+### Signature
+
+```typescript
+function useMediaBreakpointUpXs(useListener?: boolean): boolean
+function useMediaBreakpointUpSm(useListener?: boolean): boolean
+function useMediaBreakpointUpMd(useListener?: boolean): boolean
+function useMediaBreakpointUpLg(useListener?: boolean): boolean
+function useMediaBreakpointUpXl(useListener?: boolean): boolean
+function useMediaBreakpointUpXxl(useListener?: boolean): boolean
+```
+
+### Parameters
+
+<ParamField path="useListener" type="boolean" default={false}>
+  Whether to subscribe to viewport changes. When `false`, the breakpoint is only checked on mount.
+</ParamField>
+
+### Return Value
+
+<ResponseField name="matches" type="boolean">
+  `true` if the viewport width is at or above the breakpoint, `false` otherwise
+</ResponseField>
+
+### Breakpoints
+
+The breakpoint values are read from `DContext` and typically match Bootstrap's defaults:
+
+```typescript
+type BreakpointProps = {
+  xs: string;   // Extra small (default: "0px")
+  sm: string;   // Small (default: "576px")
+  md: string;   // Medium (default: "768px")
+  lg: string;   // Large (default: "992px")
+  xl: string;   // Extra large (default: "1200px")
+  xxl: string;  // Extra extra large (default: "1400px")
+}
+```
+
+### Usage
+
+#### Basic Breakpoint Check
+
+```tsx
+import { useMediaBreakpointUpMd } from 'dynamic-ui';
+
+function ResponsiveNav() {
+  const isMdOrLarger = useMediaBreakpointUpMd();
+
+  return (
+    <nav>
+      {isMdOrLarger ? <FullNavigation /> : <HamburgerMenu />}
+    </nav>
+  );
+}
+```
+
+#### Conditional Rendering
+
+```tsx
+import {
+  useMediaBreakpointUpSm,
+  useMediaBreakpointUpLg
+} from 'dynamic-ui';
+
+function Dashboard() {
+  const isSmOrLarger = useMediaBreakpointUpSm(true);
+  const isLgOrLarger = useMediaBreakpointUpLg(true);
+
+  return (
+    <div>
+      <MainContent />
+      {isSmOrLarger && <Sidebar />}
+      {isLgOrLarger && <AdditionalPanel />}
+    </div>
+  );
+}
+```
+
+#### Responsive Grid Columns
+
+```tsx
+import {
+  useMediaBreakpointUpMd,
+  useMediaBreakpointUpXl
+} from 'dynamic-ui';
+
+function ProductGrid({ products }) {
+  const isMd = useMediaBreakpointUpMd(true);
+  const isXl = useMediaBreakpointUpXl(true);
+
+  const columns = isXl ? 4 : isMd ? 3 : 1;
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
+      {products.map(product => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
+}
+```
+
+#### Mobile-First Design
+
+```tsx
+import {
+  useMediaBreakpointUpSm,
+  useMediaBreakpointUpMd,
+  useMediaBreakpointUpLg
+} from 'dynamic-ui';
+
+function AdaptiveCard() {
+  const isSm = useMediaBreakpointUpSm(true);
+  const isMd = useMediaBreakpointUpMd(true);
+  const isLg = useMediaBreakpointUpLg(true);
+
+  return (
+    <div
+      style={{
+        padding: isLg ? '32px' : isMd ? '24px' : isSm ? '16px' : '12px',
+        fontSize: isLg ? '18px' : isMd ? '16px' : '14px'
+      }}
+    >
+      <h2>Responsive Card</h2>
+      <p>Content adapts to screen size</p>
+    </div>
+  );
+}
+```
+
+## Context Setup
+
+The `useMediaBreakpointUp` hooks require `DContextProvider`:
+
+```tsx
+import { DContextProvider } from 'dynamic-ui';
+
+function App() {
+  return (
+    <DContextProvider
+      // Breakpoints are automatically read from CSS custom properties
+      // but can be overridden if needed
+    >
+      <YourApp />
+    </DContextProvider>
+  );
+}
+```
+
+## SSR Support
+
+Both hooks use `useSyncExternalStore` with proper server-side rendering support:
+
+- During SSR, `useMediaQuery` returns `false` by default
+- `useListener={false}` prevents hydration mismatches by only checking on mount
+- `useListener={true}` enables real-time updates but may cause initial hydration differences
+
+### SSR Best Practices
+
+```tsx
+import { useMediaQuery } from 'dynamic-ui';
+import { useEffect, useState } from 'react';
+
+function SSRSafeComponent() {
+  const [mounted, setMounted] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)', mounted);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    // Return server-safe fallback
+    return <DefaultView />;
+  }
+
+  return isMobile ? <MobileView /> : <DesktopView />;
+}
+```
+
+## Performance
+
+- **Without listener** (`useListener={false}`): Zero runtime overhead after initial render
+- **With listener** (`useListener={true}`): Uses efficient `matchMedia` API with automatic cleanup
+- Breakpoint hooks are memoized and only re-compute when breakpoint values change
+
+## Related
+
+- [DContext](/utilities/contexts#dcontext) - Context provider for breakpoint configuration
+- [Responsive Layouts](/examples/responsive-layouts) - Responsive layout patterns and examples

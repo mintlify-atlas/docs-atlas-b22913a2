@@ -1,0 +1,260 @@
+---
+title: "Styling System Overview"
+description: "Understanding Dynamic UI's SCSS architecture and styling approach"
+---
+
+Dynamic UI uses a comprehensive SCSS-based styling system built on top of Bootstrap 5, providing financial application-specific customizations and an extensive design token system.
+
+## Architecture
+
+The styling system is organized into a modular architecture:
+
+```scss
+// Main entry point: dynamic-ui.scss
+@import "abstracts/+import";  // Variables, mixins, functions
+@import "root/+import";       // CSS custom properties
+@import "base/+import";       // Base component styles
+@import "components/+import"; // Custom components
+@import "helpers/+import";    // Utility helpers
+```
+
+### Directory Structure
+
+- **abstracts/** - Variables, mixins, functions, and utilities
+  - `variables/` - All SCSS variables organized by component
+  - `_mixins.scss` - Reusable style mixins
+  - `_utilities.scss` - Utility class configurations
+  - `_maps.scss` - SCSS maps for theme generation
+
+- **root/** - CSS custom properties (CSS variables)
+  - `_root.scss` - Generates all CSS variables from SCSS tokens
+
+- **base/** - Base component overrides for Bootstrap components
+  - Button, form, typography, and other component styles
+
+- **components/** - Custom Dynamic UI components
+  - `_d-datepicker.scss`, `_d-stepper-desktop.scss`, etc.
+
+- **helpers/** - Utility classes and helper styles
+  - `_text-truncate.scss`, `_overlay.scss`, etc.
+
+## CSS Variable System
+
+Dynamic UI generates CSS custom properties from SCSS variables, allowing runtime theming and customization:
+
+```scss
+:root,
+[data-bs-theme="dynamic"] {
+  // Color palettes
+  --bs-blue: rgb(var(--bs-blue-rgb));
+  --bs-blue-500: #2068d5;
+  --bs-blue-600: shade-color($blue, 20%);
+  
+  // Spacing
+  --bs-ref-spacer-1: 0.25rem;  // 4px
+  --bs-ref-spacer-4: 1rem;     // 16px
+  
+  // Typography
+  --bs-fs-1: var(--bs-rfs-fs-1);  // H1 size
+  --bs-fw-bold: 600;
+  
+  // Component tokens
+  --bs-btn-border-radius: 0.5rem;
+  --bs-border-color: var(--bs-gray-100);
+}
+```
+
+## Variable Prefix
+
+All CSS variables use the `bs-` prefix by default:
+
+```scss
+$prefix: bs- !default;
+```
+
+This allows Dynamic UI to coexist with other CSS frameworks.
+
+## Bootstrap Integration
+
+Dynamic UI extends Bootstrap 5's theming system:
+
+- Overrides Bootstrap variables before import
+- Extends Bootstrap's utility API
+- Uses Bootstrap's Sass functions and mixins
+- Generates additional utility classes
+
+```scss
+// Bootstrap utilities API is extended
+@import "node_modules/bootstrap/scss/utilities/api";
+
+// Additional utilities
+@import "abstracts/utilities-hover";
+@import "abstracts/utilities-dark";
+```
+
+## Color System
+
+Dynamic UI implements a comprehensive color palette:
+
+### Gray Scale
+11 gray shades from 25 to 900:
+```scss
+$gray-25: #fbfbfc;   // Lightest
+$gray-100: #e1e1e6;
+$gray-500: #6d6d82;  // Mid-tone
+$gray-900: #15151a;  // Darkest
+```
+
+### Theme Colors
+Semantic color system:
+```scss
+$primary: $blue;      // #2068d5
+$secondary: $gray-400;
+$success: $green;     // #198754
+$danger: $red;        // #dc3545
+$warning: $yellow;    // #ffc107
+$info: $blue;
+$light: $gray-25;
+$dark: $gray-900;
+```
+
+### Color Palettes
+Each theme color has an 11-shade palette (25-900):
+```scss
+$primary-25: tint-color($blue, 95%);   // Lightest
+$primary-500: $blue;                    // Base
+$primary-900: shade-color($blue, 80%); // Darkest
+```
+
+## Spacing Scale
+
+Extended spacing system from 0 to 30:
+
+```scss
+$spacer: 1rem;  // 16px base
+
+$spacer-1: 0.25rem;   // 4px
+$spacer-2: 0.5rem;    // 8px
+$spacer-3: 0.75rem;   // 12px
+$spacer-4: 1rem;      // 16px
+$spacer-8: 2rem;      // 32px
+$spacer-12: 3rem;     // 48px
+$spacer-16: 4rem;     // 64px
+$spacer-24: 6rem;     // 96px
+$spacer-30: 7.5rem;   // 120px
+```
+
+Used in margin/padding utilities:
+```html
+<div class="p-4 mb-8">  <!-- 16px padding, 32px margin-bottom -->
+<div class="mt-12">     <!-- 48px margin-top -->
+```
+
+## Typography System
+
+### Font Family
+```scss
+$font-family-sans-serif: "Jost", sans-serif;
+```
+
+### Font Sizes
+Heading sizes (H1-H6):
+```scss
+$h1-font-size: 3rem;      // 48px
+$h2-font-size: 2.5rem;    // 40px
+$h3-font-size: 2rem;      // 32px
+$h4-font-size: 1.5rem;    // 24px
+$h5-font-size: 1.25rem;   // 20px
+$h6-font-size: 1rem;      // 16px
+```
+
+Display sizes:
+```scss
+$display1-font-size: 6rem;    // 96px
+$display2-font-size: 5.5rem;  // 88px
+$display3-font-size: 5rem;    // 80px
+$display4-font-size: 4.5rem;  // 72px
+$display5-font-size: 4rem;    // 64px
+$display6-font-size: 3.5rem;  // 56px
+```
+
+### Font Weights
+```scss
+$font-weight-light: 200;
+$font-weight-normal: 400;
+$font-weight-semibold: 500;
+$font-weight-bold: 600;
+```
+
+## Component Styling
+
+### Buttons
+```scss
+$btn-padding-y: $spacer-2;           // 8px
+$btn-padding-x: $spacer-4;           // 16px
+$btn-font-weight: $font-weight-semibold;  // 500
+$btn-border-radius: 0.5rem;          // 8px
+```
+
+### Border Radius
+```scss
+$border-radius: 0.5rem;      // 8px
+$border-radius-sm: 0.25rem;  // 4px
+$border-radius-lg: 1rem;     // 16px
+$border-radius-xl: 1.5rem;   // 24px
+$border-radius-xxl: 2rem;    // 32px
+$border-radius-pill: 50rem;  // Fully rounded
+```
+
+## Dark Mode Support
+
+Dynamic UI includes built-in dark mode support:
+
+```scss
+@if $enable-dark-mode {
+  @include color-mode(dark, true) {
+    --bs-body-color: #{$body-color-dark};
+    --bs-body-bg: #{$body-bg-dark};
+    --bs-border-color: #{$border-color-dark};
+    // ... additional dark mode overrides
+  }
+}
+```
+
+Activate with data attribute:
+```html
+<html data-bs-theme="dark">
+```
+
+## Import Strategies
+
+Dynamic UI provides three import options:
+
+1. **Full import** - All styles including CSS variables:
+   ```scss
+   @import "dynamic-ui";
+   ```
+
+2. **Root only** - Just CSS custom properties:
+   ```scss
+   @import "dynamic-ui-root";
+   ```
+
+3. **Non-root** - Styles without CSS variables:
+   ```scss
+   @import "dynamic-ui-non-root";
+   ```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Customization" icon="palette" href="/styling/customization">
+    Learn how to customize the theme and override variables
+  </Card>
+  <Card title="SCSS Variables" icon="code" href="/styling/scss-variables">
+    Complete reference of all SCSS variables
+  </Card>
+  <Card title="CSS Utilities" icon="sparkles" href="/styling/css-utilities">
+    Explore utility classes for rapid development
+  </Card>
+</CardGroup>

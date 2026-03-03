@@ -1,0 +1,614 @@
+---
+title: Data Display Components
+description: Components for displaying formatted data
+---
+
+## DAvatar
+
+User avatar component with image or initials support.
+
+### Basic Usage
+
+```tsx
+import DAvatar from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DAvatar 
+      name="John Doe"
+      image="https://example.com/avatar.jpg"
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="name" type="string">
+  User name (used for initials if no image provided)
+</ParamField>
+
+<ParamField path="image" type="string">
+  Avatar image URL
+</ParamField>
+
+<ParamField path="size" type="AvatarSize">
+  Avatar size - 'xs', 'sm', 'lg', 'xl', or 'xxl'
+</ParamField>
+
+<ParamField path="useNameAsInitials" type="boolean" default="false">
+  If true, displays full name instead of extracted initials
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="With Image">
+    ```tsx
+    <DAvatar 
+      name="Jane Smith"
+      image="https://api.dicebear.com/7.x/avataaars/svg?seed=Jane"
+    />
+    ```
+  </Tab>
+  <Tab title="Initials">
+    ```tsx
+    <DAvatar name="John Doe" />
+    // Displays: JD
+    
+    <DAvatar name="Alice Johnson" />
+    // Displays: AJ
+    ```
+  </Tab>
+  <Tab title="Sizes">
+    ```tsx
+    <DAvatar name="User" size="xs" />
+    <DAvatar name="User" size="sm" />
+    <DAvatar name="User" />
+    <DAvatar name="User" size="lg" />
+    <DAvatar name="User" size="xl" />
+    <DAvatar name="User" size="xxl" />
+    ```
+  </Tab>
+  <Tab title="Custom Display">
+    ```tsx
+    <DAvatar 
+      name="AB"
+      useNameAsInitials
+    />
+    // Displays: AB (as-is)
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Props =
+& BaseProps
+& {
+  id?: string;
+  size?: AvatarSize;
+  image?: string;
+  name?: string;
+  useNameAsInitials?: boolean;
+};
+```
+
+## DBadge
+
+Badge component for labels and status indicators.
+
+### Basic Usage
+
+```tsx
+import DBadge from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DBadge text="New" color="primary" />
+  );
+}
+```
+
+### Props
+
+<ParamField path="text" type="string">
+  Badge text content
+</ParamField>
+
+<ParamField path="color" type="ComponentColor" default="primary">
+  Badge color
+</ParamField>
+
+<ParamField path="soft" type="boolean" default="false">
+  Uses soft color variant
+</ParamField>
+
+<ParamField path="size" type="'sm' | 'lg'">
+  Badge size
+</ParamField>
+
+<ParamField path="rounded" type="boolean" default="false">
+  Makes badge pill-shaped
+</ParamField>
+
+<ParamField path="iconStart" type="string">
+  Icon at start of badge
+</ParamField>
+
+<ParamField path="iconEnd" type="string">
+  Icon at end of badge
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Colors">
+    ```tsx
+    <DBadge text="Primary" color="primary" />
+    <DBadge text="Success" color="success" />
+    <DBadge text="Danger" color="danger" />
+    <DBadge text="Warning" color="warning" />
+    <DBadge text="Info" color="info" />
+    ```
+  </Tab>
+  <Tab title="Soft Variants">
+    ```tsx
+    <DBadge text="Primary" color="primary" soft />
+    <DBadge text="Success" color="success" soft />
+    <DBadge text="Danger" color="danger" soft />
+    ```
+  </Tab>
+  <Tab title="Rounded">
+    ```tsx
+    <DBadge text="99+" color="danger" rounded />
+    <DBadge text="New" color="primary" rounded />
+    ```
+  </Tab>
+  <Tab title="With Icons">
+    ```tsx
+    <DBadge text="Verified" color="success" iconStart="CheckCircle" />
+    <DBadge text="Alert" color="danger" iconEnd="AlertCircle" />
+    ```
+  </Tab>
+  <Tab title="Sizes">
+    ```tsx
+    <DBadge text="Small" size="sm" />
+    <DBadge text="Default" />
+    <DBadge text="Large" size="lg" />
+    ```
+  </Tab>
+</Tabs>
+
+## DCurrencyText
+
+Formatted currency display using the `useFormatCurrency` hook.
+
+### Basic Usage
+
+```tsx
+import DCurrencyText from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DCurrencyText value={1234.56} />
+  );
+}
+```
+
+### Props
+
+<ParamField path="value" type="number" required>
+  Numeric value to format as currency
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles
+</ParamField>
+
+### Example
+
+```tsx
+// Displays formatted currency based on locale settings
+<DCurrencyText value={1234.56} />
+// Output: $1,234.56 (example for USD)
+
+<DCurrencyText 
+  value={9999.99} 
+  className="text-success fw-bold"
+/>
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & {
+  value: number;
+};
+```
+
+## DCreditCard
+
+Credit card display component with brand logos and customization.
+
+### Basic Usage
+
+```tsx
+import DCreditCard from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DCreditCard 
+      brand="visa"
+      number="**** **** **** 1234"
+      name="John Doe"
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="brand" type="CardBrand" default="visa">
+  Card brand - 'visa' or 'mastercard'
+</ParamField>
+
+<ParamField path="number" type="string">
+  Card number (typically masked)
+</ParamField>
+
+<ParamField path="name" type="string">
+  Cardholder name
+</ParamField>
+
+<ParamField path="holderText" type="string" default="Card Holder">
+  Label for cardholder name
+</ParamField>
+
+<ParamField path="isChipVisible" type="boolean" default="true">
+  Shows chip image
+</ParamField>
+
+<ParamField path="isVertical" type="boolean" default="false">
+  Vertical card layout
+</ParamField>
+
+<ParamField path="logoImage" type="string">
+  Custom logo image URL (overrides brand logo)
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Visa">
+    ```tsx
+    <DCreditCard 
+      brand="visa"
+      number="**** **** **** 4532"
+      name="Jane Smith"
+    />
+    ```
+  </Tab>
+  <Tab title="Mastercard">
+    ```tsx
+    <DCreditCard 
+      brand="mastercard"
+      number="**** **** **** 8901"
+      name="John Doe"
+    />
+    ```
+  </Tab>
+  <Tab title="Custom Logo">
+    ```tsx
+    <DCreditCard 
+      number="**** **** **** 5678"
+      name="Alice Johnson"
+      logoImage="https://example.com/custom-logo.png"
+    />
+    ```
+  </Tab>
+  <Tab title="Without Chip">
+    ```tsx
+    <DCreditCard 
+      brand="visa"
+      number="**** **** **** 1234"
+      name="Bob Wilson"
+      isChipVisible={false}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type CardBrand = 'visa' | 'mastercard';
+
+type Props = {
+  className?: string;
+  brand?: CardBrand;
+  isChipVisible?: boolean;
+  name?: string;
+  number?: string;
+  holderText?: string;
+  isVertical?: boolean;
+  logoImage?: string;
+};
+```
+
+## DVoucher
+
+Voucher/receipt component with share and download functionality.
+
+### Basic Usage
+
+```tsx
+import DVoucher from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DVoucher
+      title="Payment Successful"
+      message="Your transaction has been completed"
+      amount="$1,234.56"
+    >
+      <div>
+        <p><strong>Transaction ID:</strong> TXN-12345</p>
+        <p><strong>Date:</strong> March 3, 2026</p>
+      </div>
+    </DVoucher>
+  );
+}
+```
+
+### Props
+
+<ParamField path="title" type="string" required>
+  Voucher title
+</ParamField>
+
+<ParamField path="message" type="string" required>
+  Voucher message
+</ParamField>
+
+<ParamField path="amount" type="string">
+  Amount to display prominently
+</ParamField>
+
+<ParamField path="amountDetails" type="ReactNode">
+  Additional details below amount
+</ParamField>
+
+<ParamField path="icon" type="false | null | string | Partial<ComponentProps<typeof DIcon>>">
+  Icon configuration (defaults to success checkmark)
+</ParamField>
+
+<ParamField path="downloadText" type="string" default="Download">
+  Download button text
+</ParamField>
+
+<ParamField path="shareText" type="string" default="Share">
+  Share button text
+</ParamField>
+
+<ParamField path="onError" type="(err: Error) => Promise<void> | void">
+  Error handler for share/download failures
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Payment Receipt">
+    ```tsx
+    <DVoucher
+      title="Payment Successful"
+      message="Your payment has been processed"
+      amount="$250.00"
+      amountDetails={
+        <small className="text-muted">Includes $10.00 processing fee</small>
+      }
+    >
+      <div>
+        <p><strong>Payment Method:</strong> Visa ****1234</p>
+        <p><strong>Reference:</strong> PAY-ABC-123</p>
+        <p><strong>Date:</strong> March 3, 2026</p>
+      </div>
+    </DVoucher>
+    ```
+  </Tab>
+  <Tab title="Transfer Confirmation">
+    ```tsx
+    <DVoucher
+      title="Transfer Complete"
+      message="Money sent successfully"
+      amount="$1,000.00"
+      icon={{ icon: 'ArrowRightCircle', color: 'primary' }}
+    >
+      <div>
+        <p><strong>To:</strong> John Doe</p>
+        <p><strong>Account:</strong> ****5678</p>
+        <p><strong>Time:</strong> 14:30 PM</p>
+      </div>
+    </DVoucher>
+    ```
+  </Tab>
+  <Tab title="Without Icon">
+    ```tsx
+    <DVoucher
+      title="Receipt"
+      message="Transaction details"
+      icon={false}
+    >
+      <div>
+        <p>Transaction information here</p>
+      </div>
+    </DVoucher>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Props = PropsWithChildren<{
+  amount?: string;
+  amountDetails?: ReactNode;
+  icon?: false | null | string | Partial<ComponentProps<typeof DIcon>>;
+  className?: string;
+  message: string;
+  title: string;
+  downloadText?: string;
+  shareText?: string;
+  onError?: (err: Error) => Promise<void> | void;
+}>;
+```
+
+## DTimeline
+
+Timeline component for displaying sequential events.
+
+### Basic Usage
+
+```tsx
+import DTimeline from '@dynamic-ui/components';
+
+function App() {
+  const items = [
+    {
+      title: 'Order Placed',
+      description: 'Your order has been received',
+      time: '10:00 AM',
+      status: 'success' as const,
+      icon: 'check-circle'
+    },
+    {
+      title: 'Processing',
+      description: 'Order is being prepared',
+      time: '10:30 AM',
+      status: 'info' as const,
+      icon: 'clock'
+    },
+  ];
+  
+  return <DTimeline items={items} />;
+}
+```
+
+### Props
+
+<ParamField path="items" type="DTimelineItem[]" required>
+  Array of timeline items
+</ParamField>
+
+### DTimelineItem Interface
+
+<ParamField path="title" type="string" required>
+  Item title
+</ParamField>
+
+<ParamField path="description" type="string">
+  Item description
+</ParamField>
+
+<ParamField path="time" type="string">
+  Timestamp or time label
+</ParamField>
+
+<ParamField path="icon" type="string">
+  Bootstrap icon name (without 'bi-' prefix)
+</ParamField>
+
+<ParamField path="status" type="'success' | 'warning' | 'danger' | 'info'">
+  Status color variant
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Custom content for the item
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Order Tracking">
+    ```tsx
+    const orderTimeline = [
+      {
+        title: 'Order Placed',
+        description: 'Order #12345 received',
+        time: 'March 1, 10:00 AM',
+        status: 'success',
+        icon: 'check-circle'
+      },
+      {
+        title: 'Payment Confirmed',
+        description: 'Payment processed successfully',
+        time: 'March 1, 10:05 AM',
+        status: 'success',
+        icon: 'credit-card'
+      },
+      {
+        title: 'Preparing',
+        description: 'Your order is being prepared',
+        time: 'March 1, 11:00 AM',
+        status: 'info',
+        icon: 'box'
+      },
+      {
+        title: 'Shipped',
+        description: 'Package dispatched',
+        time: 'March 2, 09:00 AM',
+        status: 'warning',
+        icon: 'truck'
+      },
+    ];
+    
+    <DTimeline items={orderTimeline} />
+    ```
+  </Tab>
+  <Tab title="Transaction History">
+    ```tsx
+    const transactions = [
+      {
+        title: 'Payment Received',
+        description: 'From: Alice Johnson',
+        time: '2 hours ago',
+        status: 'success',
+        icon: 'arrow-down-circle',
+        children: <p className="mb-0 text-success">+$500.00</p>
+      },
+      {
+        title: 'Payment Sent',
+        description: 'To: Bob Wilson',
+        time: '5 hours ago',
+        status: 'info',
+        icon: 'arrow-up-circle',
+        children: <p className="mb-0 text-danger">-$200.00</p>
+      },
+    ];
+    
+    <DTimeline items={transactions} />
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+export type DTimelineItem = {
+  title: string;
+  description?: string;
+  time?: string;
+  icon?: string;
+  status?: 'success' | 'warning' | 'danger' | 'info';
+  children?: React.ReactNode;
+};
+
+type Props = BaseProps & {
+  items: DTimelineItem[];
+};
+```

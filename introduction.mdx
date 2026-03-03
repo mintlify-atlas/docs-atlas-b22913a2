@@ -1,0 +1,287 @@
+---
+title: Dynamic UI
+description: A React component library for building modern financial applications
+---
+
+<img
+  className="block dark:hidden"
+  src="/logo/light.svg"
+  alt="Dynamic UI Logo"
+/>
+<img
+  className="hidden dark:block"
+  src="/logo/dark.svg"
+  alt="Dynamic UI Logo"
+/>
+
+# Welcome to Dynamic UI
+
+Quickly create feature-rich financial applications through a robust micro frontend architecture of React-based components with customizable templates built for integration.
+
+<CardGroup cols={2}>
+  <Card
+    title="Quick Start"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Get up and running with Dynamic UI in minutes
+  </Card>
+  <Card
+    title="Installation"
+    icon="download"
+    href="/installation"
+  >
+    Install the library and configure your project
+  </Card>
+  <Card
+    title="Components"
+    icon="grid-2x2"
+    href="https://react.dynamicframework.dev"
+  >
+    Explore our full component library in Storybook
+  </Card>
+  <Card
+    title="GitHub"
+    icon="github"
+    href="https://github.com/dynamic-framework/dynamic-ui"
+  >
+    View source code and contribute
+  </Card>
+</CardGroup>
+
+## What is Dynamic UI?
+
+Dynamic UI (`@dynamic-framework/ui-react`) is a comprehensive React component library designed specifically for financial applications. Built on Bootstrap 5, it provides:
+
+- **50+ Production-Ready Components** - From basic inputs to complex financial widgets
+- **Financial-First Design** - Components like DCreditCard, DCurrencyText, and DInputCurrency
+- **Bootstrap 5 Foundation** - Leverages Bootstrap's robust utility system with enhancements
+- **TypeScript Support** - Full type definitions for all components
+- **Accessibility Built-In** - WCAG AA compliant components
+- **Dark Mode Ready** - Built-in dark mode support with utility variants
+
+## Core Features
+
+<AccordionGroup>
+  <Accordion title="Comprehensive Component Set">
+    Dynamic UI includes components for every aspect of financial UIs:
+    
+    - **Form Controls**: DInput, DInputCurrency, DInputPhone, DInputPassword, DInputMask, DDatePicker, DSelect
+    - **Layout**: DCard, DModal, DOffcanvas, DLayout, DTabs
+    - **Feedback**: DAlert, DToast, DProgress, DPasswordStrengthMeter
+    - **Navigation**: DStepper, DPaginator, DDropdown
+    - **Data Display**: DCurrencyText, DCreditCard, DTimeline, DVoucher
+    - **Interactive**: DButton, DButtonIcon, DCollapse, DPopover, DTooltip
+  </Accordion>
+  
+  <Accordion title="Bootstrap 5 Enhanced">
+    Built on Bootstrap 5 with powerful enhancements:
+    
+    - Extended spacing utilities (0-30 instead of 0-5)
+    - Expanded grid system (up to 24 columns)
+    - Semantic color tokens with multiple tints (25-900)
+    - Dark mode utilities (`dark:` prefix)
+    - Hover state utilities (`hover:` prefix)
+    - Typography enhancements with Jost font family
+  </Accordion>
+  
+  <Accordion title="Financial Application Ready">
+    Purpose-built components for financial use cases:
+    
+    - **DCurrencyText**: Format and display currency values with proper formatting
+    - **DInputCurrency**: Currency input with validation and formatting
+    - **DCreditCard**: Display credit card information with masking
+    - **DInputPhone**: International phone number input with validation
+    - **DPasswordStrengthMeter**: Real-time password strength validation
+    - **DOtp**: One-time password input for authentication flows
+  </Accordion>
+  
+  <Accordion title="Developer Experience">
+    Built with developer productivity in mind:
+    
+    - TypeScript-first with comprehensive type definitions
+    - Consistent API across all components
+    - Flexible theming through CSS variables
+    - Icon support (Bootstrap Icons, Material Symbols, Lucide React)
+    - Integration with popular libraries (Formik, React Hook Form)
+    - Comprehensive Storybook documentation
+  </Accordion>
+</AccordionGroup>
+
+## Technology Stack
+
+Dynamic UI is built with modern, battle-tested technologies:
+
+<CodeGroup>
+```json Core Dependencies
+{
+  "bootstrap": "~5.3.8",
+  "react": ">=18 <20",
+  "react-dom": ">=18 <20",
+  "lucide-react": "^0.553.0",
+  "date-fns": "~4.1.0",
+  "currency.js": "~2.0.4"
+}
+```
+
+```json Peer Dependencies
+{
+  "react": ">=18 <20",
+  "react-dom": ">=18 <20",
+  "framer-motion": ">=12 <13",
+  "i18next": ">=25 <26",
+  "react-i18next": ">=16 <17",
+  "react-hot-toast": ">=2 <3"
+}
+```
+</CodeGroup>
+
+## Quick Example
+
+Here's a simple example showing how easy it is to build a financial form with Dynamic UI:
+
+```tsx
+import { 
+  DCard, 
+  DInput, 
+  DInputCurrency, 
+  DButton,
+  DAlert 
+} from '@dynamic-framework/ui-react';
+import { useState } from 'react';
+
+function TransferForm() {
+  const [amount, setAmount] = useState('');
+  const [recipient, setRecipient] = useState('');
+
+  return (
+    <DCard>
+      <DCard.Header>
+        <h3>Transfer Funds</h3>
+      </DCard.Header>
+      <DCard.Body>
+        <DAlert color="info" className="mb-3">
+          Enter transfer details below
+        </DAlert>
+        
+        <DInput
+          label="Recipient"
+          value={recipient}
+          onChange={setRecipient}
+          placeholder="Enter recipient name"
+          className="mb-3"
+        />
+        
+        <DInputCurrency
+          label="Amount"
+          value={amount}
+          onChange={setAmount}
+          placeholder="0.00"
+          className="mb-3"
+        />
+      </DCard.Body>
+      <DCard.Footer>
+        <DButton 
+          color="primary" 
+          text="Transfer"
+          iconEnd="ArrowRight"
+        />
+      </DCard.Footer>
+    </DCard>
+  );
+}
+```
+
+## Browser Support
+
+Dynamic UI supports all modern browsers:
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+<Note>
+  Dynamic UI requires **Node.js 22.0.0 or higher** for development.
+</Note>
+
+## Design Philosophy
+
+### Semantic Colors
+
+Use semantic color tokens for clarity and accessibility:
+- **Primary** - Main actions and highlights
+- **Success** - Positive states and confirmations
+- **Warning** - Cautionary states
+- **Danger** - Errors and destructive actions
+- **Info** - Informational messages
+- **Secondary** - Neutral and complementary elements
+
+### Consistent API
+
+All components follow consistent patterns:
+- `color` prop for semantic colors
+- `size` prop for sizing (sm, md, lg)
+- `variant` prop for style variations
+- `disabled` and `loading` states
+- `className` and `style` for customization
+
+### Accessibility First
+
+- Semantic HTML elements
+- WCAG AA contrast ratios
+- Keyboard navigation support
+- Screen reader friendly
+- Focus management
+- ARIA attributes
+
+## Community and Support
+
+<CardGroup cols={3}>
+  <Card
+    title="Documentation"
+    icon="book-open"
+    href="https://docs.modyo.com/en/dynamic/"
+  >
+    Official guides and tutorials
+  </Card>
+  <Card
+    title="Storybook"
+    icon="palette"
+    href="https://react.dynamicframework.dev"
+  >
+    Interactive component explorer
+  </Card>
+  <Card
+    title="GitHub Issues"
+    icon="message-circle"
+    href="https://github.com/dynamic-framework/dynamic-ui/issues"
+  >
+    Report bugs and request features
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<Steps>
+  <Step title="Install Dynamic UI">
+    Follow our [installation guide](/installation) to add Dynamic UI to your project
+  </Step>
+  <Step title="Quick Start Tutorial">
+    Build your first component with our [quick start guide](/quickstart)
+  </Step>
+  <Step title="Explore Components">
+    Browse the [Storybook](https://react.dynamicframework.dev) to see all available components
+  </Step>
+</Steps>
+
+<Tip>
+  Want to hit the ground running? Use the Dynamic React Base Template:
+  ```bash
+  npx @modyo/cli@latest get dynamic-react-base-template
+  ```
+</Tip>
+
+---
+
+**Made with 💚 by Modyo** | [Website](https://dynamicframework.dev) | [GitHub](https://github.com/dynamic-framework/dynamic-ui) | [npm](https://www.npmjs.com/package/@dynamic-framework/ui-react)

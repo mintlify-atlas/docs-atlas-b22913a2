@@ -1,0 +1,228 @@
+---
+title: DBadge
+description: API reference for the DBadge component
+---
+
+## DBadge
+
+A component for displaying small count or status indicators.
+
+### Import
+
+```tsx
+import { DBadge } from '@dynamic-labs/ui';
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & {
+  text?: string;
+  soft?: boolean;
+  size?: 'sm' | 'lg';
+  rounded?: boolean;
+  color?: ComponentColor;
+  id?: string;
+  iconStart?: string;
+  iconEnd?: string;
+  iconMaterialStyle?: boolean;
+  iconFamilyClass?: string;
+  iconFamilyPrefix?: string;
+};
+
+type ComponentColor = string;
+
+type BaseProps = {
+  style?: CSSProperties;
+  className?: string;
+  dataAttributes?: DataAttributes;
+};
+```
+
+### Props
+
+<ParamField path="text" type="string">
+  Text content to display inside the badge.
+</ParamField>
+
+<ParamField path="soft" type="boolean" default="false">
+  If true, applies a softer, lighter color variant of the badge.
+</ParamField>
+
+<ParamField path="size" type="'sm' | 'lg'">
+  Size variant of the badge.
+</ParamField>
+
+<ParamField path="rounded" type="boolean">
+  If true, applies rounded pill styling to the badge.
+</ParamField>
+
+<ParamField path="color" type="string" default="primary">
+  Color variant of the badge. Accepts any valid color name (e.g., `'primary'`, `'success'`, `'danger'`).
+</ParamField>
+
+<ParamField path="id" type="string">
+  Unique identifier for the badge element.
+</ParamField>
+
+<ParamField path="iconStart" type="string">
+  Icon to display at the start of the badge text.
+</ParamField>
+
+<ParamField path="iconEnd" type="string">
+  Icon to display at the end of the badge text.
+</ParamField>
+
+<ParamField path="iconMaterialStyle" type="boolean">
+  Whether to use Material Design style for icons.
+</ParamField>
+
+<ParamField path="iconFamilyClass" type="string">
+  CSS class for the icon font family.
+</ParamField>
+
+<ParamField path="iconFamilyPrefix" type="string">
+  Prefix for the icon font family.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the badge.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the badge.
+</ParamField>
+
+<ParamField path="dataAttributes" type="Record<`data-${string}`, string | number | undefined | null | boolean>">
+  Custom data attributes to add to the badge element.
+</ParamField>
+
+### Usage Examples
+
+#### Basic Badge
+
+```tsx
+import { DBadge } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return <DBadge text="New" color="primary" />;
+}
+```
+
+#### Color Variants
+
+```tsx
+import { DBadge } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-2">
+      <DBadge text="Primary" color="primary" />
+      <DBadge text="Success" color="success" />
+      <DBadge text="Danger" color="danger" />
+      <DBadge text="Warning" color="warning" />
+      <DBadge text="Info" color="info" />
+    </div>
+  );
+}
+```
+
+#### Soft Badges
+
+```tsx
+import { DBadge } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-2">
+      <DBadge text="Soft Primary" color="primary" soft />
+      <DBadge text="Soft Success" color="success" soft />
+      <DBadge text="Soft Danger" color="danger" soft />
+    </div>
+  );
+}
+```
+
+#### Rounded Pills
+
+```tsx
+import { DBadge } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-2">
+      <DBadge text="14" color="primary" rounded />
+      <DBadge text="New" color="success" rounded />
+      <DBadge text="99+" color="danger" rounded />
+    </div>
+  );
+}
+```
+
+#### With Icons
+
+```tsx
+import { DBadge } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-2">
+      <DBadge
+        text="Verified"
+        color="success"
+        iconStart="check-circle-fill"
+        iconFamilyClass="bi"
+      />
+      <DBadge
+        text="Download"
+        color="primary"
+        iconEnd="download"
+        iconFamilyClass="bi"
+      />
+    </div>
+  );
+}
+```
+
+#### Size Variants
+
+```tsx
+import { DBadge } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex align-items-center gap-2">
+      <DBadge text="Small" color="primary" size="sm" />
+      <DBadge text="Default" color="primary" />
+      <DBadge text="Large" color="primary" size="lg" />
+    </div>
+  );
+}
+```
+
+#### Notification Badge
+
+```tsx
+import { DBadge } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="position-relative" style={{ display: 'inline-block' }}>
+      <button className="btn btn-primary">
+        Messages
+      </button>
+      <DBadge
+        text="5"
+        color="danger"
+        rounded
+        size="sm"
+        style={{
+          position: 'absolute',
+          top: '-5px',
+          right: '-5px'
+        }}
+      />
+    </div>
+  );
+}
+```

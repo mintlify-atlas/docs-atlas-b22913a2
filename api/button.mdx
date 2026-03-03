@@ -1,0 +1,311 @@
+---
+title: DButton
+description: API reference for the DButton component
+---
+
+## DButton
+
+A versatile button component with support for loading states, icons, and link rendering.
+
+### Import
+
+```tsx
+import { DButton } from '@dynamic-labs/ui';
+```
+
+### TypeScript Interface
+
+```typescript
+interface Props
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
+  BaseProps,
+  StartIconProps,
+  EndIconProps {
+  href?: string;
+  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>['target'];
+  rel?: React.AnchorHTMLAttributes<HTMLAnchorElement>['rel'];
+  color?: ComponentColor;
+  size?: ComponentSize;
+  variant?: ButtonVariant;
+  text?: string;
+  loading?: boolean;
+  loadingText?: string;
+  loadingAriaLabel?: string;
+}
+
+type ComponentSize = 'sm' | 'lg';
+type ButtonVariant = 'outline' | 'link';
+type ComponentColor = string;
+
+type StartIconProps = {
+  iconStart?: string;
+  iconStartDisabled?: boolean;
+  iconStartFamilyClass?: string;
+  iconStartFamilyPrefix?: string;
+  iconStartAriaLabel?: string;
+  iconStartTabIndex?: number;
+  iconStartMaterialStyle?: boolean;
+};
+
+type EndIconProps = {
+  iconEnd?: string;
+  iconEndDisabled?: boolean;
+  iconEndFamilyClass?: string;
+  iconEndFamilyPrefix?: string;
+  iconEndAriaLabel?: string;
+  iconEndTabIndex?: number;
+  iconEndMaterialStyle?: boolean;
+};
+
+type BaseProps = {
+  style?: CSSProperties;
+  className?: string;
+  dataAttributes?: DataAttributes;
+};
+```
+
+### Props
+
+<ParamField path="href" type="string">
+  If provided, renders the button as an anchor (`<a>`) element instead of a button.
+</ParamField>
+
+<ParamField path="target" type="string">
+  Target attribute for anchor element (only applies when `href` is provided).
+</ParamField>
+
+<ParamField path="rel" type="string">
+  Rel attribute for anchor element (only applies when `href` is provided).
+</ParamField>
+
+<ParamField path="color" type="string" default="primary">
+  Color variant of the button. Accepts any valid color name (e.g., `'primary'`, `'success'`, `'danger'`).
+</ParamField>
+
+<ParamField path="size" type="'sm' | 'lg'">
+  Size variant of the button.
+</ParamField>
+
+<ParamField path="variant" type="'outline' | 'link'">
+  Visual variant of the button. `'outline'` creates a bordered button, `'link'` creates a text-only button.
+</ParamField>
+
+<ParamField path="text" type="string">
+  Text content to display in the button. Alternative to using `children`.
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  If true, displays a loading spinner and disables the button.
+</ParamField>
+
+<ParamField path="loadingText" type="string">
+  Text to display next to the spinner when loading.
+</ParamField>
+
+<ParamField path="loadingAriaLabel" type="string">
+  Accessible label for screen readers when button is in loading state.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  If true, disables the button.
+</ParamField>
+
+<ParamField path="iconStart" type="string">
+  Icon to display at the start of the button text.
+</ParamField>
+
+<ParamField path="iconStartFamilyClass" type="string">
+  CSS class for the start icon font family.
+</ParamField>
+
+<ParamField path="iconStartFamilyPrefix" type="string">
+  Prefix for the start icon font family.
+</ParamField>
+
+<ParamField path="iconStartMaterialStyle" type="boolean">
+  Whether to use Material Design style for the start icon.
+</ParamField>
+
+<ParamField path="iconEnd" type="string">
+  Icon to display at the end of the button text.
+</ParamField>
+
+<ParamField path="iconEndFamilyClass" type="string">
+  CSS class for the end icon font family.
+</ParamField>
+
+<ParamField path="iconEndFamilyPrefix" type="string">
+  Prefix for the end icon font family.
+</ParamField>
+
+<ParamField path="iconEndMaterialStyle" type="boolean">
+  Whether to use Material Design style for the end icon.
+</ParamField>
+
+<ParamField path="type" type="'button' | 'submit' | 'reset'" default="button">
+  HTML button type attribute.
+</ParamField>
+
+<ParamField path="onClick" type="(event: MouseEvent<HTMLButtonElement>) => void">
+  Click event handler.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the button.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the button.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Content to display inside the button. Alternative to using `text` prop.
+</ParamField>
+
+### Usage Examples
+
+#### Basic Button
+
+```tsx
+import { DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DButton text="Click Me" color="primary" />
+  );
+}
+```
+
+#### Color Variants
+
+```tsx
+import { DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-2">
+      <DButton text="Primary" color="primary" />
+      <DButton text="Success" color="success" />
+      <DButton text="Danger" color="danger" />
+      <DButton text="Warning" color="warning" />
+      <DButton text="Info" color="info" />
+    </div>
+  );
+}
+```
+
+#### Outline Variant
+
+```tsx
+import { DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-2">
+      <DButton text="Outline Primary" color="primary" variant="outline" />
+      <DButton text="Outline Success" color="success" variant="outline" />
+      <DButton text="Outline Danger" color="danger" variant="outline" />
+    </div>
+  );
+}
+```
+
+#### With Icons
+
+```tsx
+import { DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-2">
+      <DButton
+        text="Previous"
+        color="primary"
+        iconStart="arrow-left"
+        iconStartFamilyClass="bi"
+      />
+      <DButton
+        text="Next"
+        color="primary"
+        iconEnd="arrow-right"
+        iconEndFamilyClass="bi"
+      />
+    </div>
+  );
+}
+```
+
+#### Loading State
+
+```tsx
+import { DButton } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  };
+
+  return (
+    <DButton
+      text="Submit"
+      color="primary"
+      loading={loading}
+      loadingText="Submitting..."
+      onClick={handleClick}
+    />
+  );
+}
+```
+
+#### As Link
+
+```tsx
+import { DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DButton
+      text="Visit Dynamic"
+      color="primary"
+      href="https://dynamic.xyz"
+      target="_blank"
+      rel="noopener noreferrer"
+    />
+  );
+}
+```
+
+#### Size Variants
+
+```tsx
+import { DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex align-items-center gap-2">
+      <DButton text="Small" color="primary" size="sm" />
+      <DButton text="Default" color="primary" />
+      <DButton text="Large" color="primary" size="lg" />
+    </div>
+  );
+}
+```
+
+#### Disabled State
+
+```tsx
+import { DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-2">
+      <DButton text="Disabled" color="primary" disabled />
+      <DButton text="Disabled Outline" color="primary" variant="outline" disabled />
+    </div>
+  );
+}
+```

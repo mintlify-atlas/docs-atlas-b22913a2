@@ -1,0 +1,486 @@
+---
+title: "CSS Utility Classes"
+description: "Comprehensive guide to Dynamic UI's utility classes for rapid development"
+---
+
+Dynamic UI extends Bootstrap's utility API with additional classes for colors, spacing, typography, and custom utilities.
+
+## Color Utilities
+
+### Text Colors
+
+Apply colors to text using all color palette shades:
+
+```html
+<!-- Theme colors -->
+<p class="text-primary">Primary text</p>
+<p class="text-success">Success text</p>
+<p class="text-danger">Danger text</p>
+
+<!-- Gray scale -->
+<p class="text-gray-25">Lightest gray</p>
+<p class="text-gray-500">Medium gray</p>
+<p class="text-gray-900">Darkest gray</p>
+
+<!-- Color palettes (25-900) -->
+<p class="text-primary-100">Very light primary</p>
+<p class="text-primary-500">Base primary</p>
+<p class="text-primary-900">Very dark primary</p>
+
+<!-- Extended colors -->
+<p class="text-indigo">Indigo text</p>
+<p class="text-purple">Purple text</p>
+<p class="text-pink">Pink text</p>
+<p class="text-teal">Teal text</p>
+<p class="text-cyan">Cyan text</p>
+```
+
+### Background Colors
+
+Background utilities for all color shades:
+
+```html
+<!-- Theme colors -->
+<div class="bg-primary">Primary background</div>
+<div class="bg-success">Success background</div>
+<div class="bg-light">Light background</div>
+
+<!-- Color palettes -->
+<div class="bg-primary-25">Very light primary bg</div>
+<div class="bg-primary-100">Light primary bg</div>
+<div class="bg-primary-500">Base primary bg</div>
+<div class="bg-primary-900">Dark primary bg</div>
+
+<!-- Gray backgrounds -->
+<div class="bg-gray-25">Lightest gray bg</div>
+<div class="bg-gray-100">Light gray bg</div>
+<div class="bg-gray-900">Dark gray bg</div>
+```
+
+### Border Colors
+
+Border color utilities for gray scale:
+
+```html
+<div class="border border-gray-100">Light border</div>
+<div class="border border-gray-300">Medium border</div>
+<div class="border border-gray-900">Dark border</div>
+```
+
+### Opacity Utilities
+
+Control opacity and text opacity:
+
+```html
+<!-- General opacity -->
+<div class="opacity-25">25% opacity</div>
+<div class="opacity-40">40% opacity</div>
+<div class="opacity-50">50% opacity</div>
+<div class="opacity-75">75% opacity</div>
+<div class="opacity-100">100% opacity</div>
+
+<!-- Text opacity -->
+<p class="text-primary text-opacity-40">Primary with 40% opacity</p>
+<p class="text-dark text-opacity-75">Dark with 75% opacity</p>
+```
+
+## Spacing Utilities
+
+Extended spacing scale from 0 to 30:
+
+### Margin Utilities
+
+```html
+<!-- All sides -->
+<div class="m-0">No margin</div>
+<div class="m-4">16px margin</div>
+<div class="m-8">32px margin</div>
+<div class="m-16">64px margin</div>
+<div class="m-24">96px margin</div>
+<div class="m-30">120px margin</div>
+
+<!-- Directional -->
+<div class="mt-4">Top: 16px</div>
+<div class="mb-8">Bottom: 32px</div>
+<div class="ms-6">Start: 24px</div>
+<div class="me-6">End: 24px</div>
+
+<!-- Axis -->
+<div class="mx-4">Horizontal: 16px</div>
+<div class="my-8">Vertical: 32px</div>
+
+<!-- Auto -->
+<div class="mx-auto">Centered</div>
+```
+
+### Padding Utilities
+
+```html
+<!-- All sides -->
+<div class="p-0">No padding</div>
+<div class="p-4">16px padding</div>
+<div class="p-8">32px padding</div>
+<div class="p-16">64px padding</div>
+<div class="p-24">96px padding</div>
+
+<!-- Directional -->
+<div class="pt-4">Top: 16px</div>
+<div class="pb-8">Bottom: 32px</div>
+<div class="ps-6">Start: 24px</div>
+<div class="pe-6">End: 24px</div>
+
+<!-- Axis -->
+<div class="px-4">Horizontal: 16px</div>
+<div class="py-8">Vertical: 32px</div>
+```
+
+### Spacing Scale Reference
+
+| Class | Value | Pixels |
+|-------|-------|--------|
+| `*-1` | 0.25rem | 4px |
+| `*-2` | 0.5rem | 8px |
+| `*-3` | 0.75rem | 12px |
+| `*-4` | 1rem | 16px |
+| `*-5` | 1.25rem | 20px |
+| `*-6` | 1.5rem | 24px |
+| `*-8` | 2rem | 32px |
+| `*-12` | 3rem | 48px |
+| `*-16` | 4rem | 64px |
+| `*-20` | 5rem | 80px |
+| `*-24` | 6rem | 96px |
+| `*-30` | 7.5rem | 120px |
+
+## Typography Utilities
+
+### Font Size
+
+Responsive font size utilities:
+
+```html
+<!-- Standard sizes -->
+<p class="fs-1">H1 size (48px)</p>
+<p class="fs-2">H2 size (40px)</p>
+<p class="fs-3">H3 size (32px)</p>
+<p class="fs-4">H4 size (24px)</p>
+<p class="fs-5">H5 size (20px)</p>
+<p class="fs-6">H6 size (16px)</p>
+<p class="fs-body">Body size</p>
+
+<!-- Display sizes -->
+<h1 class="display-1">Display 1 (96px)</h1>
+<h1 class="display-2">Display 2 (88px)</h1>
+<h1 class="display-3">Display 3 (80px)</h1>
+<h1 class="display-4">Display 4 (72px)</h1>
+<h1 class="display-5">Display 5 (64px)</h1>
+<h1 class="display-6">Display 6 (56px)</h1>
+
+<!-- Responsive -->
+<p class="fs-3 fs-md-2 fs-lg-1">
+  H3 on mobile, H2 on tablet, H1 on desktop
+</p>
+```
+
+### Font Weight
+
+Responsive font weight utilities:
+
+```html
+<p class="fw-light">Light (200)</p>
+<p class="fw-normal">Normal (400)</p>
+<p class="fw-semibold">Semibold (500)</p>
+<p class="fw-bold">Bold (600)</p>
+<p class="fw-bolder">Bolder (600)</p>
+
+<!-- Responsive -->
+<p class="fw-normal fw-md-semibold fw-lg-bold">
+  Normal on mobile, semibold on tablet, bold on desktop
+</p>
+```
+
+### Line Height
+
+```html
+<p class="lh-1">Line height: 1</p>
+<p class="lh-sm">Line height: 1.25</p>
+<p class="lh-base">Line height: 1.5</p>
+<p class="lh-lg">Line height: 2</p>
+```
+
+### Text Truncation
+
+Multi-line text truncation with responsive support:
+
+```html
+<!-- Single line -->
+<p class="text-truncate">This text will truncate with ellipsis...</p>
+
+<!-- Multi-line -->
+<p class="text-truncate-2">Truncate after 2 lines...</p>
+<p class="text-truncate-3">Truncate after 3 lines...</p>
+<p class="text-truncate-4">Truncate after 4 lines...</p>
+
+<!-- Responsive -->
+<p class="text-truncate-2 text-truncate-md-3 text-truncate-lg-4">
+  2 lines on mobile, 3 on tablet, 4 on desktop
+</p>
+```
+
+### Text Wrap
+
+Responsive text wrapping control:
+
+```html
+<p class="text-wrap-balance">Balanced text wrapping</p>
+<p class="text-wrap-normal">Normal wrapping</p>
+<p class="text-wrap-truncate">Truncate overflow</p>
+<p class="text-wrap-wrap">Force wrap</p>
+
+<!-- Responsive -->
+<p class="text-wrap-truncate text-wrap-md-normal">
+  Truncate on mobile, normal on tablet+
+</p>
+```
+
+## Layout Utilities
+
+### Display
+
+Responsive display utilities:
+
+```html
+<div class="d-none">Hidden</div>
+<div class="d-block">Block</div>
+<div class="d-flex">Flex</div>
+<div class="d-grid">Grid</div>
+<div class="d-inline-flex">Inline flex</div>
+<div class="d-table">Table</div>
+<div class="d-table-row">Table row</div>
+<div class="d-table-cell">Table cell</div>
+<div class="d-table-header-group">Table header group</div>
+
+<!-- Responsive -->
+<div class="d-none d-md-block d-lg-flex">
+  Hidden on mobile, block on tablet, flex on desktop
+</div>
+```
+
+### Position
+
+Responsive positioning:
+
+```html
+<div class="position-static">Static</div>
+<div class="position-relative">Relative</div>
+<div class="position-absolute">Absolute</div>
+<div class="position-fixed">Fixed</div>
+<div class="position-sticky">Sticky</div>
+
+<!-- Responsive -->
+<div class="position-relative position-md-absolute">
+  Relative on mobile, absolute on tablet+
+</div>
+```
+
+### Width & Height
+
+Responsive sizing utilities:
+
+```html
+<!-- Width -->
+<div class="w-25">25% width</div>
+<div class="w-50">50% width</div>
+<div class="w-75">75% width</div>
+<div class="w-100">100% width</div>
+<div class="w-auto">Auto width</div>
+
+<!-- Height -->
+<div class="h-25">25% height</div>
+<div class="h-50">50% height</div>
+<div class="h-75">75% height</div>
+<div class="h-100">100% height</div>
+<div class="h-auto">Auto height</div>
+
+<!-- Responsive -->
+<div class="w-100 w-md-75 w-lg-50">
+  Full on mobile, 75% on tablet, 50% on desktop
+</div>
+```
+
+### Vertical Align
+
+Responsive vertical alignment:
+
+```html
+<span class="v-align-baseline">Baseline</span>
+<span class="v-align-top">Top</span>
+<span class="v-align-middle">Middle</span>
+<span class="v-align-bottom">Bottom</span>
+<span class="v-align-text-top">Text top</span>
+<span class="v-align-text-bottom">Text bottom</span>
+```
+
+## Grid Utilities
+
+Extended grid columns (13-24):
+
+```html
+<!-- Standard grid (1-12) -->
+<div class="row">
+  <div class="g-col-6">6 columns</div>
+  <div class="g-col-6">6 columns</div>
+</div>
+
+<!-- Extended grid (13-24) -->
+<div class="row">
+  <div class="g-col-13">13 columns</div>
+  <div class="g-col-14">14 columns</div>
+  <div class="g-col-18">18 columns</div>
+  <div class="g-col-24">24 columns</div>
+</div>
+
+<!-- Responsive -->
+<div class="g-col-12 g-col-md-16 g-col-lg-20">
+  12 cols on mobile, 16 on tablet, 20 on desktop
+</div>
+```
+
+## Shadow Utilities
+
+```html
+<div class="shadow-none">No shadow</div>
+<div class="shadow-sm">Small shadow</div>
+<div class="shadow">Default shadow</div>
+<div class="shadow-lg">Large shadow (0 10px 10px rgba(0,0,0,.02))</div>
+```
+
+## Custom Utilities
+
+### Cursor
+
+Cursor utilities for interactive elements:
+
+```html
+<div class="cursor-pointer">Pointer cursor</div>
+<div class="cursor-default">Default cursor</div>
+<div class="cursor-not-allowed">Not allowed cursor</div>
+<div class="cursor-help">Help cursor</div>
+```
+
+### Overlay
+
+Opacity overlay utilities:
+
+```html
+<div class="overlay-0">No overlay (0% opacity)</div>
+<div class="overlay-25">25% overlay</div>
+<div class="overlay-50">50% overlay</div>
+<div class="overlay-75">75% overlay</div>
+<div class="overlay-100">Full overlay (100% opacity)</div>
+```
+
+## Responsive Breakpoints
+
+All responsive utilities use these breakpoints:
+
+| Breakpoint | Class Infix | Dimensions |
+|------------|-------------|-----------|
+| Extra small | (none) | &lt;576px |
+| Small | `sm` | ≥576px |
+| Medium | `md` | ≥768px |
+| Large | `lg` | ≥992px |
+| Extra large | `xl` | ≥1200px |
+| Extra extra large | `xxl` | ≥1400px |
+
+### Responsive Examples
+
+```html
+<!-- Responsive margin -->
+<div class="mt-2 mt-md-4 mt-lg-8 mt-xl-16">
+  Increasing top margin on larger screens
+</div>
+
+<!-- Responsive text size -->
+<h1 class="fs-4 fs-md-3 fs-lg-2 fs-xl-1">
+  Heading grows on larger screens
+</h1>
+
+<!-- Responsive display -->
+<div class="d-none d-md-block d-lg-flex">
+  Hidden on mobile, block on tablet, flex on desktop
+</div>
+
+<!-- Responsive grid -->
+<div class="g-col-12 g-col-md-8 g-col-lg-6">
+  Full width on mobile, 8 cols tablet, 6 cols desktop
+</div>
+```
+
+## Utility Combinations
+
+Combine utilities for powerful styling:
+
+```html
+<!-- Card-like component -->
+<div class="bg-white border border-gray-100 rounded-lg p-6 shadow-sm">
+  <h3 class="fs-4 fw-bold text-gray-900 mb-4">Card Title</h3>
+  <p class="text-gray-600 lh-base mb-0">
+    Card content with utilities only
+  </p>
+</div>
+
+<!-- Centered hero -->
+<div class="d-flex align-items-center justify-content-center min-vh-100 bg-primary-25">
+  <div class="text-center px-4">
+    <h1 class="display-2 fw-bold text-primary-900 mb-4">Hero Title</h1>
+    <p class="fs-5 text-gray-700 mb-8">Hero description</p>
+  </div>
+</div>
+
+<!-- Responsive navigation -->
+<nav class="d-flex flex-column flex-md-row gap-4 gap-md-6 p-4 bg-white border-bottom">
+  <a href="#" class="text-primary-600 fw-semibold">Link 1</a>
+  <a href="#" class="text-gray-700 fw-normal">Link 2</a>
+</nav>
+```
+
+## Extending Utilities
+
+Add custom utilities via the utilities API:
+
+```scss
+$utilities: map-merge(
+  $utilities,
+  (
+    "custom-width": (
+      property: width,
+      class: w-custom,
+      values: (
+        sm: 320px,
+        md: 640px,
+        lg: 960px
+      )
+    )
+  )
+);
+
+@import "dynamic-ui";
+```
+
+Generates:
+```html
+<div class="w-custom-sm">320px width</div>
+<div class="w-custom-md">640px width</div>
+<div class="w-custom-lg">960px width</div>
+```
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="SCSS Variables" icon="code" href="/styling/scss-variables">
+    Variables that power these utilities
+  </Card>
+  <Card title="Customization" icon="palette" href="/styling/customization">
+    Create custom utility classes
+  </Card>
+</CardGroup>

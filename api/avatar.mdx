@@ -1,0 +1,164 @@
+---
+title: DAvatar
+description: API reference for the DAvatar component
+---
+
+## DAvatar
+
+A component for displaying user avatars with image or initials.
+
+### Import
+
+```tsx
+import { DAvatar } from '@dynamic-labs/ui';
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & {
+  id?: string;
+  size?: AvatarSize;
+  image?: string;
+  name?: string;
+  useNameAsInitials?: boolean;
+};
+
+type AvatarSize = 'xs' | 'sm' | 'lg' | 'xl' | 'xxl';
+
+type BaseProps = {
+  style?: CSSProperties;
+  className?: string;
+  dataAttributes?: DataAttributes;
+};
+```
+
+### Props
+
+<ParamField path="id" type="string">
+  Unique identifier for the avatar element.
+</ParamField>
+
+<ParamField path="size" type="AvatarSize">
+  Size variant of the avatar. Options: `'xs'`, `'sm'`, `'lg'`, `'xl'`, `'xxl'`.
+</ParamField>
+
+<ParamField path="image" type="string">
+  URL of the image to display. When provided, the image takes precedence over name initials.
+</ParamField>
+
+<ParamField path="name" type="string">
+  Name to use for generating initials or alt text. When `useNameAsInitials` is false, automatically extracts first letter of each word.
+</ParamField>
+
+<ParamField path="useNameAsInitials" type="boolean" default="false">
+  If true, uses the entire name as provided. If false, extracts first letter of each word and converts to uppercase.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the avatar.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the avatar.
+</ParamField>
+
+<ParamField path="dataAttributes" type="Record<`data-${string}`, string | number | undefined | null | boolean>">
+  Custom data attributes to add to the avatar element.
+</ParamField>
+
+### Usage Examples
+
+#### Image Avatar
+
+```tsx
+import { DAvatar } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DAvatar
+      image="https://i.pravatar.cc/150?img=1"
+      name="John Doe"
+      size="lg"
+    />
+  );
+}
+```
+
+#### Initials Avatar
+
+```tsx
+import { DAvatar } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DAvatar
+      name="John Doe"
+      size="lg"
+    />
+  );
+}
+```
+
+#### Custom Initials
+
+```tsx
+import { DAvatar } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DAvatar
+      name="JD"
+      useNameAsInitials
+      size="lg"
+    />
+  );
+}
+```
+
+#### Size Variants
+
+```tsx
+import { DAvatar } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex align-items-center gap-3">
+      <DAvatar name="John Doe" size="xs" />
+      <DAvatar name="John Doe" size="sm" />
+      <DAvatar name="John Doe" />
+      <DAvatar name="John Doe" size="lg" />
+      <DAvatar name="John Doe" size="xl" />
+      <DAvatar name="John Doe" size="xxl" />
+    </div>
+  );
+}
+```
+
+#### Avatar Group
+
+```tsx
+import { DAvatar } from '@dynamic-labs/ui';
+
+export default function Example() {
+  const users = [
+    { name: 'Alice Johnson', image: 'https://i.pravatar.cc/150?img=1' },
+    { name: 'Bob Smith', image: 'https://i.pravatar.cc/150?img=2' },
+    { name: 'Carol White', image: 'https://i.pravatar.cc/150?img=3' },
+  ];
+
+  return (
+    <div className="d-flex">
+      {users.map((user, index) => (
+        <DAvatar
+          key={index}
+          name={user.name}
+          image={user.image}
+          size="lg"
+          style={{ marginLeft: index > 0 ? '-10px' : '0' }}
+        />
+      ))}
+    </div>
+  );
+}
+```

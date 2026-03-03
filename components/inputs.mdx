@@ -1,0 +1,548 @@
+---
+title: Input Components
+description: Form input components for data collection
+---
+
+## DInput
+
+Standard text input component with icon support, validation states, and floating labels.
+
+### Basic Usage
+
+```tsx
+import DInput from '@dynamic-ui/components';
+
+function App() {
+  const [value, setValue] = useState('');
+  
+  return (
+    <DInput 
+      label="Email"
+      value={value}
+      onChange={setValue}
+      placeholder="Enter your email"
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="label" type="string">
+  Input label text
+</ParamField>
+
+<ParamField path="value" type="string">
+  Input value
+</ParamField>
+
+<ParamField path="placeholder" type="string">
+  Placeholder text
+</ParamField>
+
+<ParamField path="onChange" type="(value: string) => void">
+  Change handler that receives the input value
+</ParamField>
+
+<ParamField path="size" type="ComponentSize">
+  Input size - 'sm' or 'lg'
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables the input
+</ParamField>
+
+<ParamField path="readonly" type="boolean" default="false">
+  Makes input read-only
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  Shows loading spinner
+</ParamField>
+
+<ParamField path="invalid" type="boolean" default="false">
+  Shows invalid state
+</ParamField>
+
+<ParamField path="valid" type="boolean" default="false">
+  Shows valid state
+</ParamField>
+
+<ParamField path="hint" type="string">
+  Helper text below input
+</ParamField>
+
+<ParamField path="floatingLabel" type="boolean" default="false">
+  Enables floating label style
+</ParamField>
+
+<ParamField path="iconStart" type="string">
+  Icon at start of input
+</ParamField>
+
+<ParamField path="iconEnd" type="string">
+  Icon at end of input
+</ParamField>
+
+<ParamField path="inputStart" type="ReactNode">
+  Custom content at start of input
+</ParamField>
+
+<ParamField path="inputEnd" type="ReactNode">
+  Custom content at end of input
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    <DInput 
+      label="Username"
+      value={username}
+      onChange={setUsername}
+      placeholder="Enter username"
+    />
+    ```
+  </Tab>
+  <Tab title="With Icons">
+    ```tsx
+    <DInput 
+      label="Search"
+      value={search}
+      onChange={setSearch}
+      iconStart="Search"
+      placeholder="Search..."
+    />
+    
+    <DInput 
+      label="Email"
+      value={email}
+      onChange={setEmail}
+      iconEnd="Mail"
+      onIconEndClick={() => console.log('Icon clicked')}
+    />
+    ```
+  </Tab>
+  <Tab title="Validation">
+    ```tsx
+    <DInput 
+      label="Email"
+      value={email}
+      onChange={setEmail}
+      invalid={!isValidEmail(email)}
+      hint="Please enter a valid email"
+    />
+    
+    <DInput 
+      label="Username"
+      value={username}
+      onChange={setUsername}
+      valid={isAvailable}
+      hint="Username is available"
+    />
+    ```
+  </Tab>
+  <Tab title="Floating Label">
+    ```tsx
+    <DInput 
+      label="Email Address"
+      value={email}
+      onChange={setEmail}
+      floatingLabel
+    />
+    ```
+  </Tab>
+  <Tab title="With Addons">
+    ```tsx
+    <DInput 
+      label="Website"
+      value={url}
+      onChange={setUrl}
+      inputStart="https://"
+      inputEnd=".com"
+    />
+    ```
+  </Tab>
+</Tabs>
+
+## DInputMask
+
+Masked input for formatted data entry (phone numbers, dates, etc.). Built on top of `@react-input/mask`.
+
+### Basic Usage
+
+```tsx
+import DInputMask from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DInputMask 
+      label="Phone Number"
+      mask="(___) ___-____"
+      replacement="_"
+      placeholder="(555) 123-4567"
+    />
+  );
+}
+```
+
+### Props
+
+Inherits all props from `DInput` plus:
+
+<ParamField path="mask" type="string" required>
+  Mask pattern (use underscore for input positions)
+</ParamField>
+
+<ParamField path="replacement" type="string" default="_">
+  Character used in mask pattern
+</ParamField>
+
+### Examples
+
+```tsx
+// Phone number
+<DInputMask 
+  label="Phone"
+  mask="(___) ___-____"
+  replacement="_"
+/>
+
+// Date
+<DInputMask 
+  label="Date"
+  mask="__/__/____"
+  replacement="_"
+  placeholder="MM/DD/YYYY"
+/>
+
+// Credit card
+<DInputMask 
+  label="Card Number"
+  mask="____ ____ ____ ____"
+  replacement="_"
+/>
+```
+
+## DInputPassword
+
+Password input with show/hide toggle functionality.
+
+### Basic Usage
+
+```tsx
+import DInputPassword from '@dynamic-ui/components';
+
+function App() {
+  const [password, setPassword] = useState('');
+  
+  return (
+    <DInputPassword 
+      label="Password"
+      value={password}
+      onChange={setPassword}
+    />
+  );
+}
+```
+
+### Props
+
+Inherits all props from `DInput` except `type` and `iconEnd`.
+
+<ParamField path="iconEndAriaLabel" type="string" default="show/hide password">
+  Aria label for toggle button
+</ParamField>
+
+### Example
+
+```tsx
+<DInputPassword 
+  label="Password"
+  value={password}
+  onChange={setPassword}
+  hint="Must be at least 8 characters"
+  invalid={password.length > 0 && password.length < 8}
+/>
+```
+
+## DInputPin
+
+PIN code input with multiple character fields.
+
+### Basic Usage
+
+```tsx
+import DInputPin from '@dynamic-ui/components';
+
+function App() {
+  const [pin, setPin] = useState('');
+  
+  return (
+    <DInputPin 
+      label="Enter PIN"
+      characters={4}
+      onChange={setPin}
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="label" type="string">
+  Input label
+</ParamField>
+
+<ParamField path="characters" type="number" default="4">
+  Number of PIN characters
+</ParamField>
+
+<ParamField path="type" type="PinInputType" default="text">
+  Input type - 'text', 'number', or 'tel'
+</ParamField>
+
+<ParamField path="innerInputMode" type="PinInputMode" default="text">
+  Input mode - 'text', 'numeric', or 'tel'
+</ParamField>
+
+<ParamField path="secret" type="boolean" default="false">
+  Hides input characters (password style)
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables the input
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  Shows loading state
+</ParamField>
+
+<ParamField path="invalid" type="boolean" default="false">
+  Shows invalid state
+</ParamField>
+
+<ParamField path="valid" type="boolean" default="false">
+  Shows valid state
+</ParamField>
+
+<ParamField path="hint" type="string">
+  Helper text
+</ParamField>
+
+<ParamField path="onChange" type="(value: string) => void">
+  Called when PIN value changes
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    <DInputPin 
+      label="Security PIN"
+      characters={4}
+      onChange={setPin}
+    />
+    ```
+  </Tab>
+  <Tab title="Numeric">
+    ```tsx
+    <DInputPin 
+      label="Verification Code"
+      characters={6}
+      type="number"
+      innerInputMode="numeric"
+      onChange={setCode}
+    />
+    ```
+  </Tab>
+  <Tab title="Secret">
+    ```tsx
+    <DInputPin 
+      label="PIN"
+      characters={4}
+      type="number"
+      secret
+      onChange={setPin}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+## DInputCheck
+
+Checkbox and radio input component.
+
+### Basic Usage
+
+```tsx
+import DInputCheck from '@dynamic-ui/components';
+
+function App() {
+  const [checked, setChecked] = useState(false);
+  
+  return (
+    <DInputCheck 
+      type="checkbox"
+      label="Accept terms and conditions"
+      checked={checked}
+      onChange={(e) => setChecked(e.target.checked)}
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="type" type="InputCheckType" required>
+  Input type - 'checkbox' or 'radio'
+</ParamField>
+
+<ParamField path="label" type="string">
+  Label text
+</ParamField>
+
+<ParamField path="checked" type="boolean" default="false">
+  Checked state
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables the input
+</ParamField>
+
+<ParamField path="invalid" type="boolean" default="false">
+  Shows invalid state
+</ParamField>
+
+<ParamField path="valid" type="boolean" default="false">
+  Shows valid state
+</ParamField>
+
+<ParamField path="indeterminate" type="boolean">
+  Shows indeterminate state (checkbox only)
+</ParamField>
+
+<ParamField path="hint" type="string">
+  Helper text
+</ParamField>
+
+<ParamField path="onChange" type="(event: ChangeEvent<HTMLInputElement>) => void">
+  Change handler
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Checkbox">
+    ```tsx
+    <DInputCheck 
+      type="checkbox"
+      label="Subscribe to newsletter"
+      checked={subscribe}
+      onChange={(e) => setSubscribe(e.target.checked)}
+    />
+    ```
+  </Tab>
+  <Tab title="Radio Group">
+    ```tsx
+    <DInputCheck 
+      type="radio"
+      name="plan"
+      label="Basic"
+      value="basic"
+      checked={plan === 'basic'}
+      onChange={(e) => setPlan(e.target.value)}
+    />
+    <DInputCheck 
+      type="radio"
+      name="plan"
+      label="Premium"
+      value="premium"
+      checked={plan === 'premium'}
+      onChange={(e) => setPlan(e.target.value)}
+    />
+    ```
+  </Tab>
+  <Tab title="Indeterminate">
+    ```tsx
+    <DInputCheck 
+      type="checkbox"
+      label="Select all"
+      checked={allSelected}
+      indeterminate={someSelected}
+      onChange={handleSelectAll}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+## DInputSwitch
+
+Toggle switch component for boolean values.
+
+### Basic Usage
+
+```tsx
+import DInputSwitch from '@dynamic-ui/components';
+
+function App() {
+  const [enabled, setEnabled] = useState(false);
+  
+  return (
+    <DInputSwitch 
+      label="Enable notifications"
+      checked={enabled}
+      onChange={setEnabled}
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="label" type="string">
+  Label text
+</ParamField>
+
+<ParamField path="checked" type="boolean">
+  Switch state
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables the switch
+</ParamField>
+
+<ParamField path="readonly" type="boolean" default="false">
+  Makes switch read-only
+</ParamField>
+
+<ParamField path="invalid" type="boolean" default="false">
+  Shows invalid state
+</ParamField>
+
+<ParamField path="valid" type="boolean" default="false">
+  Shows valid state
+</ParamField>
+
+<ParamField path="onChange" type="(checked: boolean) => void">
+  Called when switch is toggled
+</ParamField>
+
+### Example
+
+```tsx
+<DInputSwitch 
+  label="Dark mode"
+  checked={darkMode}
+  onChange={setDarkMode}
+/>
+
+<DInputSwitch 
+  label="Two-factor authentication"
+  checked={twoFactor}
+  onChange={setTwoFactor}
+  disabled={!isVerified}
+/>
+```

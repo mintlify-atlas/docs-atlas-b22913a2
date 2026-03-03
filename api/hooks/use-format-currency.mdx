@@ -1,0 +1,171 @@
+---
+title: useFormatCurrency
+description: Format numbers as currency values with locale-aware formatting
+---
+
+The `useFormatCurrency` hook provides currency formatting functionality using the currency settings from `DContext`. It returns both a format function and pre-formatted values.
+
+## Import
+
+```tsx
+import { useFormatCurrency } from 'dynamic-ui';
+```
+
+## Signature
+
+```typescript
+function useFormatCurrency(...args: Array<number>): {
+  format: (value: number, currencyOptions?: CurrencyProps) => string;
+  values: string[];
+}
+```
+
+## Parameters
+
+<ParamField path="...args" type="number[]">
+  Optional array of numbers to format immediately. These values will be returned in the `values` array.
+</ParamField>
+
+## Return Value
+
+<ResponseField name="format" type="function">
+  A memoized function that formats a number as currency.
+  
+  <Expandable title="Function Signature">
+    ```typescript
+    (value: number, currencyOptions?: CurrencyProps) => string
+    ```
+    
+    <ParamField path="value" type="number" required>
+      The number to format as currency
+    </ParamField>
+    
+    <ParamField path="currencyOptions" type="CurrencyProps">
+      Optional currency options to override context settings
+    </ParamField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="values" type="string[]">
+  Array of pre-formatted currency strings for the numbers passed in `args`
+</ResponseField>
+
+## Types
+
+```typescript
+type CurrencyProps = {
+  symbol: string;      // Currency symbol (e.g., "$", "€")
+  precision: number;   // Number of decimal places
+  separator: string;   // Thousands separator (e.g., ",")
+  decimal: string;     // Decimal separator (e.g., ".")
+};
+```
+
+## Usage
+
+### Basic Usage
+
+```tsx
+import { useFormatCurrency } from 'dynamic-ui';
+
+function PriceDisplay() {
+  const { format } = useFormatCurrency();
+  const price = 1234.56;
+
+  return <div>{format(price)}</div>;
+  // Output: "$1,234.56" (based on context settings)
+}
+```
+
+### Format Multiple Values
+
+```tsx
+import { useFormatCurrency } from 'dynamic-ui';
+
+function FinancialSummary({ revenue, expenses, profit }) {
+  const { values } = useFormatCurrency(revenue, expenses, profit);
+  const [revenueStr, expensesStr, profitStr] = values;
+
+  return (
+    <div>
+      <div>Revenue: {revenueStr}</div>
+      <div>Expenses: {expensesStr}</div>
+      <div>Profit: {profitStr}</div>
+    </div>
+  );
+}
+```
+
+### Custom Currency Options
+
+```tsx
+import { useFormatCurrency } from 'dynamic-ui';
+
+function EuroPrice({ amount }) {
+  const { format } = useFormatCurrency();
+
+  const euroOptions = {
+    symbol: '€',
+    precision: 2,
+    separator: '.',
+    decimal: ','
+  };
+
+  return <div>{format(amount, euroOptions)}</div>;
+  // Output: "€1.234,56" for amount = 1234.56
+}
+```
+
+### Dynamic Formatting
+
+```tsx
+import { useFormatCurrency } from 'dynamic-ui';
+
+function ProductPrice({ price, onSale, discount }) {
+  const { format } = useFormatCurrency();
+  const finalPrice = onSale ? price * (1 - discount) : price;
+
+  return (
+    <div>
+      {onSale && (
+        <span style={{ textDecoration: 'line-through' }}>
+          {format(price)}
+        </span>
+      )}
+      <span>{format(finalPrice)}</span>
+    </div>
+  );
+}
+```
+
+## Context Setup
+
+This hook requires `DContextProvider` with currency configuration:
+
+```tsx
+import { DContextProvider } from 'dynamic-ui';
+
+function App() {
+  return (
+    <DContextProvider
+      currency={{
+        symbol: '$',
+        precision: 2,
+        separator: ',',
+        decimal: '.'
+      }}
+    >
+      <YourApp />
+    </DContextProvider>
+  );
+}
+```
+
+## Implementation Details
+
+The hook uses `useDContext()` to access currency settings and `useCallback` to memoize the format function, preventing unnecessary re-renders. The format function is stable unless the currency context changes.
+
+## Related
+
+- [useInputCurrency](/hooks/use-input-currency) - Handle currency input fields
+- [DContext](/utilities/contexts#dcontext) - Context provider for currency settings

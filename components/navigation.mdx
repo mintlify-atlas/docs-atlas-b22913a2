@@ -1,0 +1,449 @@
+---
+title: Navigation Components
+description: Components for navigation and pagination
+---
+
+## DTabs
+
+Tabbed interface component with multiple variants and styles.
+
+### Basic Usage
+
+```tsx
+import DTabs from '@dynamic-ui/components';
+
+function App() {
+  const options = [
+    { label: 'Home', tab: 'home' },
+    { label: 'Profile', tab: 'profile' },
+    { label: 'Settings', tab: 'settings' },
+  ];
+  
+  return (
+    <DTabs 
+      options={options} 
+      defaultSelected="home"
+      onChange={(option) => console.log(option)}
+    >
+      <DTabs.Tab id="home">
+        <h3>Home Content</h3>
+      </DTabs.Tab>
+      <DTabs.Tab id="profile">
+        <h3>Profile Content</h3>
+      </DTabs.Tab>
+      <DTabs.Tab id="settings">
+        <h3>Settings Content</h3>
+      </DTabs.Tab>
+    </DTabs>
+  );
+}
+```
+
+### Props
+
+<ParamField path="options" type="Array<DTabOption>" required>
+  Array of tab options
+</ParamField>
+
+<ParamField path="defaultSelected" type="string" required>
+  Initially selected tab ID
+</ParamField>
+
+<ParamField path="onChange" type="(option: DTabOption) => void">
+  Called when tab selection changes
+</ParamField>
+
+<ParamField path="variant" type="TabVariant" default="underline">
+  Tab style - 'tabs', 'pills', 'underline', or 'toggle-button-group'
+</ParamField>
+
+<ParamField path="vertical" type="boolean" default="false">
+  Vertical tab layout
+</ParamField>
+
+<ParamField path="classNameTab" type="string">
+  Additional classes for tab buttons
+</ParamField>
+
+### DTabOption Interface
+
+<ParamField path="label" type="string | ReactNode" required>
+  Tab label text or element
+</ParamField>
+
+<ParamField path="tab" type="string" required>
+  Unique tab identifier
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Disables the tab
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic Tabs">
+    ```tsx
+    const options = [
+      { label: 'Overview', tab: 'overview' },
+      { label: 'Transactions', tab: 'transactions' },
+      { label: 'Documents', tab: 'documents' },
+    ];
+    
+    <DTabs options={options} defaultSelected="overview" variant="tabs">
+      <DTabs.Tab id="overview">
+        Account overview content
+      </DTabs.Tab>
+      <DTabs.Tab id="transactions">
+        Transaction history
+      </DTabs.Tab>
+      <DTabs.Tab id="documents">
+        Document list
+      </DTabs.Tab>
+    </DTabs>
+    ```
+  </Tab>
+  <Tab title="Pills">
+    ```tsx
+    <DTabs options={options} defaultSelected="home" variant="pills">
+      <DTabs.Tab id="home">Home</DTabs.Tab>
+      <DTabs.Tab id="profile">Profile</DTabs.Tab>
+    </DTabs>
+    ```
+  </Tab>
+  <Tab title="Underline">
+    ```tsx
+    <DTabs options={options} defaultSelected="home" variant="underline">
+      <DTabs.Tab id="home">Home</DTabs.Tab>
+      <DTabs.Tab id="profile">Profile</DTabs.Tab>
+    </DTabs>
+    ```
+  </Tab>
+  <Tab title="With Icons">
+    ```tsx
+    const options = [
+      { 
+        label: <><DIcon icon="Home" /> Home</>, 
+        tab: 'home' 
+      },
+      { 
+        label: <><DIcon icon="User" /> Profile</>, 
+        tab: 'profile' 
+      },
+    ];
+    
+    <DTabs options={options} defaultSelected="home">
+      <DTabs.Tab id="home">Home content</DTabs.Tab>
+      <DTabs.Tab id="profile">Profile content</DTabs.Tab>
+    </DTabs>
+    ```
+  </Tab>
+  <Tab title="Disabled Tab">
+    ```tsx
+    const options = [
+      { label: 'Active', tab: 'active' },
+      { label: 'Disabled', tab: 'disabled', disabled: true },
+    ];
+    
+    <DTabs options={options} defaultSelected="active">
+      <DTabs.Tab id="active">Active content</DTabs.Tab>
+      <DTabs.Tab id="disabled">Disabled content</DTabs.Tab>
+    </DTabs>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+export type DTabOption = {
+  label: string | React.ReactNode;
+  tab: string;
+  disabled?: boolean;
+};
+
+export type TabVariant = 'tabs' | 'pills' | 'underline' | 'toggle-button-group';
+
+type Props = BaseProps & PropsWithChildren<{
+  classNameTab?: string;
+  onChange?: (option: DTabOption) => void;
+  options: Array<DTabOption>;
+  defaultSelected: string;
+  vertical?: boolean;
+  variant?: TabVariant;
+}>;
+```
+
+## DPaginator
+
+Responsive pagination component powered by `react-responsive-pagination`.
+
+### Basic Usage
+
+```tsx
+import DPaginator from '@dynamic-ui/components';
+
+function App() {
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  return (
+    <DPaginator 
+      current={currentPage}
+      total={10}
+      onPageChange={setCurrentPage}
+    />
+  );
+}
+```
+
+### Props
+
+Inherits all props from `react-responsive-pagination`:
+
+<ParamField path="current" type="number" required>
+  Current page number (1-indexed)
+</ParamField>
+
+<ParamField path="total" type="number" required>
+  Total number of pages
+</ParamField>
+
+<ParamField path="onPageChange" type="(page: number) => void" required>
+  Called when page changes
+</ParamField>
+
+<ParamField path="maxWidth" type="number">
+  Maximum number of page buttons to show
+</ParamField>
+
+<ParamField path="navClassName" type="string">
+  Additional classes for nav element
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    const [page, setPage] = useState(1);
+    
+    <DPaginator 
+      current={page}
+      total={20}
+      onPageChange={setPage}
+    />
+    ```
+  </Tab>
+  <Tab title="With Data">
+    ```tsx
+    function PaginatedList() {
+      const [page, setPage] = useState(1);
+      const itemsPerPage = 10;
+      const totalItems = 95;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      
+      const startIndex = (page - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const currentItems = allItems.slice(startIndex, endIndex);
+      
+      return (
+        <>
+          <div>
+            {currentItems.map(item => (
+              <div key={item.id}>{item.name}</div>
+            ))}
+          </div>
+          
+          <DPaginator 
+            current={page}
+            total={totalPages}
+            onPageChange={setPage}
+          />
+        </>
+      );
+    }
+    ```
+  </Tab>
+  <Tab title="Limited Width">
+    ```tsx
+    <DPaginator 
+      current={page}
+      total={50}
+      onPageChange={setPage}
+      maxWidth={5}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+export type Props = ResponsivePaginationProps & {
+  dataAttributes?: DataAttributes;
+};
+```
+
+## DStepper
+
+Step indicator component for multi-step processes with responsive mobile/desktop views.
+
+### Basic Usage
+
+```tsx
+import DStepper from '@dynamic-ui/components';
+
+function App() {
+  const [currentStep, setCurrentStep] = useState(1);
+  
+  const steps = [
+    { label: 'Personal Info', value: 1, description: 'Basic information' },
+    { label: 'Address', value: 2, description: 'Contact details' },
+    { label: 'Review', value: 3, description: 'Confirm details' },
+  ];
+  
+  return (
+    <DStepper 
+      options={steps}
+      currentStep={currentStep}
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="options" type="Array<Step>" required>
+  Array of step configurations
+</ParamField>
+
+<ParamField path="currentStep" type="number" required>
+  Current active step number
+</ParamField>
+
+<ParamField path="vertical" type="boolean" default="false">
+  Vertical layout (desktop only)
+</ParamField>
+
+<ParamField path="completed" type="boolean" default="false">
+  Marks all steps as completed
+</ParamField>
+
+<ParamField path="breakpoint" type="BreakpointSize" default="lg">
+  Breakpoint for switching between mobile and desktop views
+</ParamField>
+
+<ParamField path="iconSuccess" type="string">
+  Custom icon for completed steps
+</ParamField>
+
+### Step Interface
+
+<ParamField path="label" type="string" required>
+  Step label
+</ParamField>
+
+<ParamField path="value" type="number" required>
+  Step number/value
+</ParamField>
+
+<ParamField path="description" type="string">
+  Step description
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Checkout Process">
+    ```tsx
+    function CheckoutStepper() {
+      const [step, setStep] = useState(1);
+      
+      const steps = [
+        { label: 'Cart', value: 1 },
+        { label: 'Shipping', value: 2 },
+        { label: 'Payment', value: 3 },
+        { label: 'Confirmation', value: 4 },
+      ];
+      
+      return (
+        <>
+          <DStepper options={steps} currentStep={step} />
+          
+          <div className="mt-4">
+            {/* Step content */}
+            <DButton 
+              text="Next"
+              onClick={() => setStep(step + 1)}
+              disabled={step === steps.length}
+            />
+          </div>
+        </>
+      );
+    }
+    ```
+  </Tab>
+  <Tab title="With Descriptions">
+    ```tsx
+    const steps = [
+      { 
+        label: 'Account', 
+        value: 1, 
+        description: 'Create your account' 
+      },
+      { 
+        label: 'Profile', 
+        value: 2, 
+        description: 'Complete your profile' 
+      },
+      { 
+        label: 'Verification', 
+        value: 3, 
+        description: 'Verify your identity' 
+      },
+    ];
+    
+    <DStepper options={steps} currentStep={2} />
+    ```
+  </Tab>
+  <Tab title="Vertical Layout">
+    ```tsx
+    <DStepper 
+      options={steps}
+      currentStep={2}
+      vertical
+    />
+    ```
+  </Tab>
+  <Tab title="All Completed">
+    ```tsx
+    <DStepper 
+      options={steps}
+      currentStep={steps.length}
+      completed
+    />
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+export type Step = {
+  label: string;
+  value: number;
+  description?: string;
+};
+
+type Props = BaseProps & {
+  options: Array<Step>;
+  currentStep: number;
+  iconSuccess?: string;
+  iconSuccessFamilyClass?: string;
+  iconSuccessFamilyPrefix?: string;
+  iconSuccessMaterialStyle?: boolean;
+  vertical?: boolean;
+  completed?: boolean;
+  breakpoint?: BreakpointSize;
+};
+```

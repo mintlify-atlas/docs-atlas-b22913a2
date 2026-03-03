@@ -1,0 +1,481 @@
+---
+title: Feedback Components
+description: Components for user feedback and status indication
+---
+
+## DAlert
+
+Alert component for displaying important messages with color variants and optional close button.
+
+### Basic Usage
+
+```tsx
+import DAlert from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DAlert color="success">
+      Your changes have been saved successfully!
+    </DAlert>
+  );
+}
+```
+
+### Props
+
+<ParamField path="color" type="ComponentStateColor" default="success">
+  Alert color - 'success', 'danger', 'warning', or 'info'
+</ParamField>
+
+<ParamField path="icon" type="string">
+  Custom icon name (auto-selected based on color if not provided)
+</ParamField>
+
+<ParamField path="showClose" type="boolean" default="false">
+  Shows close button
+</ParamField>
+
+<ParamField path="onClose" type="() => void">
+  Close button click handler
+</ParamField>
+
+<ParamField path="iconClose" type="string">
+  Custom close icon
+</ParamField>
+
+<ParamField path="iconFamilyClass" type="string">
+  Icon family class
+</ParamField>
+
+<ParamField path="iconFamilyPrefix" type="string">
+  Icon family prefix
+</ParamField>
+
+<ParamField path="iconMaterialStyle" type="boolean" default="false">
+  Use Material icon style
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Color Variants">
+    ```tsx
+    <DAlert color="success">
+      Operation completed successfully!
+    </DAlert>
+    
+    <DAlert color="danger">
+      An error occurred. Please try again.
+    </DAlert>
+    
+    <DAlert color="warning">
+      Please review your information before submitting.
+    </DAlert>
+    
+    <DAlert color="info">
+      New features are now available.
+    </DAlert>
+    ```
+  </Tab>
+  <Tab title="Dismissible">
+    ```tsx
+    function DismissibleAlert() {
+      const [visible, setVisible] = useState(true);
+      
+      if (!visible) return null;
+      
+      return (
+        <DAlert 
+          color="success" 
+          showClose
+          onClose={() => setVisible(false)}
+        >
+          This alert can be dismissed!
+        </DAlert>
+      );
+    }
+    ```
+  </Tab>
+  <Tab title="Custom Icon">
+    ```tsx
+    <DAlert color="info" icon="Bell">
+      You have 3 new notifications
+    </DAlert>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Props =
+& BaseProps
+& PropsWithChildren<{
+  id?: string;
+  color?: ComponentStateColor;
+  icon?: string;
+  iconFamilyClass?: string;
+  iconFamilyPrefix?: string;
+  iconMaterialStyle?: boolean;
+  showClose?: boolean;
+  iconClose?: string;
+  iconCloseFamilyClass?: string;
+  iconCloseFamilyPrefix?: string;
+  iconCloseMaterialStyle?: boolean;
+  onClose?: () => void;
+}>;
+```
+
+## DToast
+
+Toast notification component with composable structure.
+
+### Basic Usage
+
+```tsx
+import DToast from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DToast>
+      <DToast.Header>Notification</DToast.Header>
+      <DToast.Body>
+        Your action was completed successfully.
+      </DToast.Body>
+    </DToast>
+  );
+}
+```
+
+### Props
+
+<ParamField path="className" type="string">
+  Additional CSS classes
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles
+</ParamField>
+
+### Subcomponents
+
+#### DToast.Header
+Toast header section
+
+#### DToast.Body
+Toast body section
+
+### Example
+
+```tsx
+<DToast>
+  <DToast.Header>
+    <strong className="me-auto">Success</strong>
+    <small>Just now</small>
+  </DToast.Header>
+  <DToast.Body>
+    Your transaction has been processed.
+  </DToast.Body>
+</DToast>
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = PropsWithChildren<BaseProps>;
+
+function DToast(props: Props): JSX.Element;
+
+DToast.Header: (props: PropsWithChildren<BaseProps>) => JSX.Element;
+DToast.Body: (props: PropsWithChildren<BaseProps>) => JSX.Element;
+```
+
+## DProgress
+
+Progress bar component with percentage display and optional striped animation.
+
+### Basic Usage
+
+```tsx
+import DProgress from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DProgress 
+      currentValue={75} 
+      maxValue={100}
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="currentValue" type="number" required>
+  Current progress value
+</ParamField>
+
+<ParamField path="minValue" type="number" default="0">
+  Minimum value
+</ParamField>
+
+<ParamField path="maxValue" type="number" default="100">
+  Maximum value
+</ParamField>
+
+<ParamField path="hideCurrentValue" type="boolean" default="false">
+  Hides percentage text inside bar
+</ParamField>
+
+<ParamField path="enableStripedAnimation" type="boolean" default="false">
+  Enables animated striped pattern
+</ParamField>
+
+<ParamField path="height" type="string | number">
+  Custom height for progress bar
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    <DProgress currentValue={25} />
+    <DProgress currentValue={50} />
+    <DProgress currentValue={75} />
+    <DProgress currentValue={100} />
+    ```
+  </Tab>
+  <Tab title="Custom Height">
+    ```tsx
+    <DProgress 
+      currentValue={60} 
+      height="2rem"
+    />
+    ```
+  </Tab>
+  <Tab title="Animated">
+    ```tsx
+    <DProgress 
+      currentValue={45} 
+      enableStripedAnimation
+    />
+    ```
+  </Tab>
+  <Tab title="Without Label">
+    ```tsx
+    <DProgress 
+      currentValue={70} 
+      hideCurrentValue
+    />
+    ```
+  </Tab>
+  <Tab title="Upload Progress">
+    ```tsx
+    function UploadProgress() {
+      const [progress, setProgress] = useState(0);
+      
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setProgress(prev => prev >= 100 ? 0 : prev + 10);
+        }, 500);
+        return () => clearInterval(interval);
+      }, []);
+      
+      return (
+        <div>
+          <p>Uploading file...</p>
+          <DProgress 
+            currentValue={progress} 
+            enableStripedAnimation
+          />
+        </div>
+      );
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & {
+  currentValue: number;
+  minValue?: number;
+  maxValue?: number;
+  hideCurrentValue?: boolean;
+  enableStripedAnimation?: boolean;
+  height?: string | number;
+};
+```
+
+## DDataStateWrapper
+
+Wrapper component for handling loading, error, and empty states in data fetching scenarios.
+
+### Basic Usage
+
+```tsx
+import DDataStateWrapper from '@dynamic-ui/components';
+
+function App() {
+  const { data, isLoading, isError } = useQuery('users', fetchUsers);
+  
+  return (
+    <DDataStateWrapper
+      isLoading={isLoading}
+      isError={isError}
+      data={data}
+      onRetry={refetch}
+    >
+      {(users) => (
+        <ul>
+          {users.map(user => (
+            <li key={user.id}>{user.name}</li>
+          ))}
+        </ul>
+      )}
+    </DDataStateWrapper>
+  );
+}
+```
+
+### Props
+
+<ParamField path="isLoading" type="boolean" required>
+  Indicates loading state
+</ParamField>
+
+<ParamField path="isError" type="boolean" required>
+  Indicates error state
+</ParamField>
+
+<ParamField path="data" type="T[] | undefined" required>
+  Array of data items
+</ParamField>
+
+<ParamField path="onRetry" type="() => void">
+  Retry function called when error state retry button is clicked
+</ParamField>
+
+<ParamField path="renderLoading" type="Renderable">
+  Custom loading state renderer
+</ParamField>
+
+<ParamField path="renderEmpty" type="Renderable">
+  Custom empty state renderer
+</ParamField>
+
+<ParamField path="renderError" type="Renderable">
+  Custom error state renderer
+</ParamField>
+
+<ParamField path="children" type="(data: T[]) => ReactNode" required>
+  Render function that receives the data array
+</ParamField>
+
+### State Priority
+
+The component handles states in this order:
+1. Loading state (when `isLoading` is true)
+2. Error state (when `isError` is true)
+3. Empty state (when data array is empty)
+4. Success state (renders children with data)
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    <DDataStateWrapper
+      isLoading={isLoading}
+      isError={isError}
+      data={transactions}
+    >
+      {(transactions) => (
+        <table>
+          <tbody>
+            {transactions.map(tx => (
+              <tr key={tx.id}>
+                <td>{tx.date}</td>
+                <td>{tx.amount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </DDataStateWrapper>
+    ```
+  </Tab>
+  <Tab title="With Retry">
+    ```tsx
+    <DDataStateWrapper
+      isLoading={isLoading}
+      isError={isError}
+      data={accounts}
+      onRetry={() => refetch()}
+    >
+      {(accounts) => (
+        <div>
+          {accounts.map(account => (
+            <DCard key={account.id}>
+              <DCard.Body>{account.name}</DCard.Body>
+            </DCard>
+          ))}
+        </div>
+      )}
+    </DDataStateWrapper>
+    ```
+  </Tab>
+  <Tab title="Custom States">
+    ```tsx
+    <DDataStateWrapper
+      isLoading={isLoading}
+      isError={isError}
+      data={items}
+      renderLoading={() => (
+        <div className="text-center p-5">
+          <DProgress currentValue={50} enableStripedAnimation />
+          <p>Loading your data...</p>
+        </div>
+      )}
+      renderEmpty={() => (
+        <div className="text-center p-5">
+          <p>No items found</p>
+          <DButton text="Add Item" onClick={handleAdd} />
+        </div>
+      )}
+      renderError={() => (
+        <DAlert color="danger">
+          Failed to load data. Please try again.
+        </DAlert>
+      )}
+    >
+      {(items) => (
+        <div>
+          {items.map(item => <div key={item.id}>{item.name}</div>)}
+        </div>
+      )}
+    </DDataStateWrapper>
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Renderable = ReactNode | (() => ReactNode);
+
+type DDataStateWrapperProps<T> = {
+  isLoading: boolean;
+  isError: boolean;
+  data: T[] | undefined;
+  onRetry?: () => void;
+  renderLoading?: Renderable;
+  renderEmpty?: Renderable;
+  renderError?: Renderable;
+  children: (data: T[]) => ReactNode;
+};
+
+export default function DDataStateWrapper<T>(props: DDataStateWrapperProps<T>): ReactNode;
+```

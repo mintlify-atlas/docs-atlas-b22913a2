@@ -1,0 +1,462 @@
+---
+title: Installation
+description: Install and configure Dynamic UI in your React project
+---
+
+# Installation
+
+Get started with Dynamic UI by installing the package and configuring your project.
+
+## Prerequisites
+
+Before installing Dynamic UI, ensure your development environment meets these requirements:
+
+<AccordionGroup>
+  <Accordion title="Node.js Version" icon="node-js">
+    Dynamic UI requires **Node.js 22.0.0 or higher**.
+    
+    Check your Node.js version:
+    ```bash
+    node --version
+    ```
+    
+    If you need to upgrade, visit [nodejs.org](https://nodejs.org) or use a version manager like [nvm](https://github.com/nvm-sh/nvm).
+  </Accordion>
+  
+  <Accordion title="React Version" icon="react">
+    Dynamic UI supports **React 18.x and 19.x**.
+    
+    ```json package.json
+    {
+      "dependencies": {
+        "react": ">=18 <20",
+        "react-dom": ">=18 <20"
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion title="TypeScript (Optional)" icon="code">
+    While TypeScript is optional, Dynamic UI includes full TypeScript definitions.
+    
+    For the best development experience, use **TypeScript 5.2+**:
+    ```bash
+    npm install --save-dev typescript@~5.2.2
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Package Installation
+
+Install Dynamic UI using your preferred package manager:
+
+<CodeGroup>
+```bash npm
+npm install @dynamic-framework/ui-react
+```
+
+```bash yarn
+yarn add @dynamic-framework/ui-react
+```
+
+```bash pnpm
+pnpm add @dynamic-framework/ui-react
+```
+</CodeGroup>
+
+<Note>
+  The package is published as `@dynamic-framework/ui-react` on npm with public access.
+</Note>
+
+## Peer Dependencies
+
+Dynamic UI requires several peer dependencies for full functionality:
+
+<Steps>
+  <Step title="Required Peer Dependencies">
+    Install the core required dependencies:
+    
+    <CodeGroup>
+    ```bash npm
+    npm install react react-dom framer-motion i18next react-i18next react-hot-toast
+    ```
+    
+    ```bash yarn
+    yarn add react react-dom framer-motion i18next react-i18next react-hot-toast
+    ```
+    
+    ```bash pnpm
+    pnpm add react react-dom framer-motion i18next react-i18next react-hot-toast
+    ```
+    </CodeGroup>
+  </Step>
+  
+  <Step title="Verify Versions">
+    Ensure your peer dependencies meet the required version ranges:
+    
+    ```json package.json
+    {
+      "dependencies": {
+        "react": ">=18 <20",
+        "react-dom": ">=18 <20",
+        "framer-motion": ">=12 <13",
+        "i18next": ">=25 <26",
+        "react-i18next": ">=16 <17",
+        "react-hot-toast": ">=2 <3"
+      }
+    }
+    ```
+  </Step>
+</Steps>
+
+## Importing Styles
+
+Dynamic UI is built on Bootstrap 5 and requires CSS imports. You have two options:
+
+### Option 1: Import Bootstrap CSS (Recommended)
+
+Import the Bootstrap CSS in your main application file:
+
+```tsx App.tsx
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { DButton, DCard } from '@dynamic-framework/ui-react';
+
+function App() {
+  return (
+    <DCard>
+      <DCard.Body>
+        <DButton text="Hello Dynamic UI" />
+      </DCard.Body>
+    </DCard>
+  );
+}
+
+export default App;
+```
+
+### Option 2: Include in HTML
+
+Alternatively, add the Bootstrap CSS via CDN in your `index.html`:
+
+```html index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Dynamic UI App</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+```
+
+<Warning>
+  Dynamic UI requires Bootstrap 5.3.8 or compatible version. Using older versions may cause styling issues.
+</Warning>
+
+## Setting Up Context Provider
+
+Many Dynamic UI components require the `DContextProvider` for configuration. Wrap your application with it:
+
+```tsx main.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { DContextProvider } from '@dynamic-framework/ui-react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import App from './App';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <DContextProvider>
+      <App />
+    </DContextProvider>
+  </React.StrictMode>
+);
+```
+
+### Context Configuration
+
+You can customize the context provider with icon families and other settings:
+
+<CodeGroup>
+```tsx Bootstrap Icons (Default)
+import { DContextProvider } from '@dynamic-framework/ui-react';
+
+<DContextProvider
+  iconFamilyClass="bi"
+  iconFamilyPrefix="bi-"
+>
+  <App />
+</DContextProvider>
+```
+
+```tsx Material Symbols
+import { DContextProvider } from '@dynamic-framework/ui-react';
+
+<DContextProvider
+  iconFamilyClass="material-symbols-outlined"
+  materialStyle={true}
+>
+  <App />
+</DContextProvider>
+```
+
+```tsx Lucide React Icons
+import { DContextProvider } from '@dynamic-framework/ui-react';
+
+// Lucide React icons are used directly as components
+// No special context configuration needed
+<DContextProvider>
+  <App />
+</DContextProvider>
+```
+</CodeGroup>
+
+## TypeScript Configuration
+
+If using TypeScript, ensure your `tsconfig.json` is configured correctly:
+
+```json tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src"]
+}
+```
+
+<Tip>
+  Dynamic UI includes TypeScript definitions at `./dist/types/index.d.ts`, which are automatically picked up by TypeScript.
+</Tip>
+
+## Starter Templates
+
+The fastest way to get started is using an official template:
+
+### Dynamic React Base Template
+
+The official starter template with Dynamic UI pre-configured:
+
+<CodeGroup>
+```bash Using Modyo CLI (Recommended)
+npx @modyo/cli@latest get dynamic-react-base-template
+cd dynamic-react-base-template
+npm install
+npm run dev
+```
+
+```bash Manual Clone
+git clone https://github.com/dynamic-framework/dynamic-react-base-template.git
+cd dynamic-react-base-template
+npm install
+npm run dev
+```
+</CodeGroup>
+
+<Note>
+  The base template includes:
+  - Pre-configured Dynamic UI setup
+  - Bootstrap 5 integration
+  - TypeScript configuration
+  - Example components and layouts
+  - Routing with React Router
+  - Development server with Vite
+</Note>
+
+## Verification
+
+Verify your installation by creating a simple component:
+
+```tsx App.tsx
+import { DButton, DCard, DAlert } from '@dynamic-framework/ui-react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+function App() {
+  return (
+    <div className="container mt-5">
+      <DCard>
+        <DCard.Header>
+          <h2>Dynamic UI Installed Successfully! 🎉</h2>
+        </DCard.Header>
+        <DCard.Body>
+          <DAlert color="success" className="mb-3">
+            Your Dynamic UI installation is working correctly.
+          </DAlert>
+          <DButton 
+            text="Get Started" 
+            color="primary" 
+            iconEnd="ArrowRight"
+          />
+        </DCard.Body>
+      </DCard>
+    </div>
+  );
+}
+
+export default App;
+```
+
+Run your development server:
+
+<CodeGroup>
+```bash npm
+npm run dev
+```
+
+```bash yarn
+yarn dev
+```
+
+```bash pnpm
+pnpm dev
+```
+</CodeGroup>
+
+You should see a card with a success alert and a button.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Styles not appearing" icon="palette">
+    **Problem**: Components render but have no styling.
+    
+    **Solution**: Ensure you've imported Bootstrap CSS:
+    ```tsx
+    import 'bootstrap/dist/css/bootstrap.min.css';
+    ```
+    
+    Or verify the Bootstrap CDN link is in your HTML.
+  </Accordion>
+  
+  <Accordion title="Peer dependency warnings" icon="alert-triangle">
+    **Problem**: npm warns about unmet peer dependencies.
+    
+    **Solution**: Install all required peer dependencies:
+    ```bash
+    npm install react react-dom framer-motion i18next react-i18next react-hot-toast
+    ```
+  </Accordion>
+  
+  <Accordion title="TypeScript errors" icon="code">
+    **Problem**: TypeScript cannot find type definitions.
+    
+    **Solution**: 
+    1. Ensure TypeScript 5.2+ is installed
+    2. Check that `node_modules/@dynamic-framework/ui-react/dist/types` exists
+    3. Try deleting `node_modules` and reinstalling:
+    ```bash
+    rm -rf node_modules package-lock.json
+    npm install
+    ```
+  </Accordion>
+  
+  <Accordion title="Icons not displaying" icon="image">
+    **Problem**: Icons in components are not showing.
+    
+    **Solution**: Install and configure an icon library, or set up the context provider with your preferred icon family:
+    ```tsx
+    import { DContextProvider } from '@dynamic-framework/ui-react';
+    
+    <DContextProvider iconFamilyClass="bi" iconFamilyPrefix="bi-">
+      <App />
+    </DContextProvider>
+    ```
+    
+    For Lucide React (recommended):
+    ```tsx
+    import { ArrowRight } from 'lucide-react';
+    import { DButton } from '@dynamic-framework/ui-react';
+    
+    <DButton text="Next" iconEnd="ArrowRight" />
+    ```
+  </Accordion>
+  
+  <Accordion title="Node version errors" icon="alert-circle">
+    **Problem**: Build fails with Node.js version error.
+    
+    **Solution**: Dynamic UI requires Node.js 22.0.0+. Upgrade your Node.js:
+    ```bash
+    # Using nvm
+    nvm install 22
+    nvm use 22
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Build Configuration
+
+Dynamic UI is distributed with multiple formats for maximum compatibility:
+
+```json package.json exports
+{
+  "main": "./dist/index.js",        // CommonJS
+  "module": "./dist/index.esm.js",  // ES Modules
+  "types": "./dist/types/index.d.ts" // TypeScript definitions
+}
+```
+
+Most modern bundlers (Vite, Webpack 5+, Rollup) will automatically use the optimal format.
+
+<Tip>
+  Dynamic UI includes side effects for CSS files. This is properly configured in the package.json:
+  ```json
+  {
+    "sideEffects": ["*.css"]
+  }
+  ```
+</Tip>
+
+## CDN Usage (Not Recommended for Production)
+
+For quick prototyping, you can use the CDN version:
+
+```html
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Dynamic UI from CDN -->
+<script src="https://dynamicframework-cdn.s3.amazonaws.com/assets/latest/ui-react/index.esm.js" type="module"></script>
+```
+
+<Warning>
+  CDN usage is not recommended for production applications. Always use npm installation for production deployments.
+</Warning>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Quick Start Guide"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Build your first component with Dynamic UI
+  </Card>
+  <Card
+    title="Component Documentation"
+    icon="book"
+    href="https://react.dynamicframework.dev"
+  >
+    Explore all available components in Storybook
+  </Card>
+</CardGroup>
+
+---
+
+Need help? [Open an issue on GitHub](https://github.com/dynamic-framework/dynamic-ui/issues) or check the [official documentation](https://docs.modyo.com/en/dynamic/).

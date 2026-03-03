@@ -1,80 +1,702 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quick Start
+description: Build your first application with Dynamic UI in minutes
 ---
 
-## Get started in three steps
+# Quick Start Guide
 
-Get your documentation site running locally and make your first customization.
-
-### Step 1: Set up your local environment
-
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
-
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
-
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
-
-## Next steps
-
-Now that you have your docs running, explore these key features:
-
-<CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
-</CardGroup>
+Get up and running with Dynamic UI by building a simple financial transfer form. This guide will walk you through importing components, handling state, and creating a functional UI.
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  This guide assumes you've already [installed Dynamic UI](/installation). If not, start there first.
 </Note>
+
+## Your First Component
+
+Let's build a simple transfer form that demonstrates key Dynamic UI features:
+
+<Steps>
+  <Step title="Import Components">
+    Import the components you'll need:
+    
+    ```tsx App.tsx
+    import { 
+      DCard,
+      DInput,
+      DInputCurrency,
+      DButton,
+      DAlert,
+      DContextProvider 
+    } from '@dynamic-framework/ui-react';
+    import { useState } from 'react';
+    import 'bootstrap/dist/css/bootstrap.min.css';
+    ```
+  </Step>
+  
+  <Step title="Create the Component">
+    Build a simple transfer form with state management:
+    
+    ```tsx App.tsx
+    function TransferForm() {
+      const [recipient, setRecipient] = useState('');
+      const [amount, setAmount] = useState('');
+      const [loading, setLoading] = useState(false);
+      const [success, setSuccess] = useState(false);
+
+      const handleTransfer = () => {
+        setLoading(true);
+        // Simulate API call
+        setTimeout(() => {
+          setLoading(false);
+          setSuccess(true);
+          setRecipient('');
+          setAmount('');
+        }, 2000);
+      };
+
+      return (
+        <div className="container mt-5">
+          <DCard>
+            <DCard.Header>
+              <h3 className="mb-0">Transfer Funds</h3>
+            </DCard.Header>
+            <DCard.Body>
+              {success && (
+                <DAlert 
+                  color="success" 
+                  className="mb-3"
+                  showClose
+                  onClose={() => setSuccess(false)}
+                >
+                  Transfer completed successfully!
+                </DAlert>
+              )}
+              
+              <DInput
+                label="Recipient Name"
+                value={recipient}
+                onChange={setRecipient}
+                placeholder="Enter recipient name"
+                className="mb-3"
+              />
+              
+              <DInputCurrency
+                label="Transfer Amount"
+                value={amount}
+                onChange={setAmount}
+                placeholder="0.00"
+                className="mb-3"
+              />
+            </DCard.Body>
+            <DCard.Footer className="d-flex gap-2">
+              <DButton 
+                text="Cancel"
+                variant="outline"
+                color="secondary"
+              />
+              <DButton 
+                text="Transfer"
+                color="primary"
+                iconEnd="ArrowRight"
+                loading={loading}
+                loadingText="Processing..."
+                onClick={handleTransfer}
+                disabled={!recipient || !amount}
+              />
+            </DCard.Footer>
+          </DCard>
+        </div>
+      );
+    }
+    ```
+  </Step>
+  
+  <Step title="Wrap with Context Provider">
+    Wrap your app with `DContextProvider`:
+    
+    ```tsx App.tsx
+    function App() {
+      return (
+        <DContextProvider>
+          <TransferForm />
+        </DContextProvider>
+      );
+    }
+
+    export default App;
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+  Run your development server (`npm run dev`) and you should see a fully functional transfer form!
+</Tip>
+
+## Understanding the Components
+
+Let's break down what each component does:
+
+### DCard - Card Container
+
+The `DCard` component is a composable card with Header, Body, and Footer sections:
+
+```tsx
+import { DCard } from '@dynamic-framework/ui-react';
+
+<DCard>
+  <DCard.Header>
+    {/* Header content */}
+  </DCard.Header>
+  <DCard.Body>
+    {/* Main content */}
+  </DCard.Body>
+  <DCard.Footer>
+    {/* Footer actions */}
+  </DCard.Footer>
+</DCard>
+```
+
+<Note>
+  Card components follow the compound component pattern - `DCard.Header`, `DCard.Body`, and `DCard.Footer` are exposed as static properties.
+</Note>
+
+### DInput - Text Input
+
+The `DInput` component provides a flexible input with labels, hints, and validation:
+
+```tsx
+import { DInput } from '@dynamic-framework/ui-react';
+import { useState } from 'react';
+
+function Example() {
+  const [value, setValue] = useState('');
+  
+  return (
+    <DInput
+      label="Email Address"
+      value={value}
+      onChange={setValue}
+      placeholder="you@example.com"
+      hint="We'll never share your email"
+      type="email"
+    />
+  );
+}
+```
+
+**Key Props:**
+- `label` - Input label text
+- `value` - Controlled value
+- `onChange` - Callback with new value (not the event)
+- `placeholder` - Placeholder text
+- `hint` - Helper text below input
+- `invalid` / `valid` - Validation states
+- `disabled` - Disable the input
+- `loading` - Show loading spinner
+- `size` - Size variant ('sm' | 'lg')
+
+### DInputCurrency - Currency Input
+
+Specialized input for currency values with formatting:
+
+```tsx
+import { DInputCurrency } from '@dynamic-framework/ui-react';
+import { useState } from 'react';
+
+function Example() {
+  const [amount, setAmount] = useState('');
+  
+  return (
+    <DInputCurrency
+      label="Amount"
+      value={amount}
+      onChange={setAmount}
+      placeholder="0.00"
+      inputStart="$"
+    />
+  );
+}
+```
+
+### DButton - Button Component
+
+A comprehensive button component with loading states, icons, and variants:
+
+```tsx
+import { DButton } from '@dynamic-framework/ui-react';
+
+// Solid button (default)
+<DButton text="Primary" color="primary" />
+
+// Outline variant
+<DButton text="Secondary" color="secondary" variant="outline" />
+
+// Link variant
+<DButton text="Link" color="primary" variant="link" />
+
+// With icons
+<DButton 
+  text="Next" 
+  iconEnd="ArrowRight" 
+  color="primary" 
+/>
+
+// Loading state
+<DButton 
+  text="Submit" 
+  loading={true} 
+  loadingText="Saving..." 
+/>
+
+// Sizes
+<DButton text="Small" size="sm" />
+<DButton text="Large" size="lg" />
+
+// As anchor tag
+<DButton 
+  text="Visit Site" 
+  href="https://dynamicframework.dev"
+  target="_blank"
+  rel="noopener noreferrer"
+/>
+```
+
+**Key Props:**
+- `text` - Button text
+- `color` - Semantic color ('primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info')
+- `variant` - Style variant ('outline' | 'link')
+- `size` - Size ('sm' | 'lg')
+- `iconStart` / `iconEnd` - Icon names
+- `loading` - Show loading state
+- `loadingText` - Text during loading
+- `disabled` - Disable button
+- `href` - Render as anchor tag
+- `onClick` - Click handler
+
+### DAlert - Alert Messages
+
+Display contextual feedback messages:
+
+```tsx
+import { DAlert } from '@dynamic-framework/ui-react';
+
+// Success alert
+<DAlert color="success">
+  Operation completed successfully!
+</DAlert>
+
+// Error alert
+<DAlert color="danger">
+  Something went wrong. Please try again.
+</DAlert>
+
+// Info alert
+<DAlert color="info">
+  Please review the information below.
+</DAlert>
+
+// Warning alert
+<DAlert color="warning">
+  This action cannot be undone.
+</DAlert>
+
+// Dismissible alert
+<DAlert 
+  color="success" 
+  showClose
+  onClose={() => console.log('Closed')}
+>
+  You can dismiss this message.
+</DAlert>
+```
+
+## Working with Forms
+
+Dynamic UI components integrate seamlessly with form libraries. Here's an example with Formik:
+
+```tsx
+import { Formik, Form } from 'formik';
+import { DInput, DButton, DCard } from '@dynamic-framework/ui-react';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+  email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().min(8, 'Too short').required('Required'),
+});
+
+function LoginForm() {
+  return (
+    <Formik
+      initialValues={{ email: '', password: '' }}
+      validationSchema={validationSchema}
+      onSubmit={(values) => console.log(values)}
+    >
+      {({ values, errors, touched, setFieldValue, isSubmitting }) => (
+        <Form>
+          <DCard>
+            <DCard.Header>
+              <h3>Login</h3>
+            </DCard.Header>
+            <DCard.Body>
+              <DInput
+                label="Email"
+                type="email"
+                value={values.email}
+                onChange={(value) => setFieldValue('email', value)}
+                invalid={touched.email && !!errors.email}
+                hint={touched.email ? errors.email : undefined}
+                className="mb-3"
+              />
+              
+              <DInput
+                label="Password"
+                type="password"
+                value={values.password}
+                onChange={(value) => setFieldValue('password', value)}
+                invalid={touched.password && !!errors.password}
+                hint={touched.password ? errors.password : undefined}
+              />
+            </DCard.Body>
+            <DCard.Footer>
+              <DButton
+                type="submit"
+                text="Login"
+                color="primary"
+                loading={isSubmitting}
+              />
+            </DCard.Footer>
+          </DCard>
+        </Form>
+      )}
+    </Formik>
+  );
+}
+```
+
+## Common Patterns
+
+### Color System
+
+All components support semantic color props:
+
+```tsx
+// Semantic colors available
+const colors = [
+  'primary',    // Main actions
+  'secondary',  // Secondary actions
+  'success',    // Positive feedback
+  'danger',     // Errors, destructive actions
+  'warning',    // Cautionary states
+  'info',       // Informational
+  'light',      // Light backgrounds
+  'dark',       // Dark backgrounds
+];
+
+<DButton color="primary" text="Primary" />
+<DAlert color="success">Success!</DAlert>
+<DBadge color="danger">Error</DBadge>
+```
+
+### Size Variants
+
+Most components support small and large sizes:
+
+```tsx
+// Small
+<DButton size="sm" text="Small" />
+<DInput size="sm" label="Small Input" />
+
+// Default (medium)
+<DButton text="Medium" />
+<DInput label="Medium Input" />
+
+// Large
+<DButton size="lg" text="Large" />
+<DInput size="lg" label="Large Input" />
+```
+
+### Loading States
+
+Many components support loading states:
+
+```tsx
+// Button with loading
+<DButton 
+  text="Submit" 
+  loading={isSubmitting}
+  loadingText="Submitting..."
+/>
+
+// Input with loading
+<DInput 
+  label="Username"
+  loading={isValidating}
+/>
+```
+
+### Icons
+
+Add icons to components using icon props:
+
+```tsx
+import { DButton } from '@dynamic-framework/ui-react';
+
+// Icon at end (right)
+<DButton text="Next" iconEnd="ArrowRight" />
+
+// Icon at start (left)
+<DButton text="Back" iconStart="ArrowLeft" />
+
+// Both icons
+<DButton text="Transfer" iconStart="Send" iconEnd="Check" />
+```
+
+<Tip>
+  Dynamic UI uses Lucide React icons by default. See the [Lucide icon library](https://lucide.dev/icons/) for available icon names.
+</Tip>
+
+## Layout Helpers
+
+Dynamic UI includes Bootstrap 5 utilities for layout:
+
+### Container and Grid
+
+```tsx
+<div className="container">
+  <div className="row">
+    <div className="col-md-6">
+      <DCard>
+        <DCard.Body>Left column</DCard.Body>
+      </DCard>
+    </div>
+    <div className="col-md-6">
+      <DCard>
+        <DCard.Body>Right column</DCard.Body>
+      </DCard>
+    </div>
+  </div>
+</div>
+```
+
+### Spacing Utilities
+
+Dynamic UI extends Bootstrap spacing to 0-30:
+
+```tsx
+// Margin
+<div className="mt-3">Margin top 3</div>
+<div className="mb-5">Margin bottom 5</div>
+<div className="mx-auto">Margin x auto (centered)</div>
+<div className="mt-15">Margin top 15 (extended)</div>
+
+// Padding
+<div className="p-3">Padding 3</div>
+<div className="px-4 py-2">Padding x 4, y 2</div>
+<div className="p-20">Padding 20 (extended)</div>
+```
+
+### Flexbox Utilities
+
+```tsx
+// Flex container
+<div className="d-flex gap-3">
+  <DButton text="Button 1" />
+  <DButton text="Button 2" />
+  <DButton text="Button 3" />
+</div>
+
+// Align items
+<div className="d-flex align-items-center justify-content-between">
+  <span>Left</span>
+  <span>Right</span>
+</div>
+
+// Flex direction
+<div className="d-flex flex-column gap-2">
+  <DInput label="Input 1" />
+  <DInput label="Input 2" />
+</div>
+```
+
+## Building a Complete Page
+
+Let's combine everything into a more complete example - an account overview page:
+
+```tsx AccountOverview.tsx
+import {
+  DCard,
+  DButton,
+  DAlert,
+  DCurrencyText,
+  DContextProvider,
+} from '@dynamic-framework/ui-react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+function AccountOverview() {
+  return (
+    <div className="container mt-5">
+      {/* Alert Banner */}
+      <DAlert color="info" className="mb-4">
+        Your account statement for December is now available.
+      </DAlert>
+
+      {/* Account Balance Card */}
+      <div className="row mb-4">
+        <div className="col-md-6">
+          <DCard>
+            <DCard.Header>
+              <h4 className="mb-0">Checking Account</h4>
+              <small className="text-muted">****1234</small>
+            </DCard.Header>
+            <DCard.Body>
+              <div className="mb-2 text-muted">Available Balance</div>
+              <h2 className="mb-0">
+                <DCurrencyText value={5423.50} />
+              </h2>
+            </DCard.Body>
+            <DCard.Footer className="d-flex gap-2">
+              <DButton 
+                text="Transfer" 
+                color="primary" 
+                iconEnd="Send" 
+                size="sm"
+              />
+              <DButton 
+                text="Details" 
+                variant="outline" 
+                color="secondary" 
+                size="sm"
+              />
+            </DCard.Footer>
+          </DCard>
+        </div>
+
+        <div className="col-md-6">
+          <DCard>
+            <DCard.Header>
+              <h4 className="mb-0">Savings Account</h4>
+              <small className="text-muted">****5678</small>
+            </DCard.Header>
+            <DCard.Body>
+              <div className="mb-2 text-muted">Available Balance</div>
+              <h2 className="mb-0">
+                <DCurrencyText value={12890.75} />
+              </h2>
+            </DCard.Body>
+            <DCard.Footer className="d-flex gap-2">
+              <DButton 
+                text="Transfer" 
+                color="primary" 
+                iconEnd="Send" 
+                size="sm"
+              />
+              <DButton 
+                text="Details" 
+                variant="outline" 
+                color="secondary" 
+                size="sm"
+              />
+            </DCard.Footer>
+          </DCard>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <DCard>
+        <DCard.Header>
+          <h4 className="mb-0">Quick Actions</h4>
+        </DCard.Header>
+        <DCard.Body>
+          <div className="d-flex flex-wrap gap-2">
+            <DButton text="Pay Bills" iconStart="CreditCard" />
+            <DButton text="Transfer Money" iconStart="Send" />
+            <DButton text="View Statements" iconStart="FileText" />
+            <DButton text="Manage Cards" iconStart="CreditCard" />
+          </div>
+        </DCard.Body>
+      </DCard>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <DContextProvider>
+      <AccountOverview />
+    </DContextProvider>
+  );
+}
+
+export default App;
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Explore All Components"
+    icon="grid-2x2"
+    href="https://react.dynamicframework.dev"
+  >
+    Browse the full component library in Storybook
+  </Card>
+  <Card
+    title="View Examples"
+    icon="code"
+    href="https://github.com/dynamic-framework/dynamic-ui/tree/master/stories/examples"
+  >
+    Check out real-world examples on GitHub
+  </Card>
+  <Card
+    title="API Reference"
+    icon="book"
+    href="https://react.dynamicframework.dev"
+  >
+    Detailed component API documentation
+  </Card>
+  <Card
+    title="Official Docs"
+    icon="file-text"
+    href="https://docs.modyo.com/en/dynamic/"
+  >
+    Complete Dynamic Framework documentation
+  </Card>
+</CardGroup>
+
+## Additional Resources
+
+### Form Components
+
+Explore specialized form inputs:
+- **DInputPassword** - Password input with show/hide toggle
+- **DInputPhone** - International phone number input
+- **DInputMask** - Masked input for formatted values
+- **DInputCounter** - Numeric input with increment/decrement
+- **DDatePicker** - Date selection
+- **DSelect** - Advanced select component
+
+### Financial Components
+
+- **DCreditCard** - Display credit card information
+- **DCurrencyText** - Format currency values
+- **DPasswordStrengthMeter** - Visual password strength indicator
+- **DOtp** - One-time password input
+
+### Layout Components
+
+- **DModal** - Modal dialogs
+- **DOffcanvas** - Side panels
+- **DTabs** - Tabbed interfaces
+- **DLayout** - CSS Grid-based layout
+- **DCollapse** - Collapsible content
+
+### Feedback Components
+
+- **DToast** - Toast notifications
+- **DProgress** - Progress bars
+- **DTooltip** - Tooltips
+- **DPopover** - Popovers
+
+---
+
+Ready to build something amazing? Start exploring the [component library](https://react.dynamicframework.dev)!

@@ -1,0 +1,337 @@
+---
+title: DTooltip
+description: API reference for the DTooltip component
+---
+
+## DTooltip
+
+A tooltip component for displaying helpful information on hover, focus, or click.
+
+### Import
+
+```tsx
+import { DTooltip } from '@dynamic-labs/ui';
+```
+
+### TypeScript Interface
+
+```typescript
+export type Props = BaseProps & PropsWithChildren<{
+  childrenClassName?: string;
+  offSet?: number;
+  padding?: number;
+  withHover?: boolean;
+  withFocus?: boolean;
+  withClick?: boolean;
+  open?: boolean;
+  size?: ComponentSize;
+  placement?: Placement;
+  Component: ReactNode;
+}>;
+
+type ComponentSize = 'sm' | 'lg';
+type Placement =
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'right'
+  | 'right-start'
+  | 'right-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'left'
+  | 'left-start'
+  | 'left-end';
+
+type BaseProps = {
+  style?: CSSProperties;
+  className?: string;
+  dataAttributes?: DataAttributes;
+};
+```
+
+### Props
+
+<ParamField path="Component" type="ReactNode" required>
+  The element that triggers the tooltip (what the user hovers over or clicks).
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  The content to display inside the tooltip.
+</ParamField>
+
+<ParamField path="childrenClassName" type="string">
+  CSS classes to apply to the trigger element wrapper.
+</ParamField>
+
+<ParamField path="offSet" type="number" default="6">
+  Distance in pixels between the tooltip and the trigger element.
+</ParamField>
+
+<ParamField path="padding" type="number">
+  Padding in pixels for the shift middleware to prevent tooltip from touching viewport edges.
+</ParamField>
+
+<ParamField path="withHover" type="boolean" default="true">
+  If true, tooltip shows on hover.
+</ParamField>
+
+<ParamField path="withFocus" type="boolean" default="false">
+  If true, tooltip shows on focus.
+</ParamField>
+
+<ParamField path="withClick" type="boolean" default="false">
+  If true, tooltip shows on click.
+</ParamField>
+
+<ParamField path="open" type="boolean" default="false">
+  Initial open state of the tooltip.
+</ParamField>
+
+<ParamField path="size" type="'sm' | 'lg'">
+  Size variant of the tooltip.
+</ParamField>
+
+<ParamField path="placement" type="Placement" default="top">
+  Preferred placement of the tooltip relative to the trigger element. Options include `'top'`, `'right'`, `'bottom'`, `'left'`, and their `-start` and `-end` variants.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the tooltip.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the tooltip.
+</ParamField>
+
+### Usage Examples
+
+#### Basic Tooltip
+
+```tsx
+import { DTooltip, DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DTooltip Component={<DButton text="Hover me" />}>
+      This is a helpful tooltip!
+    </DTooltip>
+  );
+}
+```
+
+#### Placement Variants
+
+```tsx
+import { DTooltip, DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-3 justify-content-center align-items-center" style={{ minHeight: '200px' }}>
+      <DTooltip
+        placement="top"
+        Component={<DButton text="Top" size="sm" />}
+      >
+        Tooltip on top
+      </DTooltip>
+
+      <DTooltip
+        placement="right"
+        Component={<DButton text="Right" size="sm" />}
+      >
+        Tooltip on right
+      </DTooltip>
+
+      <DTooltip
+        placement="bottom"
+        Component={<DButton text="Bottom" size="sm" />}
+      >
+        Tooltip on bottom
+      </DTooltip>
+
+      <DTooltip
+        placement="left"
+        Component={<DButton text="Left" size="sm" />}
+      >
+        Tooltip on left
+      </DTooltip>
+    </div>
+  );
+}
+```
+
+#### Click to Show
+
+```tsx
+import { DTooltip, DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DTooltip
+      withClick
+      withHover={false}
+      Component={<DButton text="Click me" />}
+    >
+      This tooltip appears on click!
+    </DTooltip>
+  );
+}
+```
+
+#### Focus Trigger
+
+```tsx
+import { DTooltip, DInput } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [value, setValue] = useState('');
+
+  return (
+    <DTooltip
+      withFocus
+      withHover={false}
+      Component={
+        <DInput
+          label="Username"
+          value={value}
+          onChange={setValue}
+          placeholder="Enter username"
+        />
+      }
+    >
+      Username must be at least 3 characters
+    </DTooltip>
+  );
+}
+```
+
+#### Size Variants
+
+```tsx
+import { DTooltip, DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-3">
+      <DTooltip
+        size="sm"
+        Component={<DButton text="Small" size="sm" />}
+      >
+        Small tooltip
+      </DTooltip>
+
+      <DTooltip
+        Component={<DButton text="Default" />}
+      >
+        Default tooltip
+      </DTooltip>
+
+      <DTooltip
+        size="lg"
+        Component={<DButton text="Large" size="lg" />}
+      >
+        Large tooltip with more space
+      </DTooltip>
+    </div>
+  );
+}
+```
+
+#### Custom Offset
+
+```tsx
+import { DTooltip, DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-3">
+      <DTooltip
+        offSet={2}
+        Component={<DButton text="Close" size="sm" />}
+      >
+        Close tooltip
+      </DTooltip>
+
+      <DTooltip
+        offSet={20}
+        Component={<DButton text="Far" size="sm" />}
+      >
+        Far tooltip
+      </DTooltip>
+    </div>
+  );
+}
+```
+
+#### With Icons
+
+```tsx
+import { DTooltip } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex gap-3">
+      <DTooltip
+        Component={
+          <button className="btn btn-link p-0">
+            <i className="bi bi-info-circle" />
+          </button>
+        }
+      >
+        Click the info icon for more details
+      </DTooltip>
+
+      <DTooltip
+        Component={
+          <button className="btn btn-link p-0">
+            <i className="bi bi-question-circle" />
+          </button>
+        }
+      >
+        Need help? Contact support
+      </DTooltip>
+    </div>
+  );
+}
+```
+
+#### Rich Content Tooltip
+
+```tsx
+import { DTooltip, DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DTooltip
+      size="lg"
+      Component={<DButton text="Hover for details" />}
+    >
+      <div>
+        <strong>Pro Tip:</strong>
+        <p className="mb-0 mt-1">You can use keyboard shortcuts to speed up your workflow.</p>
+      </div>
+    </DTooltip>
+  );
+}
+```
+
+#### Multiple Triggers
+
+```tsx
+import { DTooltip, DButton } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DTooltip
+      withHover
+      withClick
+      withFocus
+      Component={<DButton text="Hover, Click, or Focus" />}
+    >
+      This tooltip shows on hover, click, and focus!
+    </DTooltip>
+  );
+}
+```

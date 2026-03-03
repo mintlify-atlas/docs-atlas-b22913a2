@@ -1,0 +1,564 @@
+---
+title: Context Providers
+description: Global configuration and portal management with DContext and DPortalContext
+---
+
+Dynamic UI uses React Context to provide global configuration for theming, internationalization, and portal management.
+
+## DContext
+
+The main context provider that supplies global configuration including currency settings, icons, breakpoints, and language preferences.
+
+### Import
+
+```tsx
+import { DContextProvider, useDContext } from 'dynamic-ui';
+```
+
+### Provider Props
+
+```typescript
+type DContextProviderProps<T extends Record<string, unknown>> = {
+  language?: string;
+  currency?: CurrencyProps;
+  icon?: IconProps;
+  iconMap?: IconMapProps;
+  portalName?: string;
+  availablePortals?: PortalAvailableList<T>;
+  children: ReactNode;
+}
+```
+
+<ParamField path="language" type="string" default="en">
+  The current language code for internationalization
+</ParamField>
+
+<ParamField path="currency" type="CurrencyProps">
+  Currency formatting configuration
+  
+  ```typescript
+  type CurrencyProps = {
+    symbol: string;      // Currency symbol (e.g., "$", "€")
+    precision: number;   // Decimal places
+    separator: string;   // Thousands separator
+    decimal: string;     // Decimal separator
+  }
+  ```
+  
+  **Default:**
+  ```json
+  {
+    "symbol": "$",
+    "precision": 2,
+    "separator": ",",
+    "decimal": "."
+  }
+  ```
+</ParamField>
+
+<ParamField path="icon" type="IconProps">
+  Icon library configuration
+  
+  ```typescript
+  type IconProps = {
+    familyClass: string;    // CSS class for icon family
+    familyPrefix: string;   // Prefix for icon names
+    materialStyle: boolean; // Use material design style
+  }
+  ```
+  
+  **Default:**
+  ```json
+  {
+    "familyClass": "bi",
+    "familyPrefix": "bi-",
+    "materialStyle": false
+  }
+  ```
+</ParamField>
+
+<ParamField path="iconMap" type="IconMapProps">
+  Mapping of semantic icon names to actual icon identifiers
+  
+  ```typescript
+  type IconMapProps = {
+    x: string;
+    xLg: string;
+    chevronDown: string;
+    chevronUp: string;
+    chevronLeft: string;
+    chevronRight: string;
+    alert: AlertThemeIconMap;
+    upload: string;
+    calendar: string;
+    check: string;
+    input: {
+      search: string;
+      show: string;
+      hide: string;
+      decrease: string;
+      increase: string;
+    };
+  }
+  ```
+</ParamField>
+
+<ParamField path="portalName" type="string" default="d-portal">
+  ID for the portal container element
+</ParamField>
+
+<ParamField path="availablePortals" type="PortalAvailableList<T>">
+  Map of portal components for modal/overlay management. See [DPortalContext](#dportalcontext) for details.
+</ParamField>
+
+### Context Value
+
+```typescript
+type DContextValue<T extends Record<string, unknown>> = {
+  language: string;
+  currency: CurrencyProps;
+  icon: IconProps;
+  iconMap: IconMapProps;
+  breakpoints: BreakpointProps;
+  setContext: (value: Partial<DContextValue<T>>) => void;
+}
+```
+
+<ResponseField name="language" type="string">
+  Current language code
+</ResponseField>
+
+<ResponseField name="currency" type="CurrencyProps">
+  Current currency settings
+</ResponseField>
+
+<ResponseField name="icon" type="IconProps">
+  Current icon library configuration
+</ResponseField>
+
+<ResponseField name="iconMap" type="IconMapProps">
+  Current icon mappings
+</ResponseField>
+
+<ResponseField name="breakpoints" type="BreakpointProps">
+  Current breakpoint values (automatically read from CSS custom properties)
+  
+  ```typescript
+  type BreakpointProps = {
+    xs: string;   // e.g., "0px"
+    sm: string;   // e.g., "576px"
+    md: string;   // e.g., "768px"
+    lg: string;   // e.g., "992px"
+    xl: string;   // e.g., "1200px"
+    xxl: string;  // e.g., "1400px"
+  }
+  ```
+</ResponseField>
+
+<ResponseField name="setContext" type="function">
+  Function to update context values dynamically
+  
+  ```typescript
+  (value: Partial<DContextValue<T>>) => void
+  ```
+</ResponseField>
+
+### Usage
+
+#### Basic Setup
+
+```tsx
+import { DContextProvider } from 'dynamic-ui';
+
+function App() {
+  return (
+    <DContextProvider>
+      <YourApp />
+    </DContextProvider>
+  );
+}
+```
+
+#### Custom Currency
+
+```tsx
+import { DContextProvider } from 'dynamic-ui';
+
+function App() {
+  return (
+    <DContextProvider
+      currency={{
+        symbol: '€',
+        precision: 2,
+        separator: '.',
+        decimal: ','
+      }}
+      language="de"
+    >
+      <YourApp />
+    </DContextProvider>
+  );
+}
+```
+
+#### Accessing Context
+
+```tsx
+import { useDContext } from 'dynamic-ui';
+
+function CurrencyDisplay() {
+  const { currency, language } = useDContext();
+
+  return (
+    <div>
+      Language: {language}<br />
+      Currency: {currency.symbol}
+    </div>
+  );
+}
+```
+
+#### Dynamic Updates
+
+```tsx
+import { useDContext } from 'dynamic-ui';
+
+function LanguageSwitcher() {
+  const { language, setContext } = useDContext();
+
+  const switchLanguage = (newLang: string) => {
+    setContext({ language: newLang });
+  };
+
+  return (
+    <div>
+      <button onClick={() => switchLanguage('en')}>English</button>
+      <button onClick={() => switchLanguage('es')}>Español</button>
+      <button onClick={() => switchLanguage('fr')}>Français</button>
+      <p>Current: {language}</p>
+    </div>
+  );
+}
+```
+
+#### Custom Icon Library
+
+```tsx
+import { DContextProvider } from 'dynamic-ui';
+
+function App() {
+  return (
+    <DContextProvider
+      icon={{
+        familyClass: 'material-icons',
+        familyPrefix: '',
+        materialStyle: true
+      }}
+      iconMap={{
+        x: 'close',
+        xLg: 'close',
+        chevronDown: 'expand_more',
+        chevronUp: 'expand_less',
+        chevronLeft: 'chevron_left',
+        chevronRight: 'chevron_right',
+        upload: 'upload',
+        calendar: 'calendar_today',
+        check: 'check',
+        alert: {
+          warning: 'warning',
+          danger: 'error',
+          success: 'check_circle',
+          info: 'info'
+        },
+        input: {
+          search: 'search',
+          show: 'visibility',
+          hide: 'visibility_off',
+          increase: 'add',
+          decrease: 'remove'
+        }
+      }}
+    >
+      <YourApp />
+    </DContextProvider>
+  );
+}
+```
+
+---
+
+## DPortalContext
+
+A specialized context for managing modal overlays and portals with stacking, animations, and keyboard navigation.
+
+### Import
+
+```tsx
+import { DPortalContextProvider, useDPortalContext } from 'dynamic-ui';
+```
+
+<Note>
+  `DPortalContextProvider` is automatically rendered by `DContextProvider`. You typically don't need to use it directly unless you need multiple independent portal contexts.
+</Note>
+
+### Types
+
+```typescript
+type PortalComponent<P = any> = FC<PortalProps<P>>;
+
+type PortalProps<P = unknown> = {
+  name: string;
+  payload: P;
+};
+
+type PortalAvailableList<T extends Record<string, unknown>> = {
+  [K in keyof T]: PortalComponent<T[K]>;
+};
+
+type PortalContextType<T extends Record<string, unknown>> = {
+  stack: PortalStackItem<string, T[keyof T]>[];
+  openPortal: (name: string, payload: T[keyof T]) => void;
+  closePortal: () => void;
+};
+```
+
+### Context Value
+
+<ResponseField name="stack" type="PortalStackItem[]">
+  Array of currently open portals in order (oldest to newest)
+</ResponseField>
+
+<ResponseField name="openPortal" type="function">
+  Opens a new portal and adds it to the stack
+  
+  ```typescript
+  (name: string, payload: any) => void
+  ```
+  
+  <ParamField path="name" type="string" required>
+    The portal name (must match a key in `availablePortals`)
+  </ParamField>
+  
+  <ParamField path="payload" type="any">
+    Data to pass to the portal component
+  </ParamField>
+</ResponseField>
+
+<ResponseField name="closePortal" type="function">
+  Closes the topmost portal in the stack
+  
+  ```typescript
+  () => void
+  ```
+</ResponseField>
+
+### Usage
+
+#### Define Portal Components
+
+```tsx
+import type { PortalProps } from 'dynamic-ui';
+
+type ConfirmDialogPayload = {
+  title: string;
+  message: string;
+  onConfirm: () => void;
+};
+
+function ConfirmDialog({ payload }: PortalProps<ConfirmDialogPayload>) {
+  const { closePortal } = useDPortalContext();
+
+  const handleConfirm = () => {
+    payload.onConfirm();
+    closePortal();
+  };
+
+  return (
+    <div className="portal">
+      <div className="modal">
+        <h2>{payload.title}</h2>
+        <p>{payload.message}</p>
+        <button onClick={handleConfirm}>Confirm</button>
+        <button onClick={closePortal}>Cancel</button>
+      </div>
+    </div>
+  );
+}
+
+type ImageViewerPayload = {
+  imageUrl: string;
+  alt: string;
+};
+
+function ImageViewer({ payload }: PortalProps<ImageViewerPayload>) {
+  const { closePortal } = useDPortalContext();
+
+  return (
+    <div className="portal" onClick={closePortal}>
+      <img src={payload.imageUrl} alt={payload.alt} />
+    </div>
+  );
+}
+```
+
+#### Register Portals
+
+```tsx
+import { DContextProvider } from 'dynamic-ui';
+
+type AvailablePortals = {
+  confirm: ConfirmDialogPayload;
+  imageViewer: ImageViewerPayload;
+};
+
+function App() {
+  return (
+    <DContextProvider
+      availablePortals={{
+        confirm: ConfirmDialog,
+        imageViewer: ImageViewer
+      }}
+    >
+      <YourApp />
+    </DContextProvider>
+  );
+}
+```
+
+#### Open Portals
+
+```tsx
+import { useDPortalContext } from 'dynamic-ui';
+
+function DeleteButton({ itemId }) {
+  const { openPortal } = useDPortalContext<AvailablePortals>();
+
+  const handleDelete = () => {
+    openPortal('confirm', {
+      title: 'Delete Item',
+      message: 'Are you sure you want to delete this item?',
+      onConfirm: () => {
+        // Delete logic
+        console.log('Deleting item:', itemId);
+      }
+    });
+  };
+
+  return <button onClick={handleDelete}>Delete</button>;
+}
+
+function ImageGallery({ images }) {
+  const { openPortal } = useDPortalContext<AvailablePortals>();
+
+  return (
+    <div>
+      {images.map(img => (
+        <img
+          key={img.id}
+          src={img.thumbnail}
+          alt={img.alt}
+          onClick={() => openPortal('imageViewer', {
+            imageUrl: img.full,
+            alt: img.alt
+          })}
+        />
+      ))}
+    </div>
+  );
+}
+```
+
+#### Nested Portals
+
+```tsx
+function SettingsPortal({ payload }: PortalProps<SettingsPayload>) {
+  const { openPortal, closePortal } = useDPortalContext();
+
+  const handleReset = () => {
+    // Open a confirmation portal on top of the settings portal
+    openPortal('confirm', {
+      title: 'Reset Settings',
+      message: 'This will reset all settings to defaults.',
+      onConfirm: () => {
+        // Reset logic
+        closePortal(); // Close confirmation
+        closePortal(); // Close settings
+      }
+    });
+  };
+
+  return (
+    <div className="portal">
+      <h2>Settings</h2>
+      <button onClick={handleReset}>Reset to Defaults</button>
+      <button onClick={closePortal}>Close</button>
+    </div>
+  );
+}
+```
+
+### Features
+
+#### Automatic Body Scroll Lock
+
+When portals are open, body scrolling is automatically disabled to prevent background scrolling.
+
+#### Keyboard Navigation
+
+- **Escape**: Closes the topmost portal (if not marked with `data-bs-backdrop`)
+- **Tab**: Keyboard focus is trapped within the active portal
+- **Shift+Tab**: Reverse tab order within portal
+
+#### Backdrop Click
+
+Clicking the backdrop automatically closes the portal unless the portal element has `data-bs-backdrop` attribute.
+
+```tsx
+function ModalWithBackdrop({ payload }: PortalProps) {
+  return (
+    <div className="portal" data-bs-backdrop>
+      {/* Backdrop clicks won't close this modal */}
+    </div>
+  );
+}
+```
+
+#### Animations
+
+Portals use Framer Motion for smooth enter/exit animations:
+
+- Backdrop fades in/out
+- Portal content can add custom animations
+- Exit animations complete before portal is removed
+
+### Portal DOM Structure
+
+Portals are rendered into a container element:
+
+```html
+<div id="d-portal">
+  <!-- Backdrop -->
+  <div class="backdrop" style="opacity: 0.5"></div>
+  <!-- Portal Content -->
+  <div class="portal">
+    <!-- Your portal component -->
+  </div>
+</div>
+```
+
+Make sure to add the portal container to your HTML:
+
+```html
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+    <div id="d-portal"></div>
+  </body>
+</html>
+```
+
+## Related
+
+- [useFormatCurrency](/hooks/use-format-currency) - Uses currency from DContext
+- [useMediaBreakpointUp](/hooks/use-media-query#usemediabreakpointup) - Uses breakpoints from DContext

@@ -1,0 +1,47 @@
+---
+title: Hooks Overview
+description: React hooks for building financial applications with Dynamic UI
+---
+
+Dynamic UI provides a collection of React hooks to simplify common patterns in financial applications, including currency formatting, media queries, and input handling.
+
+## Available Hooks
+
+### Currency Hooks
+
+<CardGroup cols={2}>
+  <Card title="useFormatCurrency" icon="dollar-sign" href="/hooks/use-format-currency">
+    Format numbers as currency values using context-aware settings
+  </Card>
+  <Card title="useInputCurrency" icon="input-text" href="/hooks/use-input-currency">
+    Handle currency input with automatic formatting and validation
+  </Card>
+</CardGroup>
+
+### Media Query Hooks
+
+<CardGroup cols={2}>
+  <Card title="useMediaQuery" icon="mobile" href="/hooks/use-media-query">
+    React to media query changes with SSR support
+  </Card>
+  <Card title="useMediaBreakpointUp" icon="window-maximize" href="/hooks/use-media-query#usemediabreakpointup">
+    Check if viewport matches breakpoint sizes
+  </Card>
+</CardGroup>
+
+## Installation
+
+All hooks are exported from the main package:
+
+```tsx
+import { useFormatCurrency, useMediaQuery } from 'dynamic-ui';
+```
+
+## Context Requirements
+
+Some hooks require the `DContextProvider` to be present in your component tree:
+
+- `useFormatCurrency` - Requires currency settings from context
+- `useMediaBreakpointUp` - Requires breakpoint configuration from context
+
+See [DContext documentation](/utilities/contexts#dcontext) for setup instructions.

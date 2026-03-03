@@ -1,0 +1,191 @@
+---
+title: usePortal
+description: Hook for creating and managing portal DOM elements for rendering content outside the component hierarchy
+---
+
+## Overview
+
+`usePortal` is a React hook that creates a dedicated DOM element (portal) for rendering content like modals, tooltips, and overlays outside the normal component hierarchy. It automatically manages the portal's lifecycle and cleanup.
+
+## Import
+
+```tsx
+import { usePortal } from '@dynamic-framework/ui-react';
+```
+
+## Signature
+
+```tsx
+function usePortal(portalName: string): {
+  created: boolean;
+}
+```
+
+## Parameters
+
+<ParamField path="portalName" type="string" required>
+  Unique identifier for the portal element. This becomes the DOM element's `id` attribute.
+</ParamField>
+
+## Return Value
+
+Returns an object with the following property:
+
+<ResponseField name="created" type="boolean">
+  Indicates whether the portal DOM element has been successfully created and mounted to the document body.
+</ResponseField>
+
+## Behavior
+
+When the hook is called:
+
+1. **Cleanup**: Removes any existing portal element with the same `portalName`
+2. **Creation**: Creates a new `div` element with:
+   - `id` set to `portalName`
+   - `className` set to `d-portal`
+3. **Mounting**: Appends the portal element to `document.body`
+4. **State Update**: Sets `created` to `true` once the portal is mounted
+
+The portal is created once when the component mounts and is cleaned up when the component unmounts.
+
+## Usage Examples
+
+### Basic Portal Creation
+
+```tsx
+import { usePortal } from '@dynamic-framework/ui-react';
+
+function MyModal() {
+  const { created } = usePortal('my-modal-portal');
+
+  if (!created) {
+    return null;
+  }
+
+  return createPortal(
+    <div className="modal">
+      <h2>Modal Content</h2>
+    </div>,
+    document.getElementById('my-modal-portal')
+  );
+}
+```
+
+### With DPortalContext
+
+The `usePortal` hook is used internally by `DPortalContext` to create portal containers for overlays:
+
+```tsx
+import { DPortalContext, usePortal } from '@dynamic-framework/ui-react';
+
+function App() {
+  const { created } = usePortal('app-portal');
+
+  if (!created) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <DPortalContext.Provider
+      config={{
+        portalName: 'app-portal',
+      }}
+    >
+      {/* Your app content */}
+    </DPortalContext.Provider>
+  );
+}
+```
+
+### Multiple Portals
+
+You can create multiple portals for different types of overlays:
+
+```tsx
+function AppLayout() {
+  const modalPortal = usePortal('modal-portal');
+  const tooltipPortal = usePortal('tooltip-portal');
+  const toastPortal = usePortal('toast-portal');
+
+  const allPortalsReady = modalPortal.created 
+    && tooltipPortal.created 
+    && toastPortal.created;
+
+  if (!allPortalsReady) {
+    return <div>Initializing...</div>;
+  }
+
+  return (
+    <div>
+      {/* Render your app */}
+    </div>
+  );
+}
+```
+
+### Conditional Portal
+
+Create a portal only when needed:
+
+```tsx
+function ConditionalOverlay({ showOverlay }) {
+  const { created } = usePortal('conditional-portal');
+
+  if (!showOverlay) {
+    return null;
+  }
+
+  if (!created) {
+    return <div>Loading overlay...</div>;
+  }
+
+  return createPortal(
+    <div className="overlay">Overlay content</div>,
+    document.getElementById('conditional-portal')
+  );
+}
+```
+
+## Implementation Details
+
+The hook uses `useEffect` to manage the portal lifecycle:
+
+- **Mount**: Creates the portal element and appends it to `document.body`
+- **Cleanup**: Automatically removes the portal when the component unmounts
+- **Uniqueness**: If a portal with the same name already exists, it's removed before creating a new one
+
+## DOM Structure
+
+When created, the portal element has this structure:
+
+```html
+<body>
+  <!-- Your app root -->
+  <div id="root">...</div>
+  
+  <!-- Portal element created by usePortal -->
+  <div id="your-portal-name" class="d-portal">
+    <!-- Content rendered via createPortal -->
+  </div>
+</body>
+```
+
+## Best Practices
+
+<Tip>
+  Use descriptive portal names that clearly indicate their purpose (e.g., `'modal-portal'`, `'tooltip-portal'`, `'notification-portal'`).
+</Tip>
+
+<Warning>
+  Ensure portal names are unique across your application to avoid conflicts and unexpected behavior.
+</Warning>
+
+<Note>
+  The portal element is automatically cleaned up when the component unmounts, so you don't need to manually remove it.
+</Note>
+
+## Related
+
+- [DPortalContext](/utilities/contexts#dportalcontext) - Context for managing portal-based overlays
+- [DModal](/api/modal) - Modal component that uses portals
+- [DTooltip](/api/tooltip) - Tooltip component that uses portals

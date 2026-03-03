@@ -1,0 +1,189 @@
+---
+title: DAlert
+description: API reference for the DAlert component
+---
+
+## DAlert
+
+A flexible alert component for displaying contextual feedback messages.
+
+### Import
+
+```tsx
+import { DAlert } from '@dynamic-labs/ui';
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & PropsWithChildren<{
+  id?: string;
+  color?: ComponentStateColor;
+  icon?: string;
+  iconFamilyClass?: string;
+  iconFamilyPrefix?: string;
+  iconMaterialStyle?: boolean;
+  showClose?: boolean;
+  iconClose?: string;
+  iconCloseFamilyClass?: string;
+  iconCloseFamilyPrefix?: string;
+  iconCloseMaterialStyle?: boolean;
+  onClose?: () => void;
+}>;
+
+type ComponentStateColor = 'success' | 'danger' | 'warning' | 'info';
+
+type BaseProps = {
+  style?: CSSProperties;
+  className?: string;
+  dataAttributes?: DataAttributes;
+};
+```
+
+### Props
+
+<ParamField path="id" type="string">
+  Unique identifier for the alert element.
+</ParamField>
+
+<ParamField path="color" type="ComponentStateColor" default="success">
+  Alert color variant. Options: `'success'`, `'danger'`, `'warning'`, `'info'`.
+</ParamField>
+
+<ParamField path="icon" type="string">
+  Icon to display at the start of the alert. If not provided, uses default icon for the color variant.
+</ParamField>
+
+<ParamField path="iconFamilyClass" type="string">
+  CSS class for the icon font family.
+</ParamField>
+
+<ParamField path="iconFamilyPrefix" type="string">
+  Prefix for the icon font family.
+</ParamField>
+
+<ParamField path="iconMaterialStyle" type="boolean" default="false">
+  Whether to use Material Design style for the icon.
+</ParamField>
+
+<ParamField path="showClose" type="boolean">
+  Whether to display a close button.
+</ParamField>
+
+<ParamField path="iconClose" type="string">
+  Icon to use for the close button. Defaults to context icon if not provided.
+</ParamField>
+
+<ParamField path="iconCloseFamilyClass" type="string">
+  CSS class for the close icon font family.
+</ParamField>
+
+<ParamField path="iconCloseFamilyPrefix" type="string">
+  Prefix for the close icon font family.
+</ParamField>
+
+<ParamField path="iconCloseMaterialStyle" type="boolean" default="false">
+  Whether to use Material Design style for the close icon.
+</ParamField>
+
+<ParamField path="onClose" type="() => void">
+  Callback function triggered when the close button is clicked.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the alert.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the alert.
+</ParamField>
+
+<ParamField path="dataAttributes" type="Record<`data-${string}`, string | number | undefined | null | boolean>">
+  Custom data attributes to add to the alert element.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Content to display inside the alert.
+</ParamField>
+
+### Usage Examples
+
+#### Basic Alert
+
+```tsx
+import { DAlert } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DAlert color="success">
+      Your changes have been saved successfully!
+    </DAlert>
+  );
+}
+```
+
+#### Alert with Close Button
+
+```tsx
+import { DAlert } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [show, setShow] = useState(true);
+
+  if (!show) return null;
+
+  return (
+    <DAlert
+      color="warning"
+      showClose
+      onClose={() => setShow(false)}
+    >
+      Please review your information before continuing.
+    </DAlert>
+  );
+}
+```
+
+#### Custom Icon Alert
+
+```tsx
+import { DAlert } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <DAlert
+      color="info"
+      icon="info-circle-fill"
+      iconFamilyClass="bi"
+    >
+      This feature is currently in beta.
+    </DAlert>
+  );
+}
+```
+
+#### All Color Variants
+
+```tsx
+import { DAlert } from '@dynamic-labs/ui';
+
+export default function Example() {
+  return (
+    <div className="d-flex flex-column gap-3">
+      <DAlert color="success">
+        Success: Operation completed successfully!
+      </DAlert>
+      <DAlert color="danger">
+        Error: Something went wrong.
+      </DAlert>
+      <DAlert color="warning">
+        Warning: Please check your input.
+      </DAlert>
+      <DAlert color="info">
+        Info: Here's some helpful information.
+      </DAlert>
+    </div>
+  );
+}
+```

@@ -1,0 +1,419 @@
+---
+title: DModal
+description: API reference for the DModal component family
+---
+
+## DModal
+
+A flexible modal dialog component with animation support.
+
+### Import
+
+```tsx
+import { DModal } from '@dynamic-labs/ui';
+```
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & PropsWithChildren<{
+  name: string;
+  staticBackdrop?: boolean;
+  scrollable?: boolean;
+  centered?: boolean;
+  fullScreen?: boolean;
+  fullScreenFrom?: ModalFullScreenFrom;
+  size?: ModalSize;
+  transition?: Transition;
+}>;
+
+type ModalSize = 'sm' | 'lg' | 'xl';
+type ModalFullScreenFrom = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+
+type BaseProps = {
+  style?: CSSProperties;
+  className?: string;
+  dataAttributes?: DataAttributes;
+};
+```
+
+### Props
+
+<ParamField path="name" type="string" required>
+  Unique identifier for the modal. Used for accessibility attributes.
+</ParamField>
+
+<ParamField path="staticBackdrop" type="boolean">
+  If true, prevents closing the modal when clicking outside or pressing escape.
+</ParamField>
+
+<ParamField path="scrollable" type="boolean">
+  If true, makes the modal body scrollable when content exceeds viewport height.
+</ParamField>
+
+<ParamField path="centered" type="boolean">
+  If true, vertically centers the modal in the viewport.
+</ParamField>
+
+<ParamField path="fullScreen" type="boolean">
+  If true, makes the modal full screen.
+</ParamField>
+
+<ParamField path="fullScreenFrom" type="ModalFullScreenFrom">
+  Breakpoint from which the modal becomes full screen. Options: `'sm'`, `'md'`, `'lg'`, `'xl'`, `'xxl'`.
+</ParamField>
+
+<ParamField path="size" type="ModalSize">
+  Size variant of the modal. Options: `'sm'`, `'lg'`, `'xl'`.
+</ParamField>
+
+<ParamField path="transition" type="Transition">
+  Custom Framer Motion transition configuration for modal animations.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the modal.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the modal.
+</ParamField>
+
+<ParamField path="dataAttributes" type="Record<`data-${string}`, string | number | undefined | null | boolean>">
+  Custom data attributes to add to the modal element.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Modal content (typically `DModal.Header`, `DModal.Body`, and `DModal.Footer`).
+</ParamField>
+
+---
+
+## DModal.Header
+
+Header section for the modal with optional close button.
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps &
+  FamilyIconProps &
+  PropsWithChildren<{
+    showCloseButton?: boolean;
+    icon?: string;
+    materialStyle?: boolean;
+    onClose?: () => void;
+  }>;
+```
+
+### Props
+
+<ParamField path="showCloseButton" type="boolean">
+  If true, displays a close button in the header.
+</ParamField>
+
+<ParamField path="icon" type="string">
+  Custom icon for the close button. Uses default if not provided.
+</ParamField>
+
+<ParamField path="materialStyle" type="boolean" default="false">
+  Whether to use Material Design style for the close icon.
+</ParamField>
+
+<ParamField path="iconFamilyClass" type="string">
+  CSS class for the icon font family.
+</ParamField>
+
+<ParamField path="iconFamilyPrefix" type="string">
+  Prefix for the icon font family.
+</ParamField>
+
+<ParamField path="onClose" type="() => void">
+  Callback function when close button is clicked.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Content to display in the header (typically the modal title).
+</ParamField>
+
+---
+
+## DModal.Body
+
+Main content section for the modal.
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & {
+  children: ReactNode;
+};
+```
+
+### Props
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the modal body.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the modal body.
+</ParamField>
+
+<ParamField path="children" type="ReactNode" required>
+  Content to display in the modal body.
+</ParamField>
+
+---
+
+## DModal.Footer
+
+Footer section for the modal with action button placement options.
+
+### TypeScript Interface
+
+```typescript
+type Props = BaseProps & PropsWithChildren<{
+  actionPlacement?: 'start' | 'end' | 'fill' | 'center';
+}>;
+```
+
+### Props
+
+<ParamField path="actionPlacement" type="'start' | 'end' | 'fill' | 'center'">
+  Controls the alignment of action buttons in the footer.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the modal footer.
+</ParamField>
+
+<ParamField path="style" type="CSSProperties">
+  Inline styles to apply to the modal footer.
+</ParamField>
+
+<ParamField path="children" type="ReactNode">
+  Content to display in the footer (typically action buttons).
+</ParamField>
+
+---
+
+## Usage Examples
+
+### Basic Modal
+
+```tsx
+import { DModal, DButton } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <DButton text="Open Modal" onClick={() => setIsOpen(true)} />
+      {isOpen && (
+        <DModal name="basicModal">
+          <DModal.Header showCloseButton onClose={() => setIsOpen(false)}>
+            <h5>Modal Title</h5>
+          </DModal.Header>
+          <DModal.Body>
+            <p>This is the modal content.</p>
+          </DModal.Body>
+          <DModal.Footer>
+            <DButton text="Close" onClick={() => setIsOpen(false)} />
+          </DModal.Footer>
+        </DModal>
+      )}
+    </>
+  );
+}
+```
+
+### Centered Modal
+
+```tsx
+import { DModal, DButton } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <DButton text="Open Centered Modal" onClick={() => setIsOpen(true)} />
+      {isOpen && (
+        <DModal name="centeredModal" centered>
+          <DModal.Header showCloseButton onClose={() => setIsOpen(false)}>
+            <h5>Centered Modal</h5>
+          </DModal.Header>
+          <DModal.Body>
+            <p>This modal is vertically centered.</p>
+          </DModal.Body>
+        </DModal>
+      )}
+    </>
+  );
+}
+```
+
+### Size Variants
+
+```tsx
+import { DModal, DButton } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [size, setSize] = useState<'sm' | 'lg' | 'xl' | undefined>();
+
+  return (
+    <>
+      <div className="d-flex gap-2">
+        <DButton text="Small" onClick={() => setSize('sm')} size="sm" />
+        <DButton text="Default" onClick={() => setSize(undefined)} />
+        <DButton text="Large" onClick={() => setSize('lg')} size="sm" />
+        <DButton text="Extra Large" onClick={() => setSize('xl')} size="sm" />
+      </div>
+      {size !== undefined && (
+        <DModal name="sizeModal" size={size}>
+          <DModal.Header showCloseButton onClose={() => setSize(undefined)}>
+            <h5>{size ? `${size.toUpperCase()} Modal` : 'Default Modal'}</h5>
+          </DModal.Header>
+          <DModal.Body>
+            <p>This is a {size || 'default'} sized modal.</p>
+          </DModal.Body>
+        </DModal>
+      )}
+    </>
+  );
+}
+```
+
+### Scrollable Modal
+
+```tsx
+import { DModal, DButton } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <DButton text="Open Scrollable Modal" onClick={() => setIsOpen(true)} />
+      {isOpen && (
+        <DModal name="scrollableModal" scrollable>
+          <DModal.Header showCloseButton onClose={() => setIsOpen(false)}>
+            <h5>Scrollable Modal</h5>
+          </DModal.Header>
+          <DModal.Body>
+            {Array.from({ length: 20 }).map((_, i) => (
+              <p key={i}>This is paragraph {i + 1} of the modal content.</p>
+            ))}
+          </DModal.Body>
+          <DModal.Footer>
+            <DButton text="Close" onClick={() => setIsOpen(false)} />
+          </DModal.Footer>
+        </DModal>
+      )}
+    </>
+  );
+}
+```
+
+### Full Screen Modal
+
+```tsx
+import { DModal, DButton } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <DButton text="Open Full Screen Modal" onClick={() => setIsOpen(true)} />
+      {isOpen && (
+        <DModal name="fullScreenModal" fullScreen>
+          <DModal.Header showCloseButton onClose={() => setIsOpen(false)}>
+            <h5>Full Screen Modal</h5>
+          </DModal.Header>
+          <DModal.Body>
+            <p>This modal takes up the entire screen.</p>
+          </DModal.Body>
+        </DModal>
+      )}
+    </>
+  );
+}
+```
+
+### Responsive Full Screen
+
+```tsx
+import { DModal, DButton } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <DButton text="Open Modal" onClick={() => setIsOpen(true)} />
+      {isOpen && (
+        <DModal
+          name="responsiveModal"
+          fullScreen
+          fullScreenFrom="md"
+        >
+          <DModal.Header showCloseButton onClose={() => setIsOpen(false)}>
+            <h5>Responsive Modal</h5>
+          </DModal.Header>
+          <DModal.Body>
+            <p>This modal is full screen below medium breakpoint.</p>
+          </DModal.Body>
+        </DModal>
+      )}
+    </>
+  );
+}
+```
+
+### Action Placement
+
+```tsx
+import { DModal, DButton } from '@dynamic-labs/ui';
+import { useState } from 'react';
+
+export default function Example() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <DButton text="Open Modal" onClick={() => setIsOpen(true)} />
+      {isOpen && (
+        <DModal name="actionsModal">
+          <DModal.Header showCloseButton onClose={() => setIsOpen(false)}>
+            <h5>Modal with Actions</h5>
+          </DModal.Header>
+          <DModal.Body>
+            <p>Choose an action below.</p>
+          </DModal.Body>
+          <DModal.Footer actionPlacement="end">
+            <DButton
+              text="Cancel"
+              variant="outline"
+              onClick={() => setIsOpen(false)}
+            />
+            <DButton
+              text="Save Changes"
+              color="primary"
+              onClick={() => setIsOpen(false)}
+            />
+          </DModal.Footer>
+        </DModal>
+      )}
+    </>
+  );
+}
+```

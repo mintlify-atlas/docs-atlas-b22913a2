@@ -1,0 +1,349 @@
+---
+title: useInputCurrency
+description: Advanced hook for currency input handling with automatic formatting
+---
+
+The `useInputCurrency` hook manages the complex state and behavior of currency input fields, automatically switching between numeric and formatted display modes, and providing style variables for currency symbols.
+
+## Import
+
+```tsx
+import { useInputCurrency } from 'dynamic-ui';
+```
+
+## Signature
+
+```typescript
+function useInputCurrency(
+  currencyOptions: Options,
+  value?: number,
+  onFocus?: (event: FocusEvent<HTMLInputElement>) => void,
+  onChange?: (value?: number) => void,
+  onBlur?: (event: FocusEvent<HTMLInputElement>) => void,
+  ref?: ForwardedRef<HTMLInputElement>,
+): UseInputCurrencyReturn
+```
+
+## Parameters
+
+<ParamField path="currencyOptions" type="Options" required>
+  Currency.js options object for formatting. See [currency.js documentation](https://currency.js.org/) for all available options.
+  
+  ```typescript
+  type Options = {
+    symbol?: string;
+    separator?: string;
+    decimal?: string;
+    precision?: number;
+    // ... other currency.js options
+  }
+  ```
+</ParamField>
+
+<ParamField path="value" type="number">
+  The current numeric value of the input. Can be `undefined` for empty inputs.
+</ParamField>
+
+<ParamField path="onFocus" type="(event: FocusEvent<HTMLInputElement>) => void">
+  Callback fired when the input receives focus. The hook's internal handler will be called first.
+</ParamField>
+
+<ParamField path="onChange" type="(value?: number) => void">
+  Callback fired when the input value changes. Receives the numeric value or `undefined` if empty.
+</ParamField>
+
+<ParamField path="onBlur" type="(event: FocusEvent<HTMLInputElement>) => void">
+  Callback fired when the input loses focus. The hook's internal handler will be called first.
+</ParamField>
+
+<ParamField path="ref" type="ForwardedRef<HTMLInputElement>">
+  Optional React ref to forward to the input element. If not provided, the hook creates one internally.
+</ParamField>
+
+## Return Value
+
+```typescript
+type UseInputCurrencyReturn = {
+  inputRef: RefObject<HTMLInputElement>;
+  innerValue: string;
+  innerType: string;
+  handleOnFocus: (event: FocusEvent<HTMLInputElement>) => void;
+  handleOnChange: (value?: string) => void;
+  handleOnBlur: (event: FocusEvent<HTMLInputElement>) => void;
+  generateStyleVariables: CustomStyles;
+  generateSymbolStyleVariables: CSSProperties;
+}
+```
+
+<ResponseField name="inputRef" type="RefObject<HTMLInputElement>">
+  Ref object to attach to the input element
+</ResponseField>
+
+<ResponseField name="innerValue" type="string">
+  The current display value for the input (formatted when blurred, raw number when focused)
+</ResponseField>
+
+<ResponseField name="innerType" type="string">
+  The current input type: `"number"` when focused, `"text"` when blurred
+</ResponseField>
+
+<ResponseField name="handleOnFocus" type="function">
+  Focus event handler that switches to numeric input mode
+</ResponseField>
+
+<ResponseField name="handleOnChange" type="function">
+  Change event handler that updates the value and calls the provided `onChange` callback
+</ResponseField>
+
+<ResponseField name="handleOnBlur" type="function">
+  Blur event handler that switches to formatted text display mode
+</ResponseField>
+
+<ResponseField name="generateStyleVariables" type="CustomStyles">
+  CSS custom properties for styling the input component:
+  ```typescript
+  {
+    '--d-input-currency-component-symbol-color': 'var(--d-secondary)',
+    '--d-input-currency-symbol-color': 'var(--d-input-currency-component-symbol-color)'
+  }
+  ```
+</ResponseField>
+
+<ResponseField name="generateSymbolStyleVariables" type="CSSProperties">
+  Style object for the currency symbol element:
+  ```typescript
+  {
+    color: 'var(--d-input-currency-symbol-color)'
+  }
+  ```
+</ResponseField>
+
+## Usage
+
+### Basic Currency Input
+
+```tsx
+import { useInputCurrency } from 'dynamic-ui';
+
+function CurrencyInput({ value, onChange }) {
+  const currencyOptions = {
+    symbol: '$',
+    separator: ',',
+    decimal: '.',
+    precision: 2
+  };
+
+  const {
+    inputRef,
+    innerValue,
+    innerType,
+    handleOnFocus,
+    handleOnChange,
+    handleOnBlur,
+    generateStyleVariables,
+    generateSymbolStyleVariables
+  } = useInputCurrency(
+    currencyOptions,
+    value,
+    undefined,
+    onChange
+  );
+
+  return (
+    <div style={generateStyleVariables}>
+      <span style={generateSymbolStyleVariables}>
+        {currencyOptions.symbol}
+      </span>
+      <input
+        ref={inputRef}
+        type={innerType}
+        value={innerValue}
+        onFocus={handleOnFocus}
+        onChange={(e) => handleOnChange(e.target.value)}
+        onBlur={handleOnBlur}
+      />
+    </div>
+  );
+}
+```
+
+### With Custom Callbacks
+
+```tsx
+import { useInputCurrency } from 'dynamic-ui';
+import { useState } from 'react';
+
+function PriceInput() {
+  const [price, setPrice] = useState<number | undefined>(0);
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    console.log('Input focused');
+  };
+
+  const handleChange = (value?: number) => {
+    setPrice(value);
+    console.log('New price:', value);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    console.log('Input blurred with value:', price);
+  };
+
+  const {
+    inputRef,
+    innerValue,
+    innerType,
+    handleOnFocus,
+    handleOnChange,
+    handleOnBlur
+  } = useInputCurrency(
+    { symbol: '$', precision: 2, separator: ',', decimal: '.' },
+    price,
+    handleFocus,
+    handleChange,
+    handleBlur
+  );
+
+  return (
+    <input
+      ref={inputRef}
+      type={innerType}
+      value={innerValue}
+      onFocus={handleOnFocus}
+      onChange={(e) => handleOnChange(e.target.value)}
+      onBlur={handleOnBlur}
+    />
+  );
+}
+```
+
+### Forwarding Ref
+
+```tsx
+import { useInputCurrency } from 'dynamic-ui';
+import { useRef, forwardRef } from 'react';
+
+const CurrencyInput = forwardRef<HTMLInputElement, Props>(
+  ({ value, onChange }, ref) => {
+    const {
+      inputRef,
+      innerValue,
+      innerType,
+      handleOnFocus,
+      handleOnChange,
+      handleOnBlur
+    } = useInputCurrency(
+      { symbol: '$', precision: 2, separator: ',', decimal: '.' },
+      value,
+      undefined,
+      onChange,
+      undefined,
+      ref
+    );
+
+    return (
+      <input
+        ref={inputRef}
+        type={innerType}
+        value={innerValue}
+        onFocus={handleOnFocus}
+        onChange={(e) => handleOnChange(e.target.value)}
+        onBlur={handleOnBlur}
+      />
+    );
+  }
+);
+```
+
+### Complete Styled Component
+
+```tsx
+import { useInputCurrency } from 'dynamic-ui';
+import styled from 'styled-components';
+
+const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 4px;
+  
+  &:focus-within {
+    border-color: #007bff;
+  }
+`;
+
+const Symbol = styled.span`
+  margin-right: 4px;
+  font-weight: 600;
+`;
+
+const Input = styled.input`
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 16px;
+`;
+
+function StyledCurrencyInput({ value, onChange }) {
+  const {
+    inputRef,
+    innerValue,
+    innerType,
+    handleOnFocus,
+    handleOnChange,
+    handleOnBlur,
+    generateStyleVariables,
+    generateSymbolStyleVariables
+  } = useInputCurrency(
+    { symbol: '$', precision: 2, separator: ',', decimal: '.' },
+    value,
+    undefined,
+    onChange
+  );
+
+  return (
+    <InputWrapper style={generateStyleVariables}>
+      <Symbol style={generateSymbolStyleVariables}>$</Symbol>
+      <Input
+        ref={inputRef}
+        type={innerType}
+        value={innerValue}
+        onFocus={handleOnFocus}
+        onChange={(e) => handleOnChange(e.target.value)}
+        onBlur={handleOnBlur}
+      />
+    </InputWrapper>
+  );
+}
+```
+
+## Behavior
+
+### Input Mode Switching
+
+The hook automatically switches between two modes:
+
+1. **Focused (Number Mode)**: When the input has focus, it displays the raw numeric value and sets `type="number"` for easier editing
+2. **Blurred (Text Mode)**: When focus is lost, it displays the fully formatted currency string with symbol, separators, and precision
+
+### Value Synchronization
+
+The hook synchronizes external `value` prop changes with internal state, ensuring the displayed value updates when the parent component changes the value.
+
+### Event Handling
+
+All event handlers (focus, change, blur) call `event.stopPropagation()` to prevent event bubbling, which can be important in complex form layouts.
+
+## Implementation Details
+
+- Uses `useProvidedRefOrCreate` to handle optional ref forwarding
+- Manages internal state for display value, numeric value, and input type
+- Formats values using the `currency.js` library
+- Provides CSS custom properties for consistent theming
+- Memoizes style objects and callbacks for performance
+
+## Related
+
+- [useFormatCurrency](/hooks/use-format-currency) - Format currency for display
+- [Input Components](/components/inputs) - DInputCurrency and other input components

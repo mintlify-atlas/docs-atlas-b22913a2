@@ -1,0 +1,456 @@
+---
+title: "Customization"
+description: "Customize Dynamic UI's styling to match your brand and design requirements"
+---
+
+Dynamic UI's SCSS architecture allows deep customization through variable overrides, custom themes, and CSS variable manipulation.
+
+## Variable Override Strategy
+
+All Dynamic UI variables use the `!default` flag, allowing you to override them before importing:
+
+```scss
+// your-theme.scss
+
+// 1. Override variables BEFORE importing Dynamic UI
+$primary: #0066cc;
+$font-family-sans-serif: "Inter", sans-serif;
+$border-radius: 0.25rem;
+
+// 2. Import Dynamic UI
+@import "dynamic-ui";
+
+// 3. Add custom styles after import
+.custom-component {
+  background: var(--bs-primary-100);
+}
+```
+
+<Warning>
+  Always override variables **before** importing Dynamic UI. Variables defined after the import will have no effect due to the `!default` flag.
+</Warning>
+
+## Customizing Colors
+
+### Override Base Colors
+
+Change the foundational color palette:
+
+```scss
+// Define your brand colors
+$blue: #0066cc;
+$green: #00b894;
+$red: #d63031;
+$yellow: #fdcb6e;
+
+// Map to theme colors
+$primary: $blue;
+$success: $green;
+$danger: $red;
+$warning: $yellow;
+
+@import "dynamic-ui";
+```
+
+This automatically generates:
+- 11 shades for each color (25-900)
+- CSS variables for all shades
+- Button variants
+- Background and text utilities
+
+### Gray Scale Customization
+
+Override the entire gray palette:
+
+```scss
+$gray-25: #fafafa;
+$gray-50: #f5f5f5;
+$gray-100: #e5e5e5;
+$gray-200: #d4d4d4;
+$gray-300: #a3a3a3;
+$gray-400: #737373;
+$gray-500: #525252;
+$gray-600: #404040;
+$gray-700: #262626;
+$gray-800: #171717;
+$gray-900: #0a0a0a;
+
+@import "dynamic-ui";
+```
+
+### Adding Custom Theme Colors
+
+Extend the theme colors map:
+
+```scss
+// Add custom brand colors
+$brand: #ff6b6b;
+$accent: #4ecdc4;
+
+$theme-colors-extra: (
+  "brand": $brand,
+  "accent": $accent,
+);
+
+@import "dynamic-ui";
+```
+
+This generates:
+- `.btn-brand`, `.btn-accent` buttons
+- `.bg-brand`, `.bg-accent` utilities
+- `.text-brand`, `.text-accent` utilities
+- Full color palettes with CSS variables
+
+## Customizing Typography
+
+### Font Family
+
+Replace the default Jost font:
+
+```scss
+// Use a different font stack
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, 
+  "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+@import "dynamic-ui";
+```
+
+### Font Sizes
+
+Adjust heading and display sizes:
+
+```scss
+// Larger headings
+$h1-font-size-value: 4rem;    // 64px instead of 48px
+$h2-font-size-value: 3rem;    // 48px instead of 40px
+$h3-font-size-value: 2.5rem;  // 40px instead of 32px
+
+// Smaller display sizes
+$display1-font-size-value: 4.5rem;  // 72px instead of 96px
+
+@import "dynamic-ui";
+```
+
+### Font Weights
+
+Customize weight scale:
+
+```scss
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-bolder: 800;
+
+@import "dynamic-ui";
+```
+
+## Customizing Spacing
+
+### Modify Base Spacer
+
+Change the fundamental spacing unit:
+
+```scss
+// Use 20px instead of 16px as base
+$spacer: 1.25rem;  // 20px
+
+@import "dynamic-ui";
+```
+
+This scales all spacing:
+- `$spacer-1`: 5px (instead of 4px)
+- `$spacer-2`: 10px (instead of 8px)
+- `$spacer-4`: 20px (instead of 16px)
+
+### Extend Spacing Scale
+
+Add custom spacing values:
+
+```scss
+// Add custom spacers
+$spacer-32: $spacer * 8;     // 128px
+$spacer-40: $spacer * 10;    // 160px
+
+$spacers: (
+  0: 0,
+  1: $spacer-1,
+  // ... default spacers ...
+  32: $spacer-32,
+  40: $spacer-40,
+);
+
+@import "dynamic-ui";
+```
+
+Use in HTML:
+```html
+<div class="p-32 mt-40">
+```
+
+## Customizing Components
+
+### Button Customization
+
+```scss
+// Larger, bolder buttons
+$btn-padding-y: $spacer-3;           // 12px instead of 8px
+$btn-padding-x: $spacer-6;           // 24px instead of 16px
+$btn-font-weight: $font-weight-bold; // 600 instead of 500
+$btn-border-radius: 0.75rem;         // 12px instead of 8px
+
+// Adjust button sizes
+$btn-padding-y-sm: $spacer-2;   // Small
+$btn-padding-x-sm: $spacer-4;
+
+$btn-padding-y-lg: $spacer-4;   // Large
+$btn-padding-x-lg: $spacer-8;
+
+@import "dynamic-ui";
+```
+
+### Border Radius
+
+Create a more rounded or sharp design:
+
+```scss
+// More rounded design
+$border-radius: 0.75rem;      // 12px
+$border-radius-sm: 0.5rem;    // 8px
+$border-radius-lg: 1.25rem;   // 20px
+$border-radius-xl: 2rem;      // 32px
+$border-radius-xxl: 3rem;     // 48px
+
+// Or completely sharp design
+$border-radius: 0;
+$border-radius-sm: 0;
+$border-radius-lg: 0;
+
+@import "dynamic-ui";
+```
+
+### Form Controls
+
+Customize form inputs:
+
+```scss
+$input-btn-padding-y: $spacer-3;      // Vertical padding
+$input-btn-padding-x: $spacer-4;      // Horizontal padding
+$input-btn-border-width: 2px;         // Thicker borders
+$input-btn-focus-width: 0.25rem;      // Focus ring width
+
+@import "dynamic-ui";
+```
+
+## CSS Variable Customization
+
+Override CSS variables at runtime without recompiling SCSS:
+
+### Global Theme Override
+
+```css
+:root {
+  /* Override primary color */
+  --bs-primary-rgb: 0, 102, 204;
+  --bs-primary: rgb(var(--bs-primary-rgb));
+  
+  /* Override spacing */
+  --bs-ref-spacer-4: 1.25rem;
+  
+  /* Override typography */
+  --bs-fw-bold: 700;
+  --bs-border-radius: 0.75rem;
+}
+```
+
+### Component-Specific Override
+
+```css
+.custom-card {
+  /* Override just for this component */
+  --bs-border-radius: 1rem;
+  --bs-card-bg: var(--bs-gray-25);
+}
+```
+
+### Dynamic Theming Example
+
+```jsx
+import React from 'react';
+import { Button } from 'dynamic-ui';
+
+function ThemedComponent() {
+  return (
+    <div style={{
+      '--bs-primary-rgb': '255, 107, 107',
+      '--bs-btn-border-radius': '2rem'
+    }}>
+      <Button variant="primary">Themed Button</Button>
+    </div>
+  );
+}
+```
+
+## Creating Custom Mixins
+
+Extend Dynamic UI with your own mixins:
+
+```scss
+// custom-mixins.scss
+@import "dynamic-ui/abstracts/variables/+import";
+@import "dynamic-ui/abstracts/mixins";
+
+// Custom card mixin
+@mixin custom-card($bg-color: var(--bs-white)) {
+  background-color: $bg-color;
+  border-radius: var(--bs-border-radius-lg);
+  padding: var(--bs-ref-spacer-6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// Custom gradient mixin
+@mixin gradient-bg($color1, $color2) {
+  background: linear-gradient(135deg, $color1 0%, $color2 100%);
+}
+```
+
+Use in your components:
+```scss
+.custom-panel {
+  @include custom-card(var(--bs-gray-25));
+}
+
+.hero-section {
+  @include gradient-bg(
+    var(--bs-primary-500),
+    var(--bs-primary-700)
+  );
+}
+```
+
+## Button Variant Customization
+
+Create custom button color schemes using Dynamic UI's mixin system:
+
+```scss
+@import "dynamic-ui/abstracts/variables/+import";
+@import "dynamic-ui/abstracts/mixins";
+
+:root {
+  // Define custom button variant
+  @include df-button-variant-variables(
+    "brand",
+    $default-color: var(--bs-brand-500),
+    $default-text-color: var(--bs-white),
+    $hover-color: var(--bs-brand-600),
+    $active-color: var(--bs-brand-700)
+  );
+  
+  // Define outline variant
+  @include df-button-outline-variant-variables(
+    "brand",
+    $default-color: var(--bs-brand-500),
+    $hover-color: var(--bs-brand-600)
+  );
+}
+```
+
+## Advanced: Custom Utility Classes
+
+Extend the utilities API:
+
+```scss
+$utilities: map-merge(
+  $utilities,
+  (
+    "custom-spacing": (
+      property: padding,
+      class: p-custom,
+      values: (
+        1: 0.5rem,
+        2: 1rem,
+        3: 2rem
+      )
+    ),
+    "brand-colors": (
+      property: color,
+      class: text-brand,
+      values: (
+        light: #ff8787,
+        base: #ff6b6b,
+        dark: #d63031
+      )
+    )
+  )
+);
+
+@import "dynamic-ui";
+```
+
+Generated classes:
+```html
+<div class="p-custom-2 text-brand-base">
+```
+
+## Dark Mode Customization
+
+Customize dark mode colors:
+
+```scss
+$enable-dark-mode: true;
+
+// Dark mode overrides
+$body-color-dark: #e5e5e5;
+$body-bg-dark: #0a0a0a;
+$border-color-dark: #262626;
+
+@import "dynamic-ui";
+```
+
+Add custom dark mode styles:
+```scss
+@include color-mode(dark) {
+  .custom-component {
+    background: var(--bs-gray-800);
+    border-color: var(--bs-gray-700);
+  }
+}
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use CSS Variables for Runtime Changes">
+    Prefer CSS variables (`--bs-*`) for values that might change at runtime or need scoping to specific components. Use SCSS variables for build-time configuration.
+  </Accordion>
+  
+  <Accordion title="Don't Override Bootstrap Variables Directly">
+    Always use Dynamic UI's variable names. While Bootstrap variables work, Dynamic UI's system generates additional utilities and CSS variables.
+  </Accordion>
+  
+  <Accordion title="Test Color Contrast">
+    When customizing colors, ensure sufficient contrast ratios. Dynamic UI's `$min-contrast-ratio` is set to 4.5 for WCAG AA compliance.
+  </Accordion>
+  
+  <Accordion title="Document Custom Variables">
+    Create a separate `_custom-variables.scss` file to track your overrides:
+    ```scss
+    // _custom-variables.scss
+    $primary: #0066cc;      // Brand blue
+    $border-radius: 0.25rem; // Sharper corners
+    
+    @import "dynamic-ui";
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="SCSS Variables Reference" icon="book" href="/styling/scss-variables">
+    Complete list of all customizable SCSS variables
+  </Card>
+  <Card title="CSS Utilities" icon="sparkles" href="/styling/css-utilities">
+    Available utility classes and how to extend them
+  </Card>
+</CardGroup>

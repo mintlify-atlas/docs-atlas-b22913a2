@@ -1,0 +1,394 @@
+---
+title: Theming System
+description: Customize colors, typography, and design tokens in Dynamic UI
+---
+
+## Overview
+
+Dynamic UI provides a comprehensive theming system built on SCSS variables and CSS custom properties. The system enables complete visual customization while maintaining consistency across your application.
+
+## Color System
+
+The library uses a sophisticated color palette with automatic shade generation and semantic color mapping.
+
+### Base Colors
+
+Dynamic UI defines 10 base colors with 11 shades each (25-900):
+
+```scss src/style/abstracts/variables/_colors.scss
+$blue: #2068d5 !default;
+$indigo: #6610f2 !default;
+$purple: #4848b7 !default;
+$pink: #d81b60 !default;
+$red: #dc3545 !default;
+$orange: #fd7e14 !default;
+$yellow: #ffc107 !default;
+$green: #198754 !default;
+$teal: #20c997 !default;
+$cyan: #0dcaf0 !default;
+```
+
+### Gray Scale
+
+```scss src/style/abstracts/variables/_colors.scss
+$white: #fff !default;
+$gray-25: #fbfbfc !default;
+$gray-50: #f0f0f2 !default;
+$gray-100: #e1e1e6 !default;
+$gray-200: #c4c4cd !default;
+$gray-300: #a7a7b4 !default;
+$gray-400: #8a8a9b !default;
+$gray-500: #6d6d82 !default;
+$gray-600: #575768 !default;
+$gray-700: #41414e !default;
+$gray-800: #2b2b34 !default;
+$gray-900: #15151a !default;
+$black: #000 !default;
+```
+
+### Theme Colors
+
+Semantic colors map to the base palette:
+
+```scss src/style/abstracts/variables/_colors.scss
+$theme-colors-mapping: (
+  "primary": "blue",
+  "secondary": "gray-800",
+  "success": "green",
+  "info": "blue",
+  "warning": "yellow",
+  "danger": "red",
+  "light": "gray-25",
+  "dark": "gray-900"
+) !default;
+```
+
+<Info>
+Changing the theme color mapping allows you to rebrand your entire application by updating a single variable.
+</Info>
+
+## Customizing Colors
+
+### Method 1: Override SCSS Variables
+
+Create a custom theme file before importing Dynamic UI:
+
+```scss your-theme.scss
+// Override base colors
+$blue: #1e40af;  // Custom primary blue
+$green: #059669; // Custom success green
+
+// Override theme mappings
+$theme-colors-mapping: (
+  "primary": "purple",  // Use purple as primary instead of blue
+  "secondary": "gray-600",
+  "success": "green",
+  "info": "cyan",
+  "warning": "orange",
+  "danger": "red",
+  "light": "gray-25",
+  "dark": "gray-900"
+);
+
+// Import Dynamic UI
+@import '@dynamic-framework/ui-react/dist/css/dynamic-ui';
+```
+
+### Method 2: CSS Custom Properties
+
+Override CSS variables at runtime for dynamic theming:
+
+```css
+:root {
+  /* Override primary color shades */
+  --bs-primary-rgb: 30, 64, 175;
+  --bs-primary-500-rgb: 30, 64, 175;
+  --bs-primary-600-rgb: 29, 78, 216;
+  --bs-primary-700-rgb: 37, 99, 235;
+  
+  /* Override gray scale */
+  --bs-gray-900: rgb(17, 24, 39);
+  --bs-gray-800: rgb(31, 41, 55);
+}
+```
+
+<Warning>
+When overriding RGB values, ensure you also update the corresponding color variables to maintain consistency.
+</Warning>
+
+## Automatic Shade Generation
+
+Dynamic UI automatically generates 11 shades for each base color using tint and shade functions:
+
+```scss src/style/abstracts/variables/_colors.scss
+$blue-25: tint-color($blue, 95%) !default;  // Lightest
+$blue-50: tint-color($blue, 90%) !default;
+$blue-100: tint-color($blue, 80%) !default;
+$blue-200: tint-color($blue, 60%) !default;
+$blue-300: tint-color($blue, 40%) !default;
+$blue-400: tint-color($blue, 20%) !default;
+$blue-500: $blue !default;                   // Base color
+$blue-600: shade-color($blue, 20%) !default;
+$blue-700: shade-color($blue, 40%) !default;
+$blue-800: shade-color($blue, 60%) !default;
+$blue-900: shade-color($blue, 80%) !default; // Darkest
+```
+
+This creates a consistent color system:
+
+<CodeGroup>
+```scss Primary Shades
+$primary-25  // Subtle backgrounds
+$primary-50  // Hover backgrounds
+$primary-100 // Borders, dividers
+$primary-500 // Default state
+$primary-600 // Hover state
+$primary-700 // Active state
+$primary-900 // High contrast text
+```
+
+```scss Success Shades
+$success-25  // Success backgrounds
+$success-100 // Success borders
+$success-500 // Default success
+$success-700 // Active success
+```
+</CodeGroup>
+
+## Component Theming
+
+### Button Variants
+
+Dynamic UI generates CSS variables for each button variant automatically:
+
+```scss src/style/abstracts/_mixins.scss
+@mixin df-button-variant-variables(
+  $color-name,
+  $default-color: var(--#{$prefix}#{$color-name}-500),
+  $hover-color: var(--#{$prefix}#{$color-name}-600),
+  $active-color: var(--#{$prefix}#{$color-name}-700),
+  // ... more parameters
+) {
+  --#{$prefix}btn-#{$color-name}-color: #{$default-text-color};
+  --#{$prefix}btn-#{$color-name}-bg: #{$default-color};
+  --#{$prefix}btn-#{$color-name}-hover-bg: #{$hover-color};
+  --#{$prefix}btn-#{$color-name}-active-bg: #{$active-color};
+}
+```
+
+This creates CSS variables like:
+- `--bs-btn-primary-bg`
+- `--bs-btn-primary-hover-bg`
+- `--bs-btn-primary-active-bg`
+- `--bs-btn-primary-color`
+
+### Custom Component Variants
+
+You can create custom button variants:
+
+```scss
+@include df-button-variant-variables(
+  'brand',
+  $default-color: #ff6b35,
+  $hover-color: #e55a2b,
+  $active-color: #cc4e24
+);
+```
+
+Then use it in your components:
+
+```tsx
+<DButton color="brand">Brand Button</DButton>
+```
+
+## Typography
+
+### Font Configuration
+
+```scss
+// Font families
+$font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !default;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, monospace !default;
+
+// Font sizes (responsive with RFS)
+$font-size-base: 1rem !default;     // 16px
+$font-size-sm: 0.875rem !default;   // 14px
+$font-size-lg: 1.125rem !default;   // 18px
+
+// Font weights
+$font-weight-lighter: 200 !default;
+$font-weight-light: 300 !default;
+$font-weight-normal: 400 !default;
+$font-weight-semibold: 600 !default;
+$font-weight-bold: 700 !default;
+$font-weight-bolder: 900 !default;
+```
+
+### Typography CSS Variables
+
+All typography settings are available as CSS variables:
+
+```css
+:root {
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  
+  --bs-fw-normal: 400;
+  --bs-fw-semibold: 600;
+  --bs-fw-bold: 700;
+}
+```
+
+## Dark Mode Support
+
+Dynamic UI includes built-in dark mode support:
+
+```scss src/style/root/_root.scss
+@if $enable-dark-mode {
+  @include color-mode(dark, true) {
+    color-scheme: dark;
+    
+    --#{$prefix}body-color: #{$body-color-dark};
+    --#{$prefix}body-bg: #{$body-bg-dark};
+    --#{$prefix}border-color: #{$border-color-dark};
+    // ... more dark mode variables
+  }
+}
+```
+
+Toggle dark mode with the `data-bs-theme` attribute:
+
+```html
+<html data-bs-theme="dark">
+  <!-- Your app in dark mode -->
+</html>
+```
+
+Or programmatically:
+
+```tsx
+document.documentElement.setAttribute('data-bs-theme', 'dark');
+```
+
+## Design Tokens
+
+### Spacing Scale
+
+```scss
+$spacers: (
+  0: 0,
+  1: 0.25rem,  // 4px
+  2: 0.5rem,   // 8px
+  3: 0.75rem,  // 12px
+  4: 1rem,     // 16px
+  5: 1.5rem,   // 24px
+  6: 2rem,     // 32px
+  7: 2.5rem,   // 40px
+  8: 3rem,     // 48px
+  9: 4rem,     // 64px
+  10: 5rem     // 80px
+);
+```
+
+Available as CSS variables:
+
+```css
+:root {
+  --bs-ref-spacer-0: 0;
+  --bs-ref-spacer-1: 0.25rem;
+  --bs-ref-spacer-4: 1rem;
+  /* ... */
+}
+```
+
+### Border Radius
+
+```scss
+$border-radius: 0.375rem !default;      // 6px
+$border-radius-sm: 0.25rem !default;    // 4px
+$border-radius-lg: 0.5rem !default;     // 8px
+$border-radius-xl: 1rem !default;       // 16px
+$border-radius-xxl: 2rem !default;      // 32px
+$border-radius-pill: 50rem !default;    // Pill shape
+```
+
+### Shadows
+
+```scss
+$box-shadow: 0 0.125rem 0.25rem rgba($black, 0.075) !default;
+$box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075) !default;
+$box-shadow-lg: 0 1rem 3rem rgba($black, 0.175) !default;
+```
+
+## WCAG Color Contrast
+
+Dynamic UI automatically ensures WCAG 2.0 compliant color contrast:
+
+```scss src/style/abstracts/variables/_colors.scss
+$min-contrast-ratio: 4.5 !default;
+$color-contrast-dark: $gray-700 !default;
+$color-contrast-light: $white !default;
+```
+
+The `color-contrast-var()` function automatically selects light or dark text based on background:
+
+```scss
+$default-text-color: color-contrast-var(map-get($all-colors, primary-500));
+// Returns white text on dark backgrounds, dark text on light backgrounds
+```
+
+## Import Options
+
+### Full Import
+
+```scss
+@import '@dynamic-framework/ui-react/dist/css/dynamic-ui';
+```
+
+### Root Variables Only
+
+```scss
+@import '@dynamic-framework/ui-react/dist/css/dynamic-ui-root';
+```
+
+### Modular Import
+
+```scss
+@import '@dynamic-framework/ui-react/src/style/abstracts/+import';
+@import '@dynamic-framework/ui-react/src/style/root/+import';
+@import '@dynamic-framework/ui-react/src/style/components/buttons';
+```
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Use Semantic Colors" icon="palette">
+    Use theme colors (`primary`, `success`, `danger`) instead of base colors (`blue`, `green`, `red`) for easier theming.
+  </Card>
+  
+  <Card title="Leverage CSS Variables" icon="code">
+    Use CSS custom properties in your styles to automatically inherit theme changes.
+  </Card>
+  
+  <Card title="Test Color Contrast" icon="eye">
+    Always verify color combinations meet WCAG AA standards (4.5:1 for normal text).
+  </Card>
+  
+  <Card title="Document Customizations" icon="book">
+    Keep a separate theme file documenting all SCSS variable overrides for your project.
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Architecture" icon="sitemap" href="/concepts/architecture">
+    Learn about the micro frontend architecture
+  </Card>
+  
+  <Card title="Accessibility" icon="universal-access" href="/concepts/accessibility">
+    Understand accessibility features and guidelines
+  </Card>
+</CardGroup>

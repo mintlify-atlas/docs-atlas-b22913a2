@@ -1,0 +1,296 @@
+---
+title: Button Components
+description: Button components for user interactions
+---
+
+## DButton
+
+Primary button component with support for variants, colors, sizes, icons, and loading states. Can render as a button or anchor element.
+
+### Basic Usage
+
+```tsx
+import DButton from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DButton 
+      text="Click me"
+      color="primary"
+      onClick={() => console.log('Clicked!')}
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="text" type="string">
+  Button text content
+</ParamField>
+
+<ParamField path="color" type="ComponentColor" default="primary">
+  Button color theme (primary, secondary, success, danger, warning, info, etc.)
+</ParamField>
+
+<ParamField path="size" type="ComponentSize">
+  Button size - 'sm' or 'lg'
+</ParamField>
+
+<ParamField path="variant" type="ButtonVariant">
+  Button variant - 'outline' or 'link'
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  Shows loading spinner when true
+</ParamField>
+
+<ParamField path="loadingText" type="string">
+  Text to display during loading state
+</ParamField>
+
+<ParamField path="loadingAriaLabel" type="string">
+  Aria label for loading state
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables the button
+</ParamField>
+
+<ParamField path="iconStart" type="string">
+  Icon name to display at start of button
+</ParamField>
+
+<ParamField path="iconEnd" type="string">
+  Icon name to display at end of button
+</ParamField>
+
+<ParamField path="href" type="string">
+  If provided, renders as an anchor tag instead of button
+</ParamField>
+
+<ParamField path="target" type="string">
+  Link target attribute (when used with href)
+</ParamField>
+
+<ParamField path="type" type="ButtonType" default="button">
+  Button type - 'button', 'submit', or 'reset'
+</ParamField>
+
+### Variants
+
+<Tabs>
+  <Tab title="Solid">
+    ```tsx
+    <DButton text="Primary" color="primary" />
+    <DButton text="Secondary" color="secondary" />
+    <DButton text="Success" color="success" />
+    <DButton text="Danger" color="danger" />
+    ```
+  </Tab>
+  <Tab title="Outline">
+    ```tsx
+    <DButton text="Primary" color="primary" variant="outline" />
+    <DButton text="Secondary" color="secondary" variant="outline" />
+    <DButton text="Success" color="success" variant="outline" />
+    <DButton text="Danger" color="danger" variant="outline" />
+    ```
+  </Tab>
+  <Tab title="Link">
+    ```tsx
+    <DButton text="Link Button" color="primary" variant="link" />
+    <DButton text="Danger Link" color="danger" variant="link" />
+    ```
+  </Tab>
+</Tabs>
+
+### With Icons
+
+```tsx
+<DButton 
+  text="Save" 
+  iconStart="Save" 
+  color="primary" 
+/>
+
+<DButton 
+  text="Next" 
+  iconEnd="ArrowRight" 
+  color="primary" 
+/>
+
+<DButton 
+  text="Download" 
+  iconStart="Download" 
+  iconStartMaterialStyle={true}
+  color="success" 
+/>
+```
+
+### Loading State
+
+```tsx
+<DButton 
+  text="Submit" 
+  loading={isSubmitting}
+  loadingText="Submitting..."
+  color="primary" 
+/>
+```
+
+### As Link
+
+```tsx
+<DButton 
+  text="Visit Page" 
+  href="/page" 
+  target="_blank"
+  rel="noopener noreferrer"
+  color="primary" 
+/>
+```
+
+### TypeScript Interface
+
+```typescript
+interface Props
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
+  BaseProps,
+  StartIconProps,
+  EndIconProps {
+  href?: string;
+  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>['target'];
+  rel?: React.AnchorHTMLAttributes<HTMLAnchorElement>['rel'];
+  color?: ComponentColor;
+  size?: ComponentSize;
+  variant?: ButtonVariant;
+  text?: string;
+  loading?: boolean;
+  loadingText?: string;
+  loadingAriaLabel?: string;
+}
+```
+
+## DButtonIcon
+
+Icon-only button component for compact interfaces. Supports all button states and can render as button or anchor.
+
+### Basic Usage
+
+```tsx
+import DButtonIcon from '@dynamic-ui/components';
+
+function App() {
+  return (
+    <DButtonIcon 
+      icon="Settings"
+      ariaLabel="Open settings"
+      color="primary"
+      onClick={() => console.log('Settings clicked')}
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="icon" type="string" required>
+  Icon name to display
+</ParamField>
+
+<ParamField path="ariaLabel" type="string">
+  Accessible label for screen readers (highly recommended)
+</ParamField>
+
+<ParamField path="color" type="ComponentColor" default="primary">
+  Button color theme
+</ParamField>
+
+<ParamField path="size" type="ComponentSize">
+  Button size - 'sm' or 'lg'
+</ParamField>
+
+<ParamField path="variant" type="ButtonVariant">
+  Button variant - 'outline' or 'link'
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  Shows loading spinner when true
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables the button
+</ParamField>
+
+<ParamField path="state" type="InputState">
+  Visual state - 'focus-visible', 'hover', 'active', or 'disabled'
+</ParamField>
+
+<ParamField path="stopPropagationEnabled" type="boolean" default="true">
+  Whether to stop event propagation on click
+</ParamField>
+
+<ParamField path="href" type="string">
+  If provided, renders as anchor tag
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    <DButtonIcon icon="Search" ariaLabel="Search" />
+    <DButtonIcon icon="Edit" ariaLabel="Edit" color="primary" />
+    <DButtonIcon icon="Delete" ariaLabel="Delete" color="danger" />
+    ```
+  </Tab>
+  <Tab title="Sizes">
+    ```tsx
+    <DButtonIcon icon="Plus" ariaLabel="Add" size="sm" />
+    <DButtonIcon icon="Plus" ariaLabel="Add" />
+    <DButtonIcon icon="Plus" ariaLabel="Add" size="lg" />
+    ```
+  </Tab>
+  <Tab title="Variants">
+    ```tsx
+    <DButtonIcon icon="Settings" ariaLabel="Settings" variant="outline" />
+    <DButtonIcon icon="Info" ariaLabel="Info" variant="link" />
+    ```
+  </Tab>
+  <Tab title="Loading">
+    ```tsx
+    <DButtonIcon 
+      icon="Save" 
+      ariaLabel="Saving" 
+      loading={true}
+      loadingAriaLabel="Saving changes"
+    />
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type Props =
+& BaseProps
+& FamilyIconProps
+& {
+  id?: string;
+  icon: string;
+  size?: ComponentSize;
+  variant?: ButtonVariant;
+  color?: ComponentColor;
+  state?: InputState;
+  type?: ButtonType;
+  loading?: boolean;
+  loadingAriaLabel?: string;
+  ariaLabel?: string;
+  stopPropagationEnabled?: boolean;
+  disabled?: boolean;
+  href?: string;
+  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>['target'];
+  rel?: React.AnchorHTMLAttributes<HTMLAnchorElement>['rel'];
+  onClick?: (event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
+};
+```

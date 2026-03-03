@@ -1,0 +1,417 @@
+---
+title: Form Components
+description: Advanced form controls for selection and range inputs
+---
+
+## DInputSelect
+
+Native HTML select element with icon support and validation states.
+
+### Basic Usage
+
+```tsx
+import DInputSelect from '@dynamic-ui/components';
+
+function App() {
+  const [country, setCountry] = useState<Country>();
+  
+  const countries = [
+    { value: 'us', label: 'United States' },
+    { value: 'ca', label: 'Canada' },
+    { value: 'mx', label: 'Mexico' },
+  ];
+  
+  return (
+    <DInputSelect 
+      label="Country"
+      options={countries}
+      value={country?.value}
+      onChange={setCountry}
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="label" type="string">
+  Select label
+</ParamField>
+
+<ParamField path="options" type="Array<T>" required>
+  Array of options
+</ParamField>
+
+<ParamField path="value" type="string | number">
+  Selected value
+</ParamField>
+
+<ParamField path="onChange" type="(selectedOption: T) => void">
+  Called when selection changes with the selected option object
+</ParamField>
+
+<ParamField path="valueExtractor" type="(item: T) => string | number">
+  Function to extract value from option object
+</ParamField>
+
+<ParamField path="labelExtractor" type="(item: T) => string">
+  Function to extract label from option object
+</ParamField>
+
+<ParamField path="size" type="ComponentSize">
+  Select size - 'sm' or 'lg'
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Disables the select
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  Shows loading state
+</ParamField>
+
+<ParamField path="invalid" type="boolean" default="false">
+  Shows invalid state
+</ParamField>
+
+<ParamField path="valid" type="boolean" default="false">
+  Shows valid state
+</ParamField>
+
+<ParamField path="hint" type="string">
+  Helper text
+</ParamField>
+
+<ParamField path="floatingLabel" type="boolean" default="false">
+  Enables floating label style
+</ParamField>
+
+<ParamField path="iconStart" type="string">
+  Icon at start
+</ParamField>
+
+<ParamField path="iconEnd" type="string">
+  Icon at end
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    const options = [
+      { value: 'option1', label: 'Option 1' },
+      { value: 'option2', label: 'Option 2' },
+    ];
+    
+    <DInputSelect 
+      label="Select an option"
+      options={options}
+      onChange={(selected) => console.log(selected)}
+    />
+    ```
+  </Tab>
+  <Tab title="Custom Objects">
+    ```tsx
+    type User = {
+      id: number;
+      name: string;
+    };
+    
+    const users: User[] = [
+      { id: 1, name: 'John Doe' },
+      { id: 2, name: 'Jane Smith' },
+    ];
+    
+    <DInputSelect<User>
+      label="Assign to"
+      options={users}
+      valueExtractor={(user) => user.id}
+      labelExtractor={(user) => user.name}
+      onChange={(user) => console.log(user.id, user.name)}
+    />
+    ```
+  </Tab>
+  <Tab title="With Icons">
+    ```tsx
+    <DInputSelect 
+      label="Currency"
+      options={currencies}
+      iconStart="DollarSign"
+      onChange={setCurrency}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+### TypeScript Interface
+
+```typescript
+type DefaultOption = {
+  value: string | number;
+  label: string;
+};
+
+type Props<T> =
+& BaseProps
+& FamilyIconProps
+& StartIconProps
+& EndIconProps
+& {
+  id?: string;
+  name?: string;
+  label?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  invalid?: boolean;
+  valid?: boolean;
+  hint?: string;
+  floatingLabel?: boolean;
+  onBlur?: (event: FocusEvent) => void;
+  onIconStartClick?: (event: MouseEvent) => void;
+  onIconEndClick?: (event: MouseEvent) => void;
+  options: Array<T>;
+  value?: string | number;
+  size?: ComponentSize;
+  onChange?: (selectedOption: T) => void;
+  valueExtractor?: (item: T) => string | number;
+  labelExtractor?: (item: T) => string;
+};
+```
+
+## DInputRange
+
+Range slider with visual value indicator.
+
+### Basic Usage
+
+```tsx
+import DInputRange from '@dynamic-ui/components';
+
+function App() {
+  const [value, setValue] = useState('50');
+  
+  return (
+    <DInputRange 
+      label="Volume"
+      value={value}
+      min="0"
+      max="100"
+      onChange={(e) => setValue(e.target.value)}
+    />
+  );
+}
+```
+
+### Props
+
+<ParamField path="label" type="string">
+  Range label
+</ParamField>
+
+<ParamField path="value" type="string" default="0">
+  Current value
+</ParamField>
+
+<ParamField path="min" type="string" default="0">
+  Minimum value
+</ParamField>
+
+<ParamField path="max" type="string" default="100">
+  Maximum value
+</ParamField>
+
+<ParamField path="filledValue" type="boolean" default="true">
+  Shows filled track up to current value
+</ParamField>
+
+<ParamField path="onChange" type="ChangeEventHandler<HTMLInputElement>">
+  Change handler
+</ParamField>
+
+### Example
+
+```tsx
+<DInputRange 
+  label="Price Range"
+  value={price}
+  min="0"
+  max="1000"
+  onChange={(e) => setPrice(e.target.value)}
+/>
+
+<DInputRange 
+  label="Opacity"
+  value={opacity}
+  min="0"
+  max="1"
+  step="0.1"
+  filledValue={true}
+  onChange={(e) => setOpacity(e.target.value)}
+/>
+```
+
+## DSelect
+
+Advanced select component powered by `react-select` with custom styling and icon support.
+
+### Basic Usage
+
+```tsx
+import DSelect from '@dynamic-ui/components';
+
+function App() {
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+  ];
+  
+  return (
+    <DSelect 
+      label="Flavor"
+      options={options}
+      onChange={(option) => console.log(option)}
+    />
+  );
+}
+```
+
+### Props
+
+Inherits all props from `react-select` with additional customizations:
+
+<ParamField path="label" type="string">
+  Select label
+</ParamField>
+
+<ParamField path="hint" type="string">
+  Helper text
+</ParamField>
+
+<ParamField path="invalid" type="boolean" default="false">
+  Shows invalid state
+</ParamField>
+
+<ParamField path="valid" type="boolean" default="false">
+  Shows valid state
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Disables the select (alias for isDisabled)
+</ParamField>
+
+<ParamField path="clearable" type="boolean">
+  Shows clear button (alias for isClearable)
+</ParamField>
+
+<ParamField path="loading" type="boolean">
+  Shows loading state (alias for isLoading)
+</ParamField>
+
+<ParamField path="searchable" type="boolean">
+  Enables search (alias for isSearchable)
+</ParamField>
+
+<ParamField path="multi" type="boolean">
+  Enables multi-select (alias for isMulti)
+</ParamField>
+
+<ParamField path="menuWithMaxContent" type="boolean" default="false">
+  Menu width adjusts to content
+</ParamField>
+
+<ParamField path="floatingLabel" type="boolean" default="false">
+  Enables floating label style
+</ParamField>
+
+<ParamField path="iconStart" type="string">
+  Icon at start
+</ParamField>
+
+<ParamField path="iconEnd" type="string">
+  Icon at end
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Basic">
+    ```tsx
+    <DSelect 
+      label="Select option"
+      options={options}
+      onChange={handleChange}
+    />
+    ```
+  </Tab>
+  <Tab title="Multi-select">
+    ```tsx
+    <DSelect 
+      label="Select multiple"
+      options={options}
+      multi
+      onChange={handleChange}
+    />
+    ```
+  </Tab>
+  <Tab title="Searchable">
+    ```tsx
+    <DSelect 
+      label="Search countries"
+      options={countries}
+      searchable
+      placeholder="Type to search..."
+      onChange={handleChange}
+    />
+    ```
+  </Tab>
+  <Tab title="With Icons">
+    ```tsx
+    <DSelect 
+      label="Account"
+      options={accounts}
+      iconStart="User"
+      clearable
+      onChange={handleChange}
+    />
+    ```
+  </Tab>
+  <Tab title="Custom Components">
+    ```tsx
+    <DSelect 
+      label="Select with icons"
+      options={options}
+      components={{
+        Option: DSelect.OptionIcon,
+        SingleValue: DSelect.SingleValueIconText,
+      }}
+      onChange={handleChange}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+### Custom Components
+
+DSelect provides pre-built custom components:
+
+- `DSelect.OptionCheck` - Checkbox in options
+- `DSelect.OptionIcon` - Icon in options
+- `DSelect.OptionEmoji` - Emoji in options
+- `DSelect.SingleValueIconText` - Icon with text for selected value
+- `DSelect.SingleValueEmoji` - Emoji for selected value
+- `DSelect.SingleValueEmojiText` - Emoji with text for selected value
+
+```tsx
+<DSelect 
+  options={[
+    { value: 'us', label: 'United States', icon: 'Flag' },
+    { value: 'ca', label: 'Canada', icon: 'Flag' },
+  ]}
+  components={{
+    Option: DSelect.OptionIcon,
+    SingleValue: DSelect.SingleValueIconText,
+  }}
+/>
+```
